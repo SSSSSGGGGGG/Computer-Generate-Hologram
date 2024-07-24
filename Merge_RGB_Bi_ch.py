@@ -9,9 +9,9 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-im_rh=plt.imread("R_144(V)_p64.png")
-im_gh=plt.imread("Green_112(V)_p54.png")
-im_bh=plt.imread("B_80(V)_p46.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/R_144(V)_p66.png")
+im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/Green_112(V)_p54.png")
+im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/B_80(V)_p46.png")
 # im_gray=plt.imread("Gray(V)_p64.png")
 
 im_rh_array = np.array(im_rh)*255
@@ -28,8 +28,8 @@ im_new_array[:,:,2] = im_bh_array[:,:,2]
 im_new_array = im_new_array.astype(np.uint8)
 
 im_new = Image.fromarray(im_new_array)
-im_new.save('RGB_bi_V_pi.png')
-plt.figure(1)
+im_new.save('RGB_bi_V_pi_s.png')
+
 im_new.show()
 # plt.figure(2)
 # plt.imshow(im_gray)

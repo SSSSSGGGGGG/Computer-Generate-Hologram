@@ -45,22 +45,16 @@ import numpy as np
 # beacause of p, we could have a realtion between xm and km, xm=km*lamda*d
 # the phase change is up to 2pi=255
     
-file_n="B"   
+file_n="R"   
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 364 # period
+stripe_width = 512 # period
+
+
 
 # this corresponds to phase value, now we need it to be 2pi.
-color_value=160
-# This is for vertical diffraction pattern distribution
-# for x in range(width):
-#     for i in range(0, height, spacing):
-#         for j in range(stripe_width):
-#             if i+j<height:
-#                 pixels[x,i+j]=(255,0,0)
-# im_blank.save(f"{file_n}(V)_p{stripe_width}.png")
-                
+color_value=255               
 # This is for horizontal
 im_blank_h=Image.new("RGB",(width,height))
 pixels_h = im_blank_h.load()
@@ -74,7 +68,7 @@ if reminder==0:
             interval=color_value/(stripe_width-1)
             for k in range(int(loop)):
                 # print(i1+k*stripe_width)
-                pixels_h[i1+k*stripe_width,x1]=(0,0,int((stripe_width-i1)* interval))
+                pixels_h[i1+k*stripe_width,x1]=(int((i1)* interval),0,0)
     im_blank_h.save(f"{file_n}(blazed)_p{stripe_width}.png")
 else:
     interval=color_value/(stripe_width-1)
@@ -83,15 +77,15 @@ else:
             
             for k in range(int(loop)):
                 # print(i1+k*stripe_width)
-                pixels_h[i1+k*stripe_width,x1]=(0,0,int((stripe_width-i1)* interval))
+                pixels_h[i1+k*stripe_width,x1]=(int((i1)* interval),0,0)
         i2=0
         while i2 < reminder-1:
           
-            pixels_h[i2+1+(round(loop))*stripe_width,x1]=(0,0,int((reminder-i2)* interval)) 
-            # print((round(loop)-1))
+            pixels_h[i2+1+(round(loop)-1)*stripe_width,x1]=(int((i2)* interval),0,0) 
+            # print(i2+1+(round(loop)-1)*stripe_width)
             i2+=1
     im_blank_h.save(f"{file_n}(blazed)_p{stripe_width}.png")
-    
+
 # the following is for vertical
 loop_v=height/stripe_width
 reminder_v=height%stripe_width
@@ -102,7 +96,7 @@ if reminder_v==0:
             interval=color_value/(stripe_width-1)
             for k in range(int(loop_v)):
                 # print(i1+k*stripe_width)
-                pixels[x1,i1+k*stripe_width]=(0,0,int((stripe_width-i1)* interval))
+                pixels[x1,i1+k*stripe_width]=(int((i1)* interval),0,0)
     im_blank.save(f"{file_n}(blazed)V_p{stripe_width}.png")
 else:
     interval=color_value/(stripe_width-1)
@@ -111,14 +105,16 @@ else:
             
             for k in range(int(loop_v)):
                 # print(i1+k*stripe_width)
-                pixels[x1,i1+k*stripe_width]=(0,0,int((stripe_width-i1)* interval))
+                pixels[x1,i1+k*stripe_width]=(int((i1)* interval),0,0)
                 # print(x1,i1+k*stripe_width)
         i2=0
         while i2 < reminder_v-1:
             # print(round(loop))
-            pixels[x1,i2+1+(round(loop_v)-1)*stripe_width]=(0,0,int((reminder_v-i2)* interval)) 
+            pixels[x1,i2+1+(round(loop_v)-1)*stripe_width]=(int((i2)* interval),0,0) 
             
             i2+=1
     im_blank.save(f"{file_n}(blazed)V_p{stripe_width}.png")
 im_blank.show()
+
+# im_blank.show()
 im_blank_h.show()

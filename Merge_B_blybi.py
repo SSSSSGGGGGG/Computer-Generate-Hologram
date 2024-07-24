@@ -9,55 +9,42 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-im_rh=plt.imread("B(blazed)_p46.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/B(blazed)_p364.png")
 # im_gh=plt.imread("Green(H)_p54.png")
-im_bh=plt.imread("B(V)_p46.png")
+im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/B(blazed)V_p364.png")
+
+im_rb=plt.imread("C:/Users/Laboratorio/MakeHologram/B_112(V)_p92.png")
 # im_gray=plt.imread("Gray(V)_p64.png")
+im_rh_array = np.array(im_rh)
+im_bh_array = np.array(im_bh)
 
-# plt.figure(1)
-# plt.imshow(im_rh)
-# plt.figure(2)
-# plt.imshow(im_gray)
+im_m = np.zeros_like(im_rh_array)
+im_m[:,:,2]=im_rh_array[:,:,2]+im_bh_array[:,:,2]
+im_check=im_m[:,:,2]*127.5 #!!!!!!!!!!!
+im_check_h=im_rh_array[:,:,2]*255
+im_check_v=im_bh_array[:,:,2]*255
+im_int=im_check.astype(int)
 
-# Convert the images to Pillow images
-im_rh_pil = Image.fromarray((im_rh * 255).astype(np.uint8))
+im_new_array = np.zeros_like(im_rh_array)
+im_new_array[:,:,2] = im_int
+im_new_array = im_new_array.astype(np.uint8)
 
-# im_gh_pil = Image.fromarray((im_gh * 255).astype(np.uint8))
-im_bh_pil = Image.fromarray((im_bh * 255).astype(np.uint8))
-# im_grayv_pil = Image.fromarray((im_gray * 255).astype(np.uint8))
-# plt.figure(1)
-# plt.imshow(im_grayv_pil)
-#Save images as layers in a single TIFF file
-im_rh_pil.save('M_B_BB_V.tif', save_all=True, append_images=[im_bh_pil])
+im_new = Image.fromarray(im_new_array)
+im_new.save('B_bl2_tri.png')
 
-# Display the third image
-# plt.figure(3)
-# plt.imshow(im_rh_pil)
-# plt.show()
+im_new.show()
 
-im_m =Image.open('M_B_BB_V.tif')
-# Number of layers in the TIFF file
-num_layers = im_m.n_frames
-layers = []
+im_rb_array = np.array(im_rb)
+im_m_3 = np.zeros_like(im_rh_array)
+im_m_3[:,:,2]=im_rh_array[:,:,2]+im_bh_array[:,:,2]+im_rb_array[:,:,2]
+im_check_3=im_m_3[:,:,2]*(255/3)
+im_int_3=im_check_3.astype(int)
 
-# Read each layer and append to the list
-for i in range(num_layers):
-    im_m.seek(i)  # Move to the i-th layer
-    layer = im_m.copy()
-    layers.append(layer)
+im_new_arr_3 = np.zeros_like(im_rh_array)
+im_new_arr_3[:,:,2] = im_int_3
+im_new_arr_3=im_new_arr_3.astype(np.uint8)
 
-# Display all layers using matplotlib
-fig, axes = plt.subplots(1, num_layers, figsize=(15, 5))
+im_new_3 = Image.fromarray(im_new_arr_3)
+im_new_3.save('B_bl2_bi_tri.png')
 
-for ax, layer, i in zip(axes, layers, range(num_layers)):
-    ax.imshow(layer)
-    ax.set_title(f'Layer {i + 1}')
-    ax.axis('off')
-
-plt.show()
-
-# im_mr=im_m[:,:,0]
-# plt.figure(4)
-# plt.imshow(im_mr* 255)
-# im_mg=im_m[:,:,1]
-# im_mb=im_m[:,:,2]
+im_new_3.show()

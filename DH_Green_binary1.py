@@ -40,12 +40,12 @@ else:
     
 # compose images
 
-G=255    
+G=112    
 file_n="Green"   
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 54 # period
+stripe_width = 27 # period
 spacing=stripe_width*2   # 2 times period
 loop_w=width/stripe_width
 reminder_w=width%stripe_width
@@ -60,7 +60,7 @@ if reminder_w==0:
             for j in range(stripe_width):
                 if i+j<height:
                     pixels[x,i+j]=(0,G,0)
-    im_blank.save(f"{file_n}_{G}(V)_p{stripe_width}.png")
+    im_blank.save(f"{file_n}_{G}(V)_p{spacing}.png")
 else:
     for x in range(width):
         for i in range(0, height, spacing):
@@ -73,7 +73,7 @@ else:
             pixels[x,i2+1+(round(loop_h)-1)*stripe_width]=(0,0,0) 
             # print(i2+1+(round(loop_w)-1)*stripe_width)
             i2+=1
-    im_blank.save(f"{file_n}_{G}(V)_p{stripe_width}.png")
+    im_blank.save(f"{file_n}_{G}(V)_p{spacing}.png")
                 
 # This is for horizontal
 im_blank_h=Image.new("RGB",(width,height))
@@ -84,7 +84,7 @@ if reminder_h==0:
             for j1 in range(stripe_width):
                 if i1+j1<width:
                     pixels_h[i1+j1,x1]=(0,G,0)
-    im_blank_h.save(f"{file_n}_{G}(H)_p{stripe_width}.png")
+    im_blank_h.save(f"{file_n}_{G}(H)_p{spacing}.png")
 else:
     for x1 in range(height):
         for i1 in range(0, width, spacing):
@@ -97,7 +97,7 @@ else:
             pixels_h[i2+1+(round(loop_w)-1)*stripe_width,x1]=(0,0,0) 
             # print(i2+1+(round(loop_w)-1)*stripe_width)
             i2+=1
-    im_blank_h.save(f"{file_n}_{G}(H)_p{stripe_width}.png")
+    im_blank_h.save(f"{file_n}_{G}(H)_p{spacing}.png")
 
 im_blank.show()
 im_blank_h.show()

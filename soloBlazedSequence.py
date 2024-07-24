@@ -22,13 +22,13 @@ def comb(x_,p):
 def blz(x_, p):
     
     period_blazed=p  # the period can be changed
-    interval=3.55*np.pi/period_blazed
+    interval=2*np.pi/period_blazed
     # print(interval,period_blazed,x_ * interval)
     
     return np.exp(1j * x_ * interval),x_ * interval
     
 # print(np.exp(1j *3.55*np.pi ))
-x1= np.arange(0,46,1) # for blazed
+x1= np.arange(0,512,1) # for blazed
 pr=len(x1)
 y_b,y_b_p=zip(*[blz(xp,pr)[:2] for xp in x1])  # blazed
 
