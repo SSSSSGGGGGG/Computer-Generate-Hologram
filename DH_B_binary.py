@@ -40,12 +40,12 @@ else:
     
 # compose images
 
-G=80   
-file_n="B"   
+G=112   
+file_n="B_tri"   
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 23 # period
+stripe_width = 24 # period
 spacing=stripe_width*2   # 2 times period
 loop_w=width/stripe_width
 reminder_w=width%stripe_width
@@ -75,29 +75,29 @@ else:
             i2+=1
     im_blank.save(f"{file_n}_{G}(V)_p{spacing}.png")
                 
-# This is for horizontal
-im_blank_h=Image.new("RGB",(width,height))
-pixels_h = im_blank_h.load()
-if reminder_h==0:
-    for x1 in range(height):
-        for i1 in range(0, width, spacing):
-            for j1 in range(stripe_width):
-                if i1+j1<width:
-                    pixels_h[i1+j1,x1]=(0,0,G)
-    im_blank_h.save(f"{file_n}_{G}(H)_p{spacing}.png")
-else:
-    for x1 in range(height):
-        for i1 in range(0, width, spacing):
-            for j1 in range(stripe_width):
-                if i1+j1<width:
-                    pixels_h[i1+j1,x1]=(0,0,G)
-        i2=0
-        while i2 < reminder_h-1:
+# # This is for horizontal
+# im_blank_h=Image.new("RGB",(width,height))
+# pixels_h = im_blank_h.load()
+# if reminder_h==0:
+#     for x1 in range(height):
+#         for i1 in range(0, width, spacing):
+#             for j1 in range(stripe_width):
+#                 if i1+j1<width:
+#                     pixels_h[i1+j1,x1]=(0,0,G)
+#     im_blank_h.save(f"{file_n}_{G}(H)_p{spacing}.png")
+# else:
+#     for x1 in range(height):
+#         for i1 in range(0, width, spacing):
+#             for j1 in range(stripe_width):
+#                 if i1+j1<width:
+#                     pixels_h[i1+j1,x1]=(0,0,G)
+#         i2=0
+#         while i2 < reminder_h-1:
           
-            pixels_h[i2+1+(round(loop_w)-2)*stripe_width,x1]=(0,0,0) 
-            # print(i2+1+(round(loop_w)-1)*stripe_width)
-            i2+=1
-    im_blank_h.save(f"{file_n}_{G}(H)_p{spacing}.png")
+#             pixels_h[i2+1+(round(loop_w)-2)*stripe_width,x1]=(0,0,0) 
+#             # print(i2+1+(round(loop_w)-1)*stripe_width)
+#             i2+=1
+#     im_blank_h.save(f"{file_n}_{G}(H)_p{spacing}.png")
 
 im_blank.show()
-im_blank_h.show()
+# im_blank_h.show()

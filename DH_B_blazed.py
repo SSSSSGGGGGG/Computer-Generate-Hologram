@@ -50,6 +50,7 @@ width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
 stripe_width = 364 # period
+stripe_width_v = 364*2 # period
 
 # this corresponds to phase value, now we need it to be 2pi.
 color_value=160
@@ -87,38 +88,38 @@ else:
         i2=0
         while i2 < reminder-1:
           
-            pixels_h[i2+1+(round(loop))*stripe_width,x1]=(0,0,int((reminder-i2)* interval)) 
+            pixels_h[i2+1+(round(loop))*stripe_width,x1]=(0,0,int((stripe_width-i2)* interval)) 
             # print((round(loop)-1))
             i2+=1
     im_blank_h.save(f"{file_n}(blazed)_p{stripe_width}.png")
     
 # the following is for vertical
-loop_v=height/stripe_width
-reminder_v=height%stripe_width
+loop_v=height/stripe_width_v
+reminder_v=height%stripe_width_v
 print(loop_v,reminder_v)
 if reminder_v==0:
     for x1 in range(width):
-        for i1 in range(0, stripe_width):
-            interval=color_value/(stripe_width-1)
+        for i1 in range(0, stripe_width_v):
+            interval=color_value/(stripe_width_v-1)
             for k in range(int(loop_v)):
                 # print(i1+k*stripe_width)
-                pixels[x1,i1+k*stripe_width]=(0,0,int((stripe_width-i1)* interval))
-    im_blank.save(f"{file_n}(blazed)V_p{stripe_width}.png")
+                pixels[x1,i1+k*stripe_width_v]=(0,0,int((stripe_width_v-i1)* interval))
+    im_blank.save(f"{file_n}(blazed)V_p{stripe_width_v}.png")
 else:
-    interval=color_value/(stripe_width-1)
+    interval=color_value/(stripe_width_v-1)
     for x1 in range(width):
-        for i1 in range(0, stripe_width):
+        for i1 in range(0, stripe_width_v):
             
             for k in range(int(loop_v)):
                 # print(i1+k*stripe_width)
-                pixels[x1,i1+k*stripe_width]=(0,0,int((stripe_width-i1)* interval))
+                pixels[x1,i1+k*stripe_width_v]=(0,0,int((stripe_width_v-i1)* interval))
                 # print(x1,i1+k*stripe_width)
         i2=0
         while i2 < reminder_v-1:
             # print(round(loop))
-            pixels[x1,i2+1+(round(loop_v)-1)*stripe_width]=(0,0,int((reminder_v-i2)* interval)) 
+            pixels[x1,i2+1+(round(loop_v))*stripe_width_v]=(0,0,int((stripe_width_v-i2)* interval)) 
             
             i2+=1
-    im_blank.save(f"{file_n}(blazed)V_p{stripe_width}.png")
+    im_blank.save(f"{file_n}(blazed)V_p{stripe_width_v}.png")
 im_blank.show()
 im_blank_h.show()

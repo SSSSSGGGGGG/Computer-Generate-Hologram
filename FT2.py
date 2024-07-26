@@ -32,9 +32,9 @@ im_r_if=ifft2(im_r_fft)
 # plt.imshow(abs(I))
 # plt.axis('off')
 im_new=np.zeros_like(im)
-im_new[:,:,0]=im_r_if
+im_new[:,:,0]=im_r_fft
 im_new_array = im_new.astype(np.uint8)
 
 im_new_t = Image.fromarray(im_new_array)
-
+im_new_t.save("FT of car.png")
 im_new_t.show()
