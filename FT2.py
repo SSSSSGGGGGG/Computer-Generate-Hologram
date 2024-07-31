@@ -39,22 +39,14 @@ im_r_fft=fftshift(fft2(im_r_process))
 # U, V = np.meshgrid(u, v)
 
 #(-pi, pi]
-phase = np.angle(im_r_fft)
+phase = np.angle(im_r_fft)+np.pi
 # the calibration between red and gray level 1.85-->255
-# interval=255/(2*np.pi)
-angle_0_pi = phase*(510/(2*np.pi))
+interval=255/(2*np.pi)
+angle_0_pi = phase*interval
 
 # angle_0_pi =angle_0_pi # this is the one in 0-255
 
-magnitude = np.abs(im_r_fft)
 
-combined = np.exp(1j * phase)
-im_r_if = np.fft.ifft2(combined)
-
-# I_r=im_r_if*im_r_if.conjugate()
-plt.figure(1)
-plt.imshow(np.abs(im_r_if),cmap="hot")
-plt.show()
 plt.figure(2)
 plt.imshow(im_r,cmap="hot")
 plt.show()
@@ -64,6 +56,16 @@ im_new[:,:,0]=np.mod(angle_0_pi,255)
 im_new_array = im_new.astype(np.uint8)
 
 im_new_t = Image.fromarray(im_new_array)
-im_new_t.save(f"ft of {filename} {shift_state}.png")
-# im_new_t.show()
+im_new_t.save(f"ft of {filename} {interval}.png")
 
+im_saved=plt.imread(f"ft of {filename} {interval}.png")[:,:,0]*255
+phase_2=im_saved/interval
+
+# combined = np.exp(1j * phase)
+im_r_if = ifft2(np.exp(1j * phase_2))
+
+# I_r=im_r_if*im_r_if.conjugate()
+plt.figure(1)
+plt.imshow(np.abs(im_r_if),cmap="hot")
+plt.show()
+plt.savefig(f"ift of {filename} {interval}.png")
