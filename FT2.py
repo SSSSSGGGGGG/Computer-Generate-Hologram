@@ -32,13 +32,13 @@ im_r_fft=fftshift(fft2(im_r))
 im_g_fft=fftshift(fft2(im_g))
 im_b_fft=fftshift(fft2(im_b))
 
-# rows, cols = im_r.shape
-# # Frequency coordinates
-# u = np.fft.fftshift(np.fft.fftfreq(rows))  # Frequency coordinates along rows
-# v = np.fft.fftshift(np.fft.fftfreq(cols))  # Frequency coordinates along columns
-# # print(u,v)
-# # Create frequency grid
-# U, V = np.meshgrid(u, v)
+rows, cols = im_r.shape
+# Frequency coordinates
+u = np.fft.fftshift(np.fft.fftfreq(rows))  # Frequency coordinates along rows
+v = np.fft.fftshift(np.fft.fftfreq(cols))  # Frequency coordinates along columns
+# print(u*rows,v*cols)
+# Create frequency grid
+U, V = np.meshgrid(u, v)
 
 #(-pi, pi]
 phase = np.angle(im_r_fft)+np.pi
@@ -59,7 +59,7 @@ angle_0_pi_b = phase_b*interval_b
 
 plt.figure(2)
 # plt.imshow(np.log(1+abs(im_r_fft)),cmap="gray")
-plt.imshow(phase_g,cmap="gray")
+plt.imshow(phase_g,cmap="gray",extent=[v.min(), v.max(), u.min(), u.max()], origin='lower', aspect='auto')
 plt.show()
 
 im_new=np.zeros_like(im)
@@ -71,14 +71,18 @@ im_new_array = im_new.astype(np.uint8)
 im_new_t = Image.fromarray(im_new_array)
 im_new_t.save(f"ft of {filename} {interval}.png")
 
-# im_saved=plt.imread(f"ft of {filename} {interval}.png")[:,:,0]*255
+
+im_saved=plt.imread("C:/Users/gaosh/Documents/python/Digital-hologram/OriginalImage/ft_of_1.jpg_resized.png")*255
 # phase_2=im_saved/interval
+plt.figure(3)
+plt.imshow(im_saved)
+plt.show()
 
 # combined = np.exp(1j * phase)
 im_r_if = ifft2(fftshift(np.exp(1j * phase_g)))
 
 # I_r=im_r_if*im_r_if.conjugate()
 plt.figure(1)
-plt.imshow(abs(im_r_if),cmap="hot")
+plt.imshow(im_new,cmap="hot",extent=[v.min(), v.max(), u.min(), u.max()], origin='lower', aspect='auto')
 plt.show()
 plt.savefig(f"ift of {filename} {interval}.png")
