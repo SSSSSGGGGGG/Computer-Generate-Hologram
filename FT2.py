@@ -14,11 +14,11 @@ from skimage import color
 
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/OriginalImage")
-filename="1.jpg"
+filename="ele_half.png"
 im=plt.imread(filename)[:,:,:3]
 shift_state="shift" # to check the shift influence,
 
-im_r=im[:,:,0]*255
+im_r=im[:,:,0]
 
 im_g=im[:,:,1]
 
@@ -28,7 +28,7 @@ im_b=im[:,:,2]
 
 im_r_process=(im_r-1)*(-1)*255
 # im_r_fft=fftshift(fft2(im_r))
-im_r_fft=fftshift(fft2(im_r_process))
+im_r_fft=fftshift(ifft2(im_r_process))
 
 # rows, cols = im_r.shape
 # # Frequency coordinates
@@ -40,32 +40,37 @@ im_r_fft=fftshift(fft2(im_r_process))
 
 #(-pi, pi]
 phase = np.angle(im_r_fft)+np.pi
+mag=np.abs(im_r_fft)
 # the calibration between red and gray level 1.85-->255
 interval=255/(2*np.pi)
 angle_0_pi = phase*interval
 
 # angle_0_pi =angle_0_pi # this is the one in 0-255
+plt.figure(3)
+plt.imshow(phase,cmap="hot")
+plt.savefig("holo.tif")
+plt.show()
 
-
-plt.figure(2)
-plt.imshow(im_r,cmap="hot")
+plt.figure(1)
+plt.imshow(mag,cmap="hot")
+plt.savefig("holo.tif")
 plt.show()
 
 im_new=np.zeros_like(im)
-im_new[:,:,0]=np.mod(angle_0_pi,255)
+im_new[:,:,0]=angle_0_pi
 im_new_array = im_new.astype(np.uint8)
 
 im_new_t = Image.fromarray(im_new_array)
-im_new_t.save(f"ft of {filename} {interval}.png")
+im_new_t.save(f"ft of ele{interval}.png")
 
-im_saved=plt.imread(f"ft of {filename} {interval}.png")[:,:,0]*255
+im_saved=plt.imread(f"ft of ele{interval}.png")[:,:,0]*255
 phase_2=im_saved/interval
 
 # combined = np.exp(1j * phase)
-im_r_if = ifft2(np.exp(1j * phase_2))
+im_r_if = fft2(np.exp(1j * phase_2))
 
 # I_r=im_r_if*im_r_if.conjugate()
-plt.figure(1)
+plt.figure(2)
 plt.imshow(np.abs(im_r_if),cmap="hot")
 plt.show()
-plt.savefig(f"ift of {filename} {interval}.png")
+plt.savefig(f"ift of {filename} {interval}.tif")
