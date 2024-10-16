@@ -49,8 +49,8 @@ file_n="R"
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 512 # period
-stripe_width_v = 512*2 # period
+stripe_width = 256 # period
+stripe_width_v = 512 # period
 
 
 

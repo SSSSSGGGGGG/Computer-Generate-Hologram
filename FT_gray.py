@@ -14,8 +14,8 @@ from skimage import color
 
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/OriginalImage")
-filename="Elephant_"
-im=plt.imread(f"{filename}.png")
+filename="2"
+im=plt.imread(f"{filename}.jpg")
 height=im.shape[0]
 width=im.shape[1]
 # holo_ex=plt.imread("Hologram (2).tiff")
