@@ -14,7 +14,7 @@ from skimage import color
 
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/OriginalImage")
-filename="small car"
+filename="planets_black"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -101,21 +101,21 @@ im_modi_bl = Image.fromarray(im_modify_bl)
 im_modi_bl.save(f"{filename}_RGB_randModi_bl.png")
 # im_modi_bl.show()
 
-# plt.figure(4)
-# plt.imshow(phase_gr_modi_mod, cmap='Greens')
-# plt.colorbar()
-# plt.title("R")
-# plt.show()
+plt.figure(4)
+plt.imshow(im_shift_r, cmap='Reds')
+plt.colorbar()
+plt.title("R")
+plt.show()
 
-# plt.figure(5)
-# plt.imshow(phase_gr_bl, cmap='Greens')
-# plt.colorbar()
-# plt.title("G")
-# plt.show()
+plt.figure(5)
+plt.imshow(im_shift_g, cmap='Greens')
+plt.colorbar()
+plt.title("G")
+plt.show()
 
-# plt.figure(6)
-# plt.imshow(abs(phase_br), cmap='Blues')
-# plt.colorbar()
-# plt.title("B")
-# plt.show()
+plt.figure(6)
+plt.imshow(im_shift_b, cmap='Blues')
+plt.colorbar()
+plt.title("B")
+plt.show()
 # # plt.imsave(f"{filename}_m_rand.png", phase_r,cmap='gray')
