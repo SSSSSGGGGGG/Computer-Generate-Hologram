@@ -49,8 +49,8 @@ file_n="G"
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 364 # period
-stripe_width_v = 364*2 # period
+stripe_width = 300 # period
+stripe_width_v = 300*2 # period
 
 
 
@@ -82,7 +82,7 @@ else:
         i2=0
         while i2 < reminder-1:
           
-            pixels_h[i2+1+(round(loop))*stripe_width,x1]=(0,int((i2)* interval),0) 
+            pixels_h[i2+1+(round(loop)-1)*stripe_width,x1]=(0,int((i2)* interval),0) 
             # print(i2+1+(round(loop)-1)*stripe_width)
             i2+=1
     im_blank_h.save(f"{file_n}(blazed)_p{stripe_width}.png")
@@ -111,7 +111,7 @@ else:
         i2=0
         while i2 < reminder_v-1:
             # print(round(loop))
-            pixels[x1,i2+1+(round(loop_v))*stripe_width_v]=(0,int((i2)* interval),0) 
+            pixels[x1,i2+1+(round(loop_v)-1)*stripe_width_v]=(0,int((i2)* interval),0) 
             
             i2+=1
     im_blank.save(f"{file_n}(blazed)V_p{stripe_width_v}.png")

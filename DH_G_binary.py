@@ -40,12 +40,12 @@ else:
     
 # compose images
 
-G=112    
-file_n="Green_pi"   
+G=140    
+file_n="Green_tri"   
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 27 # period
+stripe_width = 24 # period
 spacing=stripe_width*2   # 2 times period
 loop_w=width/stripe_width
 reminder_w=width%stripe_width

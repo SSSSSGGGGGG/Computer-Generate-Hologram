@@ -15,30 +15,44 @@ from skimage import color
 square=np.zeros((512,512))
 width,height=square.shape
 center=int(width/2)
-width_c=10
+width_c=30
 square[center-width_c:center+width_c,center-width_c:center+width_c]=1
-plt.imsave("square.png", square,cmap='gray')
+for i in range(center - width_c, center + width_c, 12):  # Step of 12 within the block
+    # print(i)
+    square[center - width_c:center + width_c, i:i + 6] = 0  # Apply to the defined region only
+
+# plt.imsave("slits in square.png", square,cmap='gray')
 
 square_fft=fftshift(fft2(square))
 square_mag=abs(square_fft)/np.max(abs(square_fft))
-# plt.imshow(rect_mag,cmap="hot")
+# plt.imsave("slits in square_fft.png", square_mag,cmap='hot')
+# plt.imshow(square_mag,cmap="hot")
 # plt.colorbar()
-plt.imsave("square_fft.png", square_mag,cmap='hot')
+square_h=np.zeros((512,512))
+width_h,height_h=square_h.shape
+center_h=int(width_h/2)
+# width_c=30
+square_h[center_h-width_c:center_h+width_c,center_h-width_c:center_h+width_c]=1
+for i in range(center_h-width_c, center_h+width_c, 12):  # Step of 12 within the block
+    # print(i)
+    square_h[i:i + 6,center_h - width_c:center_h+width_c] = 0  # Apply to the defined region only
+# plt.imsave("slits_h in square.png", square_h,cmap='gray')        
 
-rect=np.zeros((512,512))
-rect[center-2*width_c:center+2*width_c,center-width_c:center+width_c]=1
-plt.imsave("rect.png", rect,cmap='gray')
+square_h_fft=fftshift(fft2(square_h))
+square_h_mag=abs(square_h_fft)/np.max(abs(square_h_fft))
+# plt.imsave("slits_h in square_fft.png", square_h_mag,cmap='hot')
 
-rect_fft=fftshift(fft2(rect))
-rect_fft_mag=abs(rect_fft)/np.max(abs(rect_fft))
-plt.imsave("rect_fft.png", rect_fft_mag,cmap='hot')
 
-slit=np.zeros((512,512))
-slit[:,int(center)-int(1*width_c):int(center)+int(1*width_c)]=1
-plt.imsave("bar.png", slit,cmap='gray')
+SLM=np.zeros((512,512))
+width_s,height_s=SLM.shape
+center_s=int(width_s/2)
+SLM[center_s-width_c:center_s+width_c,center_s-width_c:center_s+width_c]=1
+for i in range(center_h-width_c, center_h+width_c, 12):  # Step of 12 within the block
+    # print(i)
+    SLM[i:i + 6,center_s - width_c:center_s+width_c] = 0 
+    SLM[center - width_c:center + width_c, i:i + 6] = 0
+# plt.imsave("SLM.png", SLM,cmap='gray')
 
-slit_fft=fftshift(fft2(slit))
-slit_mag=abs(slit_fft)/np.max(abs(slit_fft))
-plt.imsave("bar_fft.png", slit_mag,cmap='hot')
-# plt.imshow(bar_mag,cmap="hot")
-# plt.colorbar()
+SLM_fft=fftshift(fft2(SLM))
+SLM_mag=abs(SLM_fft)/np.max(abs(SLM_fft))
+plt.imsave("SLM_fft.png", SLM_mag,cmap='hot')

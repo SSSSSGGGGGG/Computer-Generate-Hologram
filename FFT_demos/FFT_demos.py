@@ -12,33 +12,33 @@ import matplotlib.pyplot as plt
 import os
 from skimage import color
 
-rect=np.zeros((512,512))
-width,height=rect.shape
+square=np.zeros((512,512))
+width,height=square.shape
 center=int(width/2)
 width_c=10
-rect[center-width_c:center+width_c,center-width_c:center+width_c]=1
-plt.imsave("square.png", rect,cmap='gray')
+square[center-width_c:center+width_c,center-width_c:center+width_c]=1
+plt.imsave("square.png", square,cmap='gray')
 
-rect_fft=fftshift(fft2(rect))
-rect_mag=abs(rect_fft)/np.max(abs(rect_fft))
+square_fft=fftshift(fft2(square))
+square_mag=abs(square_fft)/np.max(abs(square_fft))
 # plt.imshow(rect_mag,cmap="hot")
 # plt.colorbar()
-plt.imsave("square_fft.png", rect_mag,cmap='hot')
+plt.imsave("square_fft.png", square_mag,cmap='hot')
 
-rect_r=np.zeros((512,512))
-rect_r[center-2*width_c:center+2*width_c,center-width_c:center+width_c]=1
-plt.imsave("rect.png", rect_r,cmap='gray')
+rect=np.zeros((512,512))
+rect[center-2*width_c:center+2*width_c,center-width_c:center+width_c]=1
+plt.imsave("rect.png", rect,cmap='gray')
 
-rect_r_fft=fftshift(fft2(rect_r))
-rect_r_fft_mag=abs(rect_r_fft)/np.max(abs(rect_r_fft))
-plt.imsave("rect_fft.png", rect_r_fft_mag,cmap='hot')
+rect_fft=fftshift(fft2(rect))
+rect_fft_mag=abs(rect_fft)/np.max(abs(rect_fft))
+plt.imsave("rect_fft.png", rect_fft_mag,cmap='hot')
 
-bar=np.zeros((512,512))
-bar[:,int(center)-int(1*width_c):int(center)+int(1*width_c)]=1
-plt.imsave("bar.png", bar,cmap='gray')
+slit=np.zeros((512,512))
+slit[:,int(center)-int(1*width_c):int(center)+int(1*width_c)]=1
+plt.imsave("bar.png", slit,cmap='gray')
 
-bar_fft=fftshift(fft2(bar))
-bar_mag=abs(bar_fft)/np.max(abs(bar_fft))
-plt.imsave("bar_fft.png", bar_mag,cmap='hot')
+slit_fft=fftshift(fft2(slit))
+slit_mag=abs(slit_fft)/np.max(abs(slit_fft))
+plt.imsave("bar_fft.png", slit_mag,cmap='hot')
 # plt.imshow(bar_mag,cmap="hot")
 # plt.colorbar()

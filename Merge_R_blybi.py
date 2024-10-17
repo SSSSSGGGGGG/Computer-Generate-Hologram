@@ -9,11 +9,11 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/R(blazed)_p256.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/R(blazed)_p200.png")
 # im_gh=plt.imread("Green(H)_p54.png")
-im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/R(blazed)V_p512.png")
+im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/R(blazed)V_p400.png")
 
-im_rb=plt.imread("C:/Users/Laboratorio/MakeHologram/R_tri_92(V)_p70.png")
+im_rb=plt.imread("C:/Users/Laboratorio/MakeHologram/tri/R_tri_92(V)_p70.png")
 # im_gray=plt.imread("Gray(V)_p64.png")
 im_rh_array = np.array(im_rh)*255
 im_bh_array = np.array(im_bh)*255
@@ -33,7 +33,7 @@ im_new_array = im_new_array.astype(np.uint8)
 
 im_new = Image.fromarray(im_new_array)
 # im_compare=Image.fromarray(im_mod)
-im_new.save('R_bl2.png')
+im_new.save('R_bl2_p200.png')
 
 # plt.imshow(im_new_array)
 im_new.show()
@@ -49,6 +49,6 @@ im_new_arr_3[:,:,0] = im_int_3
 im_new_arr_3=im_new_arr_3.astype(np.uint8)
 
 im_new_3 = Image.fromarray(im_new_arr_3)
-im_new_3.save('R_bl2_bi_tri.png')
+im_new_3.save('R_bl2_bi_tri_p200.png')
 
 im_new_3.show()

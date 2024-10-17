@@ -40,7 +40,7 @@ else:
     
 # compose images
 
-G=112   
+G=112  
 file_n="B_tri"   
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))

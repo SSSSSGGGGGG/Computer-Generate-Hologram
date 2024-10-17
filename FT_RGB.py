@@ -14,7 +14,7 @@ from skimage import color
 
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/OriginalImage")
-filename="planets_black"
+filename="planets140p"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -43,7 +43,7 @@ phase_rr_new=phase_rr.astype(np.uint8)
 phase_rr_save=Image.fromarray(phase_rr_new)
 phase_rr_modi=(np.angle(im_rr_ft)/np.pi+1)*(255/1.85)
 phase_rr_modi_mod=np.mod(phase_rr_modi,255)
-R_blaze=plt.imread("C:/Users/Laboratorio/MakeHologram/tri/R_bl2.png")
+R_blaze=plt.imread("C:/Users/Laboratorio/MakeHologram/tri_blue is center/R_bl2_p200.png")
 cropped_image = R_blaze[0:height, 0:width]
 phase_rr_bl=phase_rr_modi_mod+cropped_image[:,:,0]*255
 phase_rr_bl_mod=np.mod(phase_rr_bl,255)
@@ -56,9 +56,9 @@ phase_gr_new=phase_gr.astype(np.uint8)
 phase_gr_save=Image.fromarray(phase_gr_new)
 phase_gr_modi=(np.angle(im_gr_ft)/np.pi+1)*(255/2.63)
 phase_gr_modi_mod=np.mod(phase_gr_modi,255)
-G_blaze=plt.imread("C:/Users/Laboratorio/MakeHologram/tri/G_bl2.png")
+G_blaze=plt.imread("C:/Users/Laboratorio/MakeHologram/tri_blue is center/G_bl2_p300.png")
 cropped_imageG = G_blaze[0:height, 0:width]
-phase_gr_bl=phase_gr_modi_mod+cropped_imageG[:,:,1]*195
+phase_gr_bl=phase_gr_modi_mod+cropped_imageG[:,:,1]*255
 
 #B
 im_b_rand=exp_rand*im_shift_b
