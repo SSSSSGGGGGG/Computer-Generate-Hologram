@@ -82,7 +82,7 @@ else:
         i2=0
         while i2 < reminder-1:
           
-            pixels_h[i2+1+(round(loop)-1)*stripe_width,x1]=(0,int((i2)* interval),0) 
+            pixels_h[i2+1+(round(loop))*stripe_width,x1]=(0,int((i2)* interval),0) 
             # print(i2+1+(round(loop)-1)*stripe_width)
             i2+=1
     im_blank_h.save(f"{file_n}(blazed)_p{stripe_width}.png")

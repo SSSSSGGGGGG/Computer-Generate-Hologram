@@ -9,9 +9,9 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/GrayR_bl2_bi_tri.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/tri_blue is center/GrayR_bl2_bi_tri_p200.png")
 
-im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/GrayG_bl300_mod_tri.png")
+im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/GrayG_bl2_tri_p300.png")
 im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/tri/B_tri_112(V)_p48.png")
 
 im_rh_array = np.array(im_rh)*255
@@ -32,6 +32,6 @@ im_new_array = im_int
 im_new_array = im_new_array.astype(np.uint8)
 
 im_new = Image.fromarray(im_new_array)
-im_new.save('gray_bl2_tri_rgbSeperate255.png')
+im_new.save('gray_bl2_tri_SeperateNew.png')
 
 im_new.show()

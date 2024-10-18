@@ -9,9 +9,9 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/G(blazed)_p300.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/tri_blue is center/G(blazed)_p300.png")
 # im_gh=plt.imread("Green(H)_p54.png")
-im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/G(blazed)V_p600.png")
+im_bh=plt.imread("C:/Users/Laboratorio/MakeHologram/tri_blue is center/G(blazed)V_p600.png")
 
 im_rb=plt.imread("C:/Users/Laboratorio/MakeHologram/tri/Green_tri_140(V)_p54.png")
 # im_gray=plt.imread("Gray(V)_p64.png")
