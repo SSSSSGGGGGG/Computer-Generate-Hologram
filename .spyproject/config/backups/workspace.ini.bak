@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['FT_RGB.py', 'FFT_demos\\FFTofSLM.py']
+recent_files = ['FT_RGB.py', 'DH_G_blazed.py', 'Merge_RB_gray.py', 'Merge_G_blybi.py', 'DH_G_binary.py', 'Merge_RGB_Bi_ch.py']
 
 [main]
 version = 0.2.0

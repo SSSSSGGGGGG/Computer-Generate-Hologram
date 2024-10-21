@@ -49,13 +49,13 @@ file_n="G"
 width,height=1920,1080
 im_blank=Image.new("RGB",(width,height))
 pixels=im_blank.load()
-stripe_width = 300 # period
-stripe_width_v = 300*2 # period
+stripe_width = 320 # period
+stripe_width_v = 320*2 # period
 
 
 
 # this corresponds to phase value, now we need it to be 2pi.
-color_value=195               
+color_value=206               
 # This is for horizontal
 im_blank_h=Image.new("RGB",(width,height))
 pixels_h = im_blank_h.load()
