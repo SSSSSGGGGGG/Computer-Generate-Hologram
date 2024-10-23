@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['FT_RGB.py', 'GrayScript\\DH_G_binary.py', 'GrayScript\\Merge_G_blybi.py', 'GrayScript\\Merge_R_blybi.py', 'GrayScript\\Merge_RB_gray.py', 'RGBScript\\Merge_G_blybi.py', 'RGBScript\\Merge_R_blybi.py']
+recent_files = ['Sim_4_FFT_of_tri\\FFTofSLM.py', 'FT_RGB.py', 'Gaussian_profile.py']
 
 [main]
 version = 0.2.0
