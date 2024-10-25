@@ -4,11 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-<<<<<<< HEAD
-recent_files = ['fttest.py', 'FT2.py']
-=======
-recent_files = ['Sim_4_FFT_of_tri\\FFTofSLM_blazed.py', 'Sim_4_FFT_of_tri\\FFTofSLM.py']
->>>>>>> 7824bd28de6d95c6cf0c874987011985d5a308b4
+recent_files = ['Sim_4_FFT_of_tri_H_showV\\FFTofSLM.py', 'Sim_4_FFT_of_tri_H_showV\\FFTofSLM_blazed.py']
 
 [main]
 version = 0.2.0
