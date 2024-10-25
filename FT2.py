@@ -7,10 +7,11 @@ This is a temporary script file.
 from PIL import Image
 import numpy as np
 import scipy as sp
-from scipy.fft import fft2, fftshift,ifft2,ifftshift
+from scipy.fft import fft2, fftshift,ifft2,ifftshift,ifft,fft
 import matplotlib.pyplot as plt
 import os
 from skimage import color
+from skimage.color import rgb2gray
 
 
 os.chdir("C:/Users/gaosh/Documents/python/Digital-hologram/OriginalImage")
@@ -72,17 +73,19 @@ im_new_t = Image.fromarray(im_new_array)
 im_new_t.save(f"ft of {filename} {interval}.png")
 
 
-im_saved=plt.imread("C:/Users/gaosh/Documents/python/Digital-hologram/OriginalImage/ft_of_1.jpg_resized.png")*255
-# phase_2=im_saved/interval
+im_saved=plt.imread("C:/Users/gaosh/Documents/python/Digital-hologram/holos26.7/R_tri_92(V)_p70.png")
+im_gray=rgb2gray(im_saved)
+phase_2=im_saved/interval
 plt.figure(3)
-plt.imshow(im_saved)
+plt.imshow(im_gray)
 plt.show()
 
 # combined = np.exp(1j * phase)
-im_r_if = ifft2(fftshift(np.exp(1j * phase_g)))
+im_r_if = ifftshift(ifft2(5*np.exp(1j * im_saved)))
 
 # I_r=im_r_if*im_r_if.conjugate()
 plt.figure(1)
-plt.imshow(im_new,cmap="hot",extent=[v.min(), v.max(), u.min(), u.max()], origin='lower', aspect='auto')
+plt.imshow(abs(im_r_if))
+# plt.imshow(im_new,cmap="hot",extent=[v.min(), v.max(), u.min(), u.max()], origin='lower', aspect='auto')
 plt.show()
-plt.savefig(f"ift of {filename} {interval}.png")
+# plt.savefig(f"ift of {filename} {interval}.png")
