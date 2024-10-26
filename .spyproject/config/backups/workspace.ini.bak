@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['Sim_4_FFT_of_tri_H_showV\\FFTofSLM.py', 'Sim_4_FFT_of_tri_H_showV\\FFTofSLM_blazed.py']
+recent_files = ['Sim_4_FFT_of_tri_H_showV1\\DH_R_blazed.py', 'Sim_4_FFT_of_tri_H_showV1\\FFTofSLM.py', 'Sim_4_FFT_of_tri_H_showV1\\DH_R_binary.py']
 
 [main]
 version = 0.2.0

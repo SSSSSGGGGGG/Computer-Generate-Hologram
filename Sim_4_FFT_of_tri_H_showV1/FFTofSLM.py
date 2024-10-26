@@ -12,17 +12,17 @@ import matplotlib.pyplot as plt
 
 Rslits=np.ones((1080,1920))
 height,width=Rslits.shape
-p=64 #half period
+p=48 #half period
 phase = 0.64 * np.pi 
 G1 = np.exp(1j * phase)
 G2 = np.exp(1j * 0)  
 delta_bi=0.5*height/p
 
-p_X=79#92
-p_Y=400#640
+p_X=92#79#81
+p_Y=1080#400#640
 delta_X = 1 / p_X * width
 delta_Y = 1 / p_Y * height
-max_phase=1.85*np.pi
+max_phase=2*np.pi
 
 x = np.linspace(-0.5*width, 0.5*width, width)
 y = np.linspace(-0.5*height, 0.5*height, height)
@@ -130,13 +130,14 @@ I_1_G=I_binary_G_nor[540+int(delta_bi),960]
 I_n1_G=I_binary_G_nor[540-int(delta_bi),960]
 # print(f"With beam, I_0={I_0_G},I_1={I_1_G},I_-1={I_n1_G} ")
 """FFT of binary*blazed""" 
-fft_grating_withBlazed = fftshift(fft2(blazed_grating_X*binary_phase*blazed_grating_Y))
+fft_grating_withBlazed = fftshift(fft2(blazed_grating_X
+                                       *binary_phase))
 I_withBlazed=np.abs(fft_grating_withBlazed)**2
 sumI_withBlazed=np.sum(I_withBlazed)
 I_withBlazed_nor=I_withBlazed/sumI_withBlazed
 
-I_0_b=I_withBlazed_nor[540+int(1080/p_Y),960+int(1920/p_X)]
-I_1_b=I_withBlazed_nor[540+int(delta_bi)+int(1080/p_Y),960+int(1920/p_X)]
+I_0_b=I_withBlazed_nor[540+1+int(1080/p_Y),960+int(1920/p_X)]
+I_1_b=I_withBlazed_nor[540+1+int(delta_bi)+int(1080/p_Y),960+int(1920/p_X)]
 I_n1_b=I_withBlazed_nor[540-int(delta_bi)+int(1080/p_Y),960+int(1920/p_X)]
 print(f"Blazed: fy={1080/p_Y},fx={1920/p_X},I_0_x:{540+int(1080/p_Y)},I_0_y:{960+int(1920/p_X)}")
 print(f"I_0={I_0_b},I_1={I_1_b},I_-1={I_n1_b}, CE={I_0_b/I_0} ")
@@ -205,4 +206,4 @@ plt.imshow(I_cropped_withBlazed, cmap='hot')  #,vmin=0, vmax=0.2
 plt.title('FFT of compensated binary phase grating * Beam')
 plt.colorbar()
 plt.show()
-plt.imsave(f"FFT of all gratings pV_{p_Y}px pH_{p_X}px.png",I_cropped_withBlazed,cmap="hot")
+plt.imsave(f"FFT of all gratings pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png",I_cropped_withBlazed,cmap="hot")

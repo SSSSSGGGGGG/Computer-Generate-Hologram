@@ -11,10 +11,10 @@ from scipy.fft import fft2, fftshift
 import matplotlib.pyplot as plt
 
 width, height = 1920, 1080    
-file_n = "R"   
-p_X = 79
+# file_n = "R"   
+p_X = 92#81#79#128
 max_phase = 2 * np.pi
-p_Y = 400
+p_Y = 1080#640#400#540
 delta_X = 1 / p_X * width
 delta_Y = 1 / p_Y * height
 blazed_phase_X=np.ones((height, width))
@@ -62,7 +62,7 @@ for x1 in range(width):
         if idx < height:
             blazed_phase_Y[idx, x1] = i2 * interval_v/np.pi
             blazed_grating_Y[idx, x1] = np.exp(1j * (i2 * interval_v))
-fft_grating_X = fftshift(fft2(blazed_grating_X*blazed_grating_Y))
+fft_grating_X = fftshift(fft2(blazed_grating_X))
 I_X = np.abs(fft_grating_X)**2
 I_X = I_X / np.sum(I_X)
 # Fourier Transform and Visualization
@@ -81,25 +81,57 @@ print(f"position for 1st and 2nd {int(width/2+delta_X)-960,int(width/2+2*delta_X
 print(f"maximum={np.max(I_X)},0th_X={I_X[int(height/2),int(width/2)]}")
 print(f"1th_X={I_X[int(height/2),int(width/2+delta_X)]},2nd_X={I_X[int(height/2),int(width/2+2*delta_X)]}")
 
+fft_grating_Y = fftshift(fft2(blazed_grating_Y))
+I_Y = np.abs(fft_grating_Y)**2
+I_Y = I_Y / np.sum(I_Y)
+
+fft_grating_Y_G = fftshift(fft2(blazed_grating_Y*Guassia_amplitude))
+I_Y_G = np.abs(fft_grating_Y_G)**2
+I_Y_G = I_Y_G / np.sum(I_Y_G)
+print(f"fy1={delta_Y}")
+print(f"position for 1st and 2nd {int(height/2+delta_Y)-540,int(height/2+2*delta_Y)-540}")
+print(f"maximum={np.max(I_Y)},0th_X={I_Y[int(height/2),int(width/2)]}")
+print(f"1th_Y={I_Y[int(height/2+delta_Y+1),int(width/2)]},2nd_Y={I_Y[int(height/2+2*delta_Y+1),int(width/2)]}")
+
+fft_grating = fftshift(fft2(blazed_grating_Y*blazed_grating_X))
+I = np.abs(fft_grating)**2
+I = I / np.sum(I)
+
+fft_grating_G = fftshift(fft2(blazed_grating_Y*blazed_grating_X*Guassia_amplitude))
+I_G = np.abs(fft_grating_G)**2
+I_G = I_G / np.sum(I_G)
+# print(f"position for 1st and 2nd {int(height/2+delta_Y)-540,int(height/2+2*delta_Y)-540}")
+print(f"maximum={np.max(I)},0th_X={I[int(height/2),int(width/2)]}")
+print(f"1th={I[int(height/2+delta_Y+1),int(width/2++delta_X)]},2nd={I[int(height/2+2*delta_Y+1),int(width/2+2*delta_X)]}")
+
 # Cropped FFT Magnitude
 center_h, center_w = height // 2, width // 2
 crop_size = 200
 start_h, end_h = center_h - crop_size // 2, center_h + crop_size // 2
-start_w, end_w = center_w - crop_size // 2, center_w + crop_size // 2
-fft_magnitude_cropped = I_X_G[start_h:end_h, start_w:end_w]
-
+start_w, end_w = center_w - crop_size // 4, center_w + crop_size // 4
+fft_magnitude_cropped_X = I_X_G[start_h:end_h, start_w:end_w]
+fft_magnitude_cropped_Y = I_Y_G[start_h:end_h, start_w:end_w]
+fft_magnitude_cropped = I_G[start_h:end_h, start_w:end_w]
+I_cropped=I_X[int(start_h):int(end_h), int(start_w):int(end_w)]
 # Plot Results
+# plt.figure()
+# plt.imshow(I_X_G, cmap='hot')
+# plt.title('Blazed Phase')
+# plt.colorbar()
+# plt.show()
 plt.figure()
-plt.imshow(I_X_G, cmap='hot')
+plt.imshow(I_Y_G, cmap='hot')
 plt.title('Blazed Phase')
 plt.colorbar()
 plt.show()
 
 plt.figure()
-plt.imshow(fft_magnitude_cropped, cmap='hot')
+plt.imshow(I_cropped, cmap='hot')
 plt.colorbar()
 plt.show()
 
 # plt.imsave(f"Blazed_X p={p_X,max_phase/np.pi}pi.png", blazed_grating_X.real, cmap='gray')
 # plt.imsave(f"Blazed_Y p={p_Y,max_phase/np.pi}pi.png", blazed_grating_Y.real, cmap='gray')
 # plt.imsave(f"FFT of blazed p={p_X,max_phase/np.pi}pi.png", fft_magnitude_cropped, cmap='hot')
+# plt.imsave(f"FFT of blazed_Y p={p_Y,max_phase/np.pi}pi.png", fft_magnitude_cropped_Y, cmap='hot')
+plt.imsave(f"FFT of blazeds pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png", fft_magnitude_cropped, cmap='hot')
