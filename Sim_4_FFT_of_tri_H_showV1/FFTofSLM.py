@@ -12,17 +12,17 @@ import matplotlib.pyplot as plt
 
 Rslits=np.ones((1080,1920))
 height,width=Rslits.shape
-p=48 #half period
+p=64#64 #half period
 phase = 0.64 * np.pi 
 G1 = np.exp(1j * phase)
 G2 = np.exp(1j * 0)  
 delta_bi=0.5*height/p
 
-p_X=92#79#81
-p_Y=1080#400#640
+p_X=79#92#79#81
+p_Y=400#1080#400#640
 delta_X = 1 / p_X * width
 delta_Y = 1 / p_Y * height
-max_phase=2*np.pi
+max_phase=1.85*np.pi
 
 x = np.linspace(-0.5*width, 0.5*width, width)
 y = np.linspace(-0.5*height, 0.5*height, height)
@@ -130,7 +130,7 @@ I_1_G=I_binary_G_nor[540+int(delta_bi),960]
 I_n1_G=I_binary_G_nor[540-int(delta_bi),960]
 # print(f"With beam, I_0={I_0_G},I_1={I_1_G},I_-1={I_n1_G} ")
 """FFT of binary*blazed""" 
-fft_grating_withBlazed = fftshift(fft2(blazed_grating_X
+fft_grating_withBlazed = fftshift(fft2(blazed_grating_X*blazed_grating_Y
                                        *binary_phase))
 I_withBlazed=np.abs(fft_grating_withBlazed)**2
 sumI_withBlazed=np.sum(I_withBlazed)
@@ -152,58 +152,58 @@ I_n1_b_G=I_withBlazed_G_nor[540-int(delta_bi)+int(1080/p_Y),960+int(1920/p_X)]
 """Define the center region to crop"""
 center_h = height // 2
 center_w = width // 2
-crop_size_h = 240  # Size of the cropped region (200x200 pixels)
+crop_size_h = 200  # Size of the cropped region (200x200 pixels)
 crop_size_w = 100
 # Crop the FFT magnitude
 start_h = center_h - crop_size_h // 2
 end_h = center_h + crop_size_h // 2
 start_w = center_w - crop_size_w // 2
 end_w = center_w + crop_size_w // 2
-I_cropped_binary = I_binary_G_nor[start_h:end_h, start_w:end_w]
-I_cropped_withBlazed = I_withBlazed_G_nor[start_h:end_h, start_w:end_w]
+I_cropped_binary = I_binary_nor[start_h:end_h, start_w:end_w]
+I_cropped_withBlazed = I_withBlazed_nor[start_h:end_h, start_w:end_w]
 """Built-in spatial frequency"""
 frequencies_x = np.fft.fftshift(np.fft.fftfreq(width, d=1))
 frequencies_y = np.fft.fftshift(np.fft.fftfreq(height, d=1))
 # print(I_max,sumI)
-"""Show"""
-plt.figure()
-plt.imshow(np.real(binary_phase), cmap='gray')
-plt.title('Real part of the binary phase grating')
-plt.colorbar()
-plt.show()
-# plt.imsave(f"Binary phase grating p_{period/4.6e-6}.png",binary_phase,cmap="gray")
-
-plt.figure()
-plt.imshow(blazed_phase_X, cmap='gray')
-plt.title('Blazed phase grating_H')
-plt.colorbar()
-plt.show()
-# plt.imsave(f"Blazed phase grating pH_{period_X/4.6e-6}.png",blazed_grating_X,cmap="gray")
-
-plt.figure()
-plt.imshow(blazed_phase_Y, cmap='gray')
-plt.title('Blazed phase grating_V')
-plt.colorbar()
-plt.show()
-# plt.imsave(f"Blazed phase grating pV_{period_Y/4.6e-6}.png",blazed_grating_Y,cmap="gray")
+# """Show"""
+# plt.figure()
+# plt.imshow(np.real(binary_phase), cmap='gray')
+# plt.title('Real part of the binary phase grating')
+# plt.colorbar()
+# plt.show()
+# # plt.imsave(f"Binary phase grating p_{period/4.6e-6}.png",binary_phase,cmap="gray")
 
 # plt.figure()
-# plt.imshow(Guassia_amplitude, cmap='hot',vmin=0, vmax=1)
-# plt.title('Beam')
+# plt.imshow(blazed_phase_X, cmap='gray')
+# plt.title('Blazed phase grating_H')
 # plt.colorbar()
-# plt.imsave(f"Gaussian Beam width {beam_width/4.6e-6}px.png",Guassia_amplitude,cmap="hot")
+# plt.show()
+# # plt.imsave(f"Blazed phase grating pH_{period_X/4.6e-6}.png",blazed_grating_X,cmap="gray")
 
-plt.figure()
-plt.imshow(I_cropped_binary, cmap='hot')  #,vmin=0, vmax=0.2
-plt.title('FFT of the binary phase grating * Beam')
-plt.colorbar()
-# plt.text(0, 100, f"I_0={I_0},I_1={I_1},I_-1={I_n1}")
-plt.show()
-plt.imsave(f"FFT of binary phase grating p_{2*p}px.png",I_cropped_binary,cmap="hot")
+# plt.figure()
+# plt.imshow(blazed_phase_Y, cmap='gray')
+# plt.title('Blazed phase grating_V')
+# plt.colorbar()
+# plt.show()
+# # plt.imsave(f"Blazed phase grating pV_{period_Y/4.6e-6}.png",blazed_grating_Y,cmap="gray")
 
-plt.figure()
-plt.imshow(I_cropped_withBlazed, cmap='hot')  #,vmin=0, vmax=0.2
-plt.title('FFT of compensated binary phase grating * Beam')
-plt.colorbar()
-plt.show()
-plt.imsave(f"FFT of all gratings pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png",I_cropped_withBlazed,cmap="hot")
+# # plt.figure()
+# # plt.imshow(Guassia_amplitude, cmap='hot',vmin=0, vmax=1)
+# # plt.title('Beam')
+# # plt.colorbar()
+# # plt.imsave(f"Gaussian Beam width {beam_width/4.6e-6}px.png",Guassia_amplitude,cmap="hot")
+
+# plt.figure()
+# plt.imshow(I_cropped_binary, cmap='hot')  #,vmin=0, vmax=0.2
+# plt.title('FFT of the binary phase grating * Beam')
+# plt.colorbar()
+# # plt.text(0, 100, f"I_0={I_0},I_1={I_1},I_-1={I_n1}")
+# plt.show()
+# plt.imsave(f"FFT of binary phase grating p_{2*p}px.png",I_cropped_binary,cmap="hot")
+
+# plt.figure()
+# plt.imshow(I_cropped_withBlazed, cmap='hot')  #,vmin=0, vmax=0.2
+# plt.title('FFT of compensated binary phase grating * Beam')
+# plt.colorbar()
+# plt.show()
+# plt.imsave(f"FFT of all gratings pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png",I_cropped_withBlazed,cmap="hot")

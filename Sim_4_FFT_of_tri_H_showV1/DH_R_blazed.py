@@ -12,9 +12,9 @@ import matplotlib.pyplot as plt
 
 width, height = 1920, 1080    
 # file_n = "R"   
-p_X = 92#81#79#128
-max_phase = 2 * np.pi
-p_Y = 1080#640#400#540
+p_X = 79#81#79#128
+max_phase = 1.85 * np.pi
+p_Y = 400#640#400#540
 delta_X = 1 / p_X * width
 delta_Y = 1 / p_Y * height
 blazed_phase_X=np.ones((height, width))
@@ -112,26 +112,26 @@ start_w, end_w = center_w - crop_size // 4, center_w + crop_size // 4
 fft_magnitude_cropped_X = I_X_G[start_h:end_h, start_w:end_w]
 fft_magnitude_cropped_Y = I_Y_G[start_h:end_h, start_w:end_w]
 fft_magnitude_cropped = I_G[start_h:end_h, start_w:end_w]
-I_cropped=I_X[int(start_h):int(end_h), int(start_w):int(end_w)]
-# Plot Results
+I_cropped=I[int(start_h):int(end_h), int(start_w):int(end_w)]
+# # Plot Results
+# # plt.figure()
+# # plt.imshow(I_X_G, cmap='hot')
+# # plt.title('Blazed Phase')
+# # plt.colorbar()
+# # plt.show()
 # plt.figure()
-# plt.imshow(I_X_G, cmap='hot')
+# plt.imshow(I_Y_G, cmap='hot')
 # plt.title('Blazed Phase')
 # plt.colorbar()
 # plt.show()
-plt.figure()
-plt.imshow(I_Y_G, cmap='hot')
-plt.title('Blazed Phase')
-plt.colorbar()
-plt.show()
 
-plt.figure()
-plt.imshow(I_cropped, cmap='hot')
-plt.colorbar()
-plt.show()
+# plt.figure()
+# plt.imshow(I_cropped, cmap='hot')
+# plt.colorbar()
+# plt.show()
 
-# plt.imsave(f"Blazed_X p={p_X,max_phase/np.pi}pi.png", blazed_grating_X.real, cmap='gray')
-# plt.imsave(f"Blazed_Y p={p_Y,max_phase/np.pi}pi.png", blazed_grating_Y.real, cmap='gray')
-# plt.imsave(f"FFT of blazed p={p_X,max_phase/np.pi}pi.png", fft_magnitude_cropped, cmap='hot')
-# plt.imsave(f"FFT of blazed_Y p={p_Y,max_phase/np.pi}pi.png", fft_magnitude_cropped_Y, cmap='hot')
-plt.imsave(f"FFT of blazeds pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png", fft_magnitude_cropped, cmap='hot')
+# # plt.imsave(f"Blazed_X p={p_X,max_phase/np.pi}pi.png", blazed_grating_X.real, cmap='gray')
+# # plt.imsave(f"Blazed_Y p={p_Y,max_phase/np.pi}pi.png", blazed_grating_Y.real, cmap='gray')
+# # plt.imsave(f"FFT of blazed p={p_X,max_phase/np.pi}pi.png", fft_magnitude_cropped, cmap='hot')
+# # plt.imsave(f"FFT of blazed_Y p={p_Y,max_phase/np.pi}pi.png", fft_magnitude_cropped_Y, cmap='hot')
+# plt.imsave(f"FFT of blazeds pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png", fft_magnitude_cropped, cmap='hot')
