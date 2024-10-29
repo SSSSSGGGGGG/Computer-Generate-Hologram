@@ -13,8 +13,8 @@ import os
 from skimage import color
 
 
-os.chdir("C:/Users/Laboratorio/MakeHologram/OriginalImage")
-filename="planets140p"
+os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
+filename="RGB100p"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -76,7 +76,7 @@ im_new = Image.fromarray(im_new_array)
 im_new.save(f"{filename}_RGB_rand_M.png")
 
 # Define wavelengths (in meters, for example)
-lambda_r = 0.650e-6  # Red wavelength
+lambda_r = 0.633e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
 lambda_b = 0.450e-6  # Blue wavelength
 
@@ -95,7 +95,7 @@ im_modify[:,:,1] = phase_gr_modi_mod
 im_modify[:,:,2] = scaled_phase_blue 
 im_modify = im_modify.astype(np.uint8)
 im_modi = Image.fromarray(im_modify)
-im_modi.save(f"{filename}_RGB_rand_M_scale.png")
+im_modi.save(f"{filename}_RGB_rand_M_scaled.png")
 # im_modi.show()
 
 # # Create a new array for the new image with the same shape as the original

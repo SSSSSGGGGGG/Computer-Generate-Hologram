@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
-os.chdir("C:/Users/gaosh/Documents/python/Digital-hologram/OriginalImage")
-filename="planets140p"
+os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
+filename="RGB100p"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -33,11 +33,11 @@ im_rr_ft=fftshift(fft2(im_r_rand))
 phase_rr = np.angle(im_rr_ft)
 phase_rr_new=phase_rr.astype(np.uint8)
 phase_rr_save=Image.fromarray(phase_rr_new)
-plt.figure()
-plt.imshow(phase_rr_save, cmap='Reds')
-plt.colorbar()#label='Phase (radians)'
-plt.title("Phase without modification")
-plt.show()
+# plt.figure()
+# plt.imshow(phase_rr_save, cmap='Reds')
+# plt.colorbar()#label='Phase (radians)'
+# plt.title("Phase without modification")
+# plt.show()
 im_g_rand=exp_rand*im_shift_g
 im_gr_ft=fftshift(fft2(im_g_rand))
 phase_gr = np.angle(im_gr_ft)
@@ -92,6 +92,30 @@ im_modify[:,:,1] = phase_gr_modi_mod
 im_modify[:,:,2] = phase_br_modi_mod
 im_modify = im_modify.astype(np.uint8)
 im_modi = Image.fromarray(im_modify)
+im_modi.save(f"{filename}_RGB_GS {iterations}.png")
+
+# Define wavelengths (in meters, for example)
+lambda_r = 0.633e-6  # Red wavelength
+lambda_g = 0.532e-6  # Green wavelength (reference)
+lambda_b = 0.450e-6  # Blue wavelength
+
+# Calculate scaling factors with respect to green
+scale_r = lambda_g / lambda_r
+scale_b = lambda_g / lambda_b
+
+# Scale the phase maps
+scaled_phase_red =  phase_rr_modi_mod * scale_r
+scaled_phase_blue =  phase_br_modi_mod * scale_b
+
+# Create a new array for the new image with the same shape as the original
+im_new_array = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+# Modify the new array
+im_new_array[:,:,0] = scaled_phase_red
+im_new_array[:,:,1] = phase_gr_modi_mod
+im_new_array[:,:,2] = scaled_phase_blue
+im_new_array = im_new_array.astype(np.uint8)
+im_new = Image.fromarray(im_new_array)
+im_new.save(f"{filename}_RGB_GS {iterations}_scaled.png")
 # Display results
 plt.figure()
 plt.imshow(im_modi)

@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 Rslits=np.ones((1080,1920))
 height,width=Rslits.shape
-p=64#64 #half period
+p=35#27#35#64 #half period
 phase = 0.64 * np.pi 
 G1 = np.exp(1j * phase)
 G2 = np.exp(1j * 0)  
@@ -141,7 +141,8 @@ I_1_b=I_withBlazed_nor[540+1+int(delta_bi)+int(1080/p_Y),960+int(1920/p_X)]
 I_n1_b=I_withBlazed_nor[540-int(delta_bi)+int(1080/p_Y),960+int(1920/p_X)]
 print(f"Blazed: fy={1080/p_Y},fx={1920/p_X},I_0_x:{540+int(1080/p_Y)},I_0_y:{960+int(1920/p_X)}")
 print(f"I_0={I_0_b},I_1={I_1_b},I_-1={I_n1_b}, CE={I_0_b/I_0} ")
-fft_grating_withBlazed_G = fftshift(fft2(blazed_grating_X*binary_phase*Guassia_amplitude))#*blazed_grating_Y
+fft_grating_withBlazed_G = fftshift(fft2(blazed_grating_X*binary_phase*blazed_grating_Y
+                                         *Guassia_amplitude))#
 I_withBlazed_G=np.abs(fft_grating_withBlazed_G)**2
 sumI_withBlazed_G=np.sum(I_withBlazed_G)
 I_withBlazed_G_nor=I_withBlazed_G/sumI_withBlazed_G
@@ -160,7 +161,8 @@ end_h = center_h + crop_size_h // 2
 start_w = center_w - crop_size_w // 2
 end_w = center_w + crop_size_w // 2
 I_cropped_binary = I_binary_nor[start_h:end_h, start_w:end_w]
-I_cropped_withBlazed = I_withBlazed_nor[start_h:end_h, start_w:end_w]
+I_cropped_withBlazed = I_withBlazed_G_nor[start_h:end_h, start_w:end_w]
+I_cropped_withBlazed_check = I_withBlazed_nor[start_h:end_h, start_w:end_w]
 """Built-in spatial frequency"""
 frequencies_x = np.fft.fftshift(np.fft.fftfreq(width, d=1))
 frequencies_y = np.fft.fftshift(np.fft.fftfreq(height, d=1))
@@ -206,4 +208,4 @@ frequencies_y = np.fft.fftshift(np.fft.fftfreq(height, d=1))
 # plt.title('FFT of compensated binary phase grating * Beam')
 # plt.colorbar()
 # plt.show()
-# plt.imsave(f"FFT of all gratings pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png",I_cropped_withBlazed,cmap="hot")
+plt.imsave(f"FFT of all gratings pV_{p_Y}px pH_{p_X}px {max_phase/np.pi}pi.png",I_cropped_withBlazed,cmap="hot")
