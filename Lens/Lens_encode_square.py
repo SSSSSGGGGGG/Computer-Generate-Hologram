@@ -11,12 +11,12 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
 
-height, width=1080,1920
+height, width=1024,1024
 arr_r=np.zeros((height, width))
 arr_g=np.zeros((height, width))
 arr_b=np.zeros((height, width))
 pixel_size=4.5e-6#4.5e-6
-f=2 # meters
+f=1.8 # meters
 # Define wavelengths (in meters, for example)
 lambda_r = 0.633e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
@@ -46,7 +46,7 @@ rgb_image[:, :, 0] = arr_r_modified  # Set red channel
 rgb_image[:, :, 1] = arr_g_modified
 rgb_image[:, :, 2] = arr_b_modified
 arr_r_im=Image.fromarray(rgb_image)
-arr_r_im.save(f"Lens_rgb{f}.png")
+arr_r_im.save(f"Lens_rgb{f,height}.png")
 # # Display results
 # plt.figure()
 # plt.imshow(I_lens,cmap="hot")

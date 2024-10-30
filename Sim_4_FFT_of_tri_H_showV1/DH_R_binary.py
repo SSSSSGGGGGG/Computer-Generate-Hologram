@@ -16,7 +16,7 @@ G2 = np.exp(1j * 0)
 file_n = "R_tri"   
 width, height = 1920, 1080
 binary_phase = np.ones((height, width),dtype="complex128")
-stripe_width = 24#•27#35  # period
+stripe_width = 40#•27#35  # period
 spacing = stripe_width * 2   # 2 times period
 delta_bi=0.5*height/stripe_width
 
@@ -41,7 +41,7 @@ else:
         i2 = 0
         while i2 < reminder_h - 1:
             if (i2 + 1 + (loop_h) * stripe_width) < height:
-                binary_phase[i2 + 1 + (loop_h) * stripe_width, x] = G1
+                binary_phase[i2 + 1 + ((loop_h) -0)* stripe_width, x] = G1
             i2 += 1
 fft_grating_binary = fftshift(fft2(binary_phase))#*Guassia_amplitude
 I_binary=np.abs(fft_grating_binary)**2
@@ -75,6 +75,7 @@ end_h = center_h + crop_size_h // 2
 start_w = center_w - crop_size_w // 2
 end_w = center_w + crop_size_w // 2
 I_cropped_binary = I_binary_G_nor[start_h:end_h, start_w:end_w]
+I_cropped_binary_check = I_binary_nor[start_h:end_h, start_w:end_w]
 # I_cropped_withBlazed = I_withBlazed_G_nor[start_h:end_h, start_w:end_w]
 # plt.imsave(f"Gaussian Beam width {beam_width}px.png",Guassia_amplitude,cmap="hot")
 # Display the result
