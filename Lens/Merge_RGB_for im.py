@@ -17,7 +17,6 @@ im_array = np.array(im)*255
 
 # Create a new array for the new image with the same shape as the original
 im_new_array = np.zeros_like(im_array)
-# Modify the new array
 im_new_array[:,:,0] = im_lens_array[:,:,0]+im_array[:,:,0]
 im_new_array[:,:,1] = im_lens_array[:,:,1]+im_array[:,:,1]
 im_new_array[:,:,2] = im_lens_array[:,:,2]+im_array[:,:,2]

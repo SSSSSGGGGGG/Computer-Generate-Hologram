@@ -14,7 +14,7 @@ from skimage import color
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
-filename="rgbdots_b"
+filename="t"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -23,62 +23,53 @@ width=im.shape[1]
 lambda_r = 0.633e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
 lambda_b = 0.450e-6  # Blue wavelength
-# Calculate scaling factors with respect to green
-scale_r =  lambda_r/lambda_g
-scale_b =  lambda_b/lambda_g
+# # Calculate scaling factors with respect to green
+# scale_r =  lambda_r/lambda_g
+# scale_b =  lambda_b/lambda_g
 
-h_r, w_r = int(height * scale_r), int(width * scale_r)
-h_b, w_b = int(height * scale_b), int(width * scale_b)
-print(h_r,int(h_r), w_r,int(w_r))
-print(h_b,int(h_b), w_b,int(w_b))
+# h_r, w_r = int(height * scale_r), int(width * scale_r)
+# h_b, w_b = int(height * scale_b), int(width * scale_b)
+# print(h_r,int(h_r), w_r,int(w_r))
+# print(h_b,int(h_b), w_b,int(w_b))
 
-x_offset_r = (int(w_r)-width) // 2
-y_offset_r = (int(h_r)-height) // 2
-print(x_offset_r,y_offset_r)
-x_offset_b = (width - int(w_b)) // 2
-y_offset_b = (height - int(h_b)) // 2
-print(x_offset_b,y_offset_b)
-# Step 1: Pad the red channel to the scaled size
-padded_red = np.zeros((h_r, w_r))
-padded_red[y_offset_r:y_offset_r + height, x_offset_r:x_offset_r + width] = im[:, :, 0]
+# x_offset_r = (int(w_r)-width) // 2
+# y_offset_r = (int(h_r)-height) // 2
+# print(x_offset_r,y_offset_r)
+# x_offset_b = (width - int(w_b)) // 2
+# y_offset_b = (height - int(h_b)) // 2
+# print(x_offset_b,y_offset_b)
+# # Step 1: Pad the red channel to the scaled size
+# padded_red = np.zeros((h_r, w_r))
+# padded_red[y_offset_r:y_offset_r + height, x_offset_r:x_offset_r + width] = im[:, :, 0]
 
-# Step 2: Crop the blue channel to the scaled size
-cropped_blue=np.zeros((h_b, w_b))
-cropped_blue = im[:, :, 2][y_offset_b:y_offset_b + h_b, x_offset_b:x_offset_b + w_b]
+# # Step 2: Crop the blue channel to the scaled size
+# cropped_blue=np.zeros((h_b, w_b))
+# cropped_blue = im[:, :, 2][y_offset_b:y_offset_b + h_b, x_offset_b:x_offset_b + w_b]
 
-# Step 3: Resize both channels back to the original dimensions
-scaled_red = cv2.resize(padded_red, (width, height), interpolation=cv2.INTER_LINEAR)
-scaled_blue = cv2.resize(cropped_blue, (width, height), interpolation=cv2.INTER_LINEAR)
+# # Step 3: Resize both channels back to the original dimensions
+# scaled_red = cv2.resize(padded_red, (width, height), interpolation=cv2.INTER_LINEAR)
+# scaled_blue = cv2.resize(cropped_blue, (width, height), interpolation=cv2.INTER_LINEAR)
 
-im_manipulated=np.zeros((height,width,3))
-im_manipulated[:,:,0]=scaled_red
-im_manipulated[:,:,1]=im[:,:,1]
-im_manipulated[:,:,2]=scaled_blue
-plt.imsave(f"scaled {filename}.png", im_manipulated)
-plt.figure()
-plt.imshow(im_manipulated)
-# plt.colorbar()
-plt.title("RGB")
-plt.show()
+# im_manipulated=np.zeros((height,width,3))
+# im_manipulated[:,:,0]=im[:,:,0]
+# im_manipulated[:,:,1]=im[:,:,1]
+# im_manipulated[:,:,2]=im[:,:,2]
+# plt.imsave(f"scaled {filename}.png", im_manipulated)
+# plt.figure()
+# plt.imshow(im_manipulated)
+# # plt.colorbar()
+# plt.title("RGB")
+# plt.show()
 #R
-im_shift_r=fftshift(scaled_red)
+im_shift_r=fftshift(im[:,:,0])
 #G
 im_shift_g=fftshift(im[:,:,1])
 #B
-im_shift_b=fftshift(scaled_blue)
+im_shift_b=fftshift(im[:,:,2])
 
-# random
-
-def rand(height, width):
-    rand=np.random.uniform(0, 1, (height, width))
-    rand_2pi=np.pi*rand
-    rand_ma=np.max(rand_2pi)
-    rand_mi=np.min(rand_2pi)
-    exp_rand=np.exp(1j*rand_2pi)#np.exp(1j*)
-    return exp_rand
     
 #R
-im_r_rand=rand(height, width)*im_shift_r
+im_r_rand=im_shift_r
 im_rr_ft=fftshift(fft2(im_r_rand))
 phase_rr = np.angle(im_rr_ft)
 # phase_rr_new=phase_rr.astype(np.uint8)
@@ -87,7 +78,7 @@ phase_rr_modi=(np.angle(im_rr_ft)/np.pi+1)*(255/1.85)
 phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
 #G
-im_g_rand=rand(height, width)*im_shift_g
+im_g_rand=im_shift_g
 im_gr_ft=fftshift(fft2(im_g_rand))
 phase_gr = np.angle(im_gr_ft)
 # phase_gr_new=phase_gr.astype(np.uint8)
@@ -96,7 +87,7 @@ phase_gr_modi=(np.angle(im_gr_ft)/np.pi+1)*(255/2.63)
 phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 #B
-im_b_rand=rand(height, width)*im_shift_b
+im_b_rand=im_shift_b
 im_br_ft=fftshift(fft2(im_b_rand))
 phase_br = np.angle(im_br_ft)
 # phase_br_new=phase_br.astype(np.uint8)
@@ -151,12 +142,12 @@ im_modi.save(f"{filename}_RGB_M_rescaled_lens.png")
 # im_modi.show()
 
 plt.figure()
-plt.imshow(scaled_red, cmap='Reds')
+plt.imshow(im[:,:,0], cmap='Reds')
 plt.colorbar()
 plt.title("R")
 plt.show()
 plt.figure()
-plt.imshow(scaled_blue, cmap='Blues')
+plt.imshow(im[:,:,2], cmap='Blues')
 plt.colorbar()
 plt.title("G")
 plt.show()

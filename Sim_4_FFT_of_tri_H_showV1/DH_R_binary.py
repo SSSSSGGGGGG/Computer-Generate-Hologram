@@ -16,7 +16,7 @@ G2 = np.exp(1j * 0)
 file_n = "R_tri"   
 width, height = 1920, 1080
 binary_phase = np.ones((height, width),dtype="complex128")
-stripe_width = 40#•27#35  # period
+stripe_width = 23#•27#35  # period
 spacing = stripe_width * 2   # 2 times period
 delta_bi=0.5*height/stripe_width
 
