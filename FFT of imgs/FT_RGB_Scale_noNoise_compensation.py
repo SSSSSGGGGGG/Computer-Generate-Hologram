@@ -14,7 +14,7 @@ from skimage import color
 import cv2
 
 os.chdir("C:/Users/gaosh/Documents/python/Digital-hologram/FFT of imgs")
-filename="whiteRing_shift"
+filename="planets"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
