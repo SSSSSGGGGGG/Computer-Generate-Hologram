@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
-os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
-filename="RGB100p"
+os.chdir("C:/Users/gaosh/Documents/python/Digital-hologram/FFT of imgs")
+filename="planets"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -33,11 +33,7 @@ im_rr_ft=fftshift(fft2(im_r_rand))
 phase_rr = np.angle(im_rr_ft)
 phase_rr_new=phase_rr.astype(np.uint8)
 phase_rr_save=Image.fromarray(phase_rr_new)
-# plt.figure()
-# plt.imshow(phase_rr_save, cmap='Reds')
-# plt.colorbar()#label='Phase (radians)'
-# plt.title("Phase without modification")
-# plt.show()
+
 im_g_rand=exp_rand*im_shift_g
 im_gr_ft=fftshift(fft2(im_g_rand))
 phase_gr = np.angle(im_gr_ft)
@@ -59,19 +55,14 @@ for i in range(iterations):
     field_target_r = fftshift(fft2(current_field_r ))
     field_target_g = fftshift(fft2(current_field_g ))
     field_target_b = fftshift(fft2(current_field_b ))
-
-    # Replace amplitude with target amplitude, keep the phase
-    field_target_r = np.sqrt(exp_rand*im_shift_r) * np.exp(1j * np.angle(field_target_r))
-    field_target_g = np.sqrt(exp_rand*im_shift_g) * np.exp(1j * np.angle(field_target_g))
-    field_target_b = np.sqrt(exp_rand*im_shift_b) * np.exp(1j * np.angle(field_target_b))
     # Inverse Fourier Transform to initial plane
-    current_field_r = ifft2(ifftshift(field_target_r))
-    current_field_g = ifft2(ifftshift(field_target_g))
-    current_field_b = ifft2(ifftshift(field_target_b))
+    current_field_r = ifft2(ifftshift(np.exp(1j * np.angle(field_target_r))))
+    current_field_g = ifft2(ifftshift(np.exp(1j * np.angle(field_target_g))))
+    current_field_b = ifft2(ifftshift(np.exp(1j * np.angle(field_target_b))))
     # Impose constraints in the initial plane (e.g., unit amplitude or custom profile)
-    current_field_r = np.exp(1j * np.angle(current_field_r))
-    current_field_g = np.exp(1j * np.angle(current_field_g))
-    current_field_b = np.exp(1j * np.angle(current_field_b))
+    current_field_r = exp_rand*im_shift_r*np.exp(1j * np.angle(current_field_r))
+    current_field_g = exp_rand*im_shift_g*np.exp(1j * np.angle(current_field_g))
+    current_field_b = exp_rand*im_shift_b*np.exp(1j * np.angle(current_field_b))
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
 phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
@@ -84,43 +75,39 @@ phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 optimized_phase_g = np.angle(current_field_g)
 phase_br_modi=(optimized_phase_g+1)*(255/3.55)
 phase_br_modi_mod=np.mod(phase_br_modi,255)
-# Create a new array for the new image with the same shape as the original
-im_modify = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
-# Modify the new array
-im_modify[:,:,0] = phase_rr_modi_mod
-im_modify[:,:,1] = phase_gr_modi_mod
-im_modify[:,:,2] = phase_br_modi_mod
-im_modify = im_modify.astype(np.uint8)
-im_modi = Image.fromarray(im_modify)
-im_modi.save(f"{filename}_RGB_GS {iterations}.png")
 
-# Define wavelengths (in meters, for example)
+"""Lens"""
 lambda_r = 0.633e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
-lambda_b = 0.450e-6  # Blue wavelength
+lambda_b = 0.450e-6  
+arr_r=np.zeros((height, width))
+arr_g=np.zeros((height, width))
+arr_b=np.zeros((height, width))
+pixel_size=4.5e-6#4.5e-6
+f=-2 # meters
+center_h=height//2
+center_w=width//2
+"""RGB lens"""
+for i in range(height):
+    for j in range(width):
+        r = pixel_size * np.sqrt((i - center_h)**2 + (j - center_w)**2)
+        arr_r[i, j] =  r**2 / (f * lambda_r) #np.pi *
+        arr_g[i, j] =  r**2 / (f * lambda_g)
+        arr_b[i, j] =  r**2 / (f * lambda_b)
+"""mod into 0-2"""
+arr_r_mod=np.mod(arr_r,2)
+arr_g_mod=np.mod(arr_g,2)
+arr_b_mod=np.mod(arr_b,2)    
 
-# Calculate scaling factors with respect to green
-scale_r = lambda_g / lambda_r
-scale_b = lambda_g / lambda_b
-
-# Scale the phase maps
-scaled_phase_red =  phase_rr_modi_mod * scale_r
-scaled_phase_blue =  phase_br_modi_mod * scale_b
-
+"""Map phase to gray level for diff laser"""
+arr_r_modified=arr_r_mod*(255/1.85)
+arr_g_modified=arr_g_mod*(255/2.63)
+arr_b_modified=arr_b_mod*(255/3.55)
 # Create a new array for the new image with the same shape as the original
-im_new_array = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
-# Modify the new array
-im_new_array[:,:,0] = scaled_phase_red
-im_new_array[:,:,1] = phase_gr_modi_mod
-im_new_array[:,:,2] = scaled_phase_blue
-im_new_array = im_new_array.astype(np.uint8)
-im_new = Image.fromarray(im_new_array)
-im_new.save(f"{filename}_RGB_GS {iterations}_scaled.png")
-# Display results
-plt.figure()
-plt.imshow(im_modi)
-plt.colorbar()#label='Phase (radians)'
-plt.axis('off')
-plt.title("Optimized Phase using GS Algorithm")
-plt.show()
-# im_new.save(f"{filename}_RGB_rand_M_GS.png")
+im_modify = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+im_modify[:,:,0] = phase_rr_modi_mod+arr_r_modified
+im_modify[:,:,1] = phase_gr_modi_mod+arr_g_modified
+im_modify[:,:,2] = phase_br_modi_mod+arr_b_modified
+im_modify = im_modify.astype(np.uint8)
+im_modi = Image.fromarray(im_modify)
+im_modi.save(f"{filename}_GS {iterations}_lens.png")
