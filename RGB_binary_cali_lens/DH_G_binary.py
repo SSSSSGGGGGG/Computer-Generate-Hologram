@@ -29,14 +29,14 @@ arr_r_modified=arr_r_mod*(255/2.63)
 """Convert array to image"""
 rgb_image = np.zeros((height, width, 3), dtype=np.uint8)
 
-G=[  0 , 16 , 32 , 48 , 64 , 80 , 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 255]#92   
+G=[136]#[  0 , 16 , 32 , 48 , 64 , 80 , 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 255]#92   
 def holo(G):
     G=int(G)
     print(G)
       
     im_blank=Image.new("RGB",(width,height))
     pixels=im_blank.load()
-    stripe_width = 27 # period
+    stripe_width = 24#27 # period
     spacing=stripe_width*2   # 2 times period
     loop_w=width/stripe_width
     reminder_w=width%stripe_width

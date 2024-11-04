@@ -29,7 +29,7 @@ arr_r_modified=arr_r_mod*(255/3.55)
 """Convert array to image"""
 rgb_image = np.zeros((height, width, 3), dtype=np.uint8)
 
-G=[  0 , 16 , 32 , 48 , 64 , 80 , 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 255]#112  
+G=[16,32,48,160,176]#[  0 , 16 , 32 , 48 , 64 , 80 , 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 255]
 # print(G)
 def holo(G):
     G=int(G)

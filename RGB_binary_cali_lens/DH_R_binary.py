@@ -29,7 +29,7 @@ arr_r_modified=arr_r_mod*(255/1.85)
 """Convert array to image"""
 rgb_image = np.zeros((height, width, 3), dtype=np.uint8)
 
-G=[176]
+G=[184]
 # G=[  0 , 16 , 32 , 48 , 64 , 80 , 96, 112, 128, 144, 160, 176, 192, 208, 224, 240, 255]#92   
 def holo(G):
     G=int(G)
@@ -37,7 +37,7 @@ def holo(G):
       
     im_blank=Image.new("RGB",(width,height))
     pixels=im_blank.load()
-    stripe_width = 35 # period
+    stripe_width =35 #35 # period
     spacing=stripe_width*2   # 2 times period
     # This is for vertical diffraction pattern distribution
     

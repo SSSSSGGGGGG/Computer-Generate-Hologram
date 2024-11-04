@@ -20,9 +20,9 @@ height=im.shape[0]
 width=im.shape[1]
 
 # Define wavelengths (in meters, for example)
-lambda_r = 0.633e-6  # Red wavelength
+lambda_r = 0.680e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
-lambda_b = 0.450e-6  # Blue wavelength
+lambda_b = 0.461e-6  # Blue wavelength
 # Calculate scaling factors with respect to green
 scale_r =  lambda_r/lambda_g
 scale_b =  lambda_b/lambda_g
@@ -116,9 +116,9 @@ center_w=width//2
 for i in range(height):
     for j in range(width):
         r = pixel_size * np.sqrt((i - center_h)**2 + (j - center_w)**2)
-        arr_r[i, j] =  r**2 / (f * lambda_r) #np.pi *
+        arr_r[i, j] =  r**2 / (f * 0.633e-6) #np.pi *
         arr_g[i, j] =  r**2 / (f * lambda_g)
-        arr_b[i, j] =  r**2 / (f * lambda_b)
+        arr_b[i, j] =  r**2 / (f * 0.450e-6)
 """mod into 0-2"""
 arr_r_mod=np.mod(arr_r,2)
 arr_g_mod=np.mod(arr_g,2)
