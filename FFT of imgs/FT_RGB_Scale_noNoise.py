@@ -14,7 +14,7 @@ from skimage import color
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
-filename="whiteRing"
+filename="whiteRing_shift"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -140,18 +140,18 @@ im_modi = Image.fromarray(im_cropped)
 im_modi.save(f"{filename}_rescaled_noN_lens.png")
 # im_modi.show()
 
-plt.figure()
-plt.imshow(scaled_red, cmap='Reds')
-plt.colorbar()
-plt.title("R")
-plt.show()
-plt.figure()
-plt.imshow(scaled_blue, cmap='Blues')
-plt.colorbar()
-plt.title("G")
-plt.show()
-plt.figure()
-plt.imshow(im[:,:,1], cmap='Greens')
-plt.colorbar()
-plt.title("B")
-plt.show()
+# plt.figure()
+# plt.imshow(scaled_red, cmap='Reds')
+# plt.colorbar()
+# plt.title("R")
+# plt.show()
+# plt.figure()
+# plt.imshow(scaled_blue, cmap='Blues')
+# plt.colorbar()
+# plt.title("G")
+# plt.show()
+# plt.figure()
+# plt.imshow(im[:,:,1], cmap='Greens')
+# plt.colorbar()
+# plt.title("B")
+# plt.show()

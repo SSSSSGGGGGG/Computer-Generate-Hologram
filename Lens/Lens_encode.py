@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
 
-height, width=1080,1920
+height, width=1920,1920
 arr_r=np.zeros((height, width))
 arr_g=np.zeros((height, width))
 arr_b=np.zeros((height, width))
