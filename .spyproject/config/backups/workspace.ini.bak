@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['FFT of imgs\\FT_RGB_Scale.py', 'FFT of imgs\\FT_RGB_noNoise.py', 'FFT of imgs\\FT_RGB_Scale_noNoise.py']
+recent_files = ['FFT of imgs\\FT_RGB_Scale_noNoise.py', 'RGB_binary_cali_lens\\CrossTalk\\Combined_Two.py', 'RGB_binary_cali_lens\\CrossTalk\\Combined_RGB.py', 'FFT of imgs\\FT_iteration_test.py']
 
 [main]
 version = 0.2.0

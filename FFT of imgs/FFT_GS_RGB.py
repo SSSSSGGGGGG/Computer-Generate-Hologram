@@ -9,8 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
-os.chdir("C:/Users/gaosh/Documents/python/Digital-hologram/FFT of imgs")
-filename="planets"
+os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
+filename="planets_h16"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -29,51 +29,53 @@ rand_mi=np.min(rand_2pi)
 exp_rand=np.exp(1j*rand_2pi)
 #R
 im_r_rand=exp_rand*im_shift_r
-im_rr_ft=fftshift(fft2(im_r_rand))
-phase_rr = np.angle(im_rr_ft)
-phase_rr_new=phase_rr.astype(np.uint8)
-phase_rr_save=Image.fromarray(phase_rr_new)
+# im_rr_ft=fftshift(fft2(im_r_rand))
+# phase_rr = np.angle(im_rr_ft)
+# phase_rr_new=phase_rr.astype(np.uint8)
+# phase_rr_save=Image.fromarray(phase_rr_new)
 
 im_g_rand=exp_rand*im_shift_g
-im_gr_ft=fftshift(fft2(im_g_rand))
-phase_gr = np.angle(im_gr_ft)
-phase_gr_new=phase_gr.astype(np.uint8)
-phase_gr_save=Image.fromarray(phase_gr_new)
+# im_gr_ft=fftshift(fft2(im_g_rand))
+# phase_gr = np.angle(im_gr_ft)
+# phase_gr_new=phase_gr.astype(np.uint8)
+# phase_gr_save=Image.fromarray(phase_gr_new)
 
 im_b_rand=exp_rand*im_shift_b
-im_br_ft=fftshift(fft2(im_b_rand))
-phase_br = np.angle(im_br_ft)
-phase_br_new=phase_br.astype(np.uint8)
-phase_br_save=Image.fromarray(phase_br_new)
+# im_br_ft=fftshift(fft2(im_b_rand))
+# phase_br = np.angle(im_br_ft)
+# phase_br_new=phase_br.astype(np.uint8)
+# phase_br_save=Image.fromarray(phase_br_new)
 # Start with the initial guess in the target plane
 current_field_r = im_r_rand
 current_field_g =im_g_rand
 current_field_b =im_b_rand
 iterations=10
 for i in range(iterations):
-    # Forward Fourier Transform to the target plane
-    field_target_r = fftshift(fft2(current_field_r ))
-    field_target_g = fftshift(fft2(current_field_g ))
-    field_target_b = fftshift(fft2(current_field_b ))
+    
     # Inverse Fourier Transform to initial plane
-    current_field_r = ifft2(ifftshift(np.exp(1j * np.angle(field_target_r))))
-    current_field_g = ifft2(ifftshift(np.exp(1j * np.angle(field_target_g))))
-    current_field_b = ifft2(ifftshift(np.exp(1j * np.angle(field_target_b))))
-    # Impose constraints in the initial plane (e.g., unit amplitude or custom profile)
-    current_field_r = exp_rand*im_shift_r*np.exp(1j * np.angle(current_field_r))
-    current_field_g = exp_rand*im_shift_g*np.exp(1j * np.angle(current_field_g))
-    current_field_b = exp_rand*im_shift_b*np.exp(1j * np.angle(current_field_b))
+    current_field_r = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
+    current_field_g = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
+    current_field_b = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
+    # # Impose constraints in the initial plane (e.g., unit amplitude or custom profile)
+    current_field_r_n = exp_rand*im_shift_r*np.exp(1j * np.angle(current_field_r))
+    current_field_g_n = exp_rand*im_shift_g*np.exp(1j * np.angle(current_field_g))
+    current_field_b_n = exp_rand*im_shift_b*np.exp(1j * np.angle(current_field_b))
+    
+    # Forward Fourier Transform to the target plane
+    field_target_r = fftshift(fft2(current_field_r_n ))
+    field_target_g = fftshift(fft2(current_field_g_n ))
+    field_target_b = fftshift(fft2(current_field_b_n ))
 # Final optimized phase for display or application on SLM
-optimized_phase_r = np.angle(current_field_r)
+optimized_phase_r = np.angle(field_target_r)
 phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
 phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
-optimized_phase_g = np.angle(current_field_g)
+optimized_phase_g = np.angle(field_target_g)
 phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2.63)
 phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
-optimized_phase_g = np.angle(current_field_g)
-phase_br_modi=(optimized_phase_g+1)*(255/3.55)
+optimized_phase_b = np.angle(field_target_b)
+phase_br_modi=(optimized_phase_b+1)*(255/3.55)
 phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""

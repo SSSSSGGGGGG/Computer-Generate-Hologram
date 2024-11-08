@@ -23,7 +23,7 @@ im_new_array[:,:,1] = im_gh_array[:,:,1]
 im_new_array = im_new_array.astype(np.uint8)
 
 im_new = Image.fromarray(im_new_array)
-im_new.save('RV_GH.png')
+im_new.save('RV_GH.tif')
 im_new.show()
 
 """RB"""
@@ -34,7 +34,7 @@ im_new_rb[:,:,2] = im_bh_array[:,:,2]
 im_new_rb = im_new_rb.astype(np.uint8)
 
 im_new_rb= Image.fromarray(im_new_rb)
-im_new_rb.save('RV_BD.png')
+im_new_rb.save('RV_BD.tif')
 im_new_rb.show()
 
 """GB"""
@@ -45,5 +45,5 @@ im_new_gb[:,:,2] = im_bh_array[:,:,2]
 im_new_gb = im_new_gb.astype(np.uint8)
 
 im_new_gb = Image.fromarray(im_new_gb)
-im_new_gb.save('GH_BD.png')
+im_new_gb.save('GH_BD.tif')
 im_new_gb.show()

@@ -14,7 +14,7 @@ from skimage import color
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs")
-filename="whiteRing_shift"
+filename="planets_h16"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -54,7 +54,7 @@ im_manipulated=np.zeros((height,width,3))
 im_manipulated[:,:,0]=scaled_red
 im_manipulated[:,:,1]=im[:,:,1]
 im_manipulated[:,:,2]=scaled_blue
-plt.imsave(f"scaled {filename}.png", im_manipulated)
+# plt.imsave(f"scaled {filename}.png", im_manipulated)
 plt.figure()
 plt.imshow(im_manipulated)
 # plt.colorbar()
@@ -125,7 +125,7 @@ im_modify0[:,:,1] = phase_gr_modi_mod
 im_modify0[:,:,2] = phase_br_modi_mod
 im_modify0 = im_modify0.astype(np.uint8)
 im_modi0 = Image.fromarray(im_modify0)
-# im_modi0.save(f"{filename}_RGB_M_rescaled.png")
+im_modi0.save(f"{filename}_RGB_M_rescaled.png")
 
 # Create a new array for the new image with the same shape as the original
 im_modify = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
