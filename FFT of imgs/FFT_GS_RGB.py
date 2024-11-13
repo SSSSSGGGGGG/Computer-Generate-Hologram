@@ -75,7 +75,7 @@ phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2.63)
 phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 optimized_phase_b = np.angle(field_target_b)
-phase_br_modi=(optimized_phase_b+1)*(255/3.55)
+phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.55)
 phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""
