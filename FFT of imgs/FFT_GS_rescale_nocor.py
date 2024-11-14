@@ -92,14 +92,51 @@ for i in range(iterations):
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
     
-    current_field_r_n =im_shift_r*np.exp(1j * np.angle(current_field_r_i)) #exp_rand
-    current_field_g_n =im_shift_g*np.exp(1j * np.angle(current_field_g_i)) #exp_rand*
-    current_field_b_n =im_shift_b*np.exp(1j * np.angle(current_field_b_i)) #exp_rand*
+    current_field_r_n =im_shift_r*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
+    current_field_g_n =im_shift_g*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
+    current_field_b_n =im_shift_b*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
+
+plt.figure()
+plt.imshow(np.angle(current_field_r),cmap="Reds")
+plt.title("R")
+plt.colorbar()
+plt.show()
+
+plt.figure()
+plt.imshow(abs(current_field_r),cmap="Reds")
+plt.title("R")
+plt.colorbar()
+plt.show()
+
+plt.figure()
+plt.imshow(np.angle(current_field_g),cmap="Greens")
+plt.title("G")
+plt.colorbar()
+plt.show()
+
+plt.figure()
+plt.imshow(abs(current_field_g),cmap="Greens")
+plt.title("G")
+plt.colorbar()
+plt.show()
+
+plt.figure()
+plt.imshow(np.angle(current_field_b),cmap="Blues")
+plt.title("B")
+plt.colorbar()
+plt.show()
+
+plt.figure()
+plt.imshow(abs(current_field_b),cmap="Blues")
+plt.title("B")
+plt.colorbar()
+plt.show()
+
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
 phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
@@ -163,26 +200,7 @@ im_modify_c = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_modify_c[:,:,0] = phase_rr_modi+arr_r_modified
 im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
 im_modify_c[:,:,2] = phase_br_modi+arr_b_modified
-# plt.figure()
-# plt.imshow(im_modify_c[:,:,0],cmap="Reds")
-# plt.title("R")
-# plt.show()
-# # # plt.figure()
-# # # plt.imshow(im_modify_c[:,:,0],cmap="Reds")
-# # # plt.title("R")
-# # # plt.show()
-# # plt.figure()
-# # plt.imshow(im_modify_c[:,:,1],cmap="Greens")
-# # plt.title("G")
-# # plt.show()
-# plt.figure()
-# plt.imshow(im_modify_c[:,:,2],cmap="Blues")
-# plt.title("B")
-# plt.show()
-# # plt.figure()
-# # plt.imshow(im_modify_c[:,:,2],cmap="Blues")
-# # plt.title("B")
-# # plt.show()
+
 def crop(im_modify,name):
     y_offset=center_h-1080//2
     im_cropped=im_modify[y_offset:y_offset+1080,:]

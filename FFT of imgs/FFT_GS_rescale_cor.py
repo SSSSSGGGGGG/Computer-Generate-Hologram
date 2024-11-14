@@ -81,7 +81,8 @@ im_b_rand=exp_rand*im_shift_b
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=10
+
+iterations=1
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -92,14 +93,21 @@ for i in range(iterations):
     target_phase_constraint = (np.angle(current_field_r_i) +
                            np.angle(current_field_g_i) +
                            np.angle(current_field_b_i)) / 3
-    current_field_r_n = im_shift_r *np.exp(1j * target_phase_constraint)# 
-    current_field_g_n = im_shift_g *np.exp(1j *target_phase_constraint)#im_shift_g *  
-    current_field_b_n = im_shift_b *np.exp(1j * target_phase_constraint)# 
+    current_field_r_n = im_shift_r *np.exp(1j *target_phase_constraint)#*exp_rand# 
+    current_field_g_n = im_shift_g *np.exp(1j *target_phase_constraint)#*exp_rand#  
+    current_field_b_n = im_shift_b *np.exp(1j *target_phase_constraint)#*exp_rand# 
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
+
+plt.figure()
+plt.imshow(target_phase_constraint,cmap="gray")
+plt.title("average phase")
+plt.colorbar()
+plt.show()
+
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
 phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
@@ -155,4 +163,4 @@ def crop(im_modify,name):
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
-C=crop(im_modify_c, "c")
+# C=crop(im_modify_c, "c")
