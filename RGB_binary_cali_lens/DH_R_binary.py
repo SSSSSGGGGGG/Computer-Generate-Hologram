@@ -48,7 +48,7 @@ def holo(G):
     reminder_h=height%stripe_width
     # print(round(loop_w),loop_h)
     # This is for vertical diffraction pattern distribution
-    if reminder_w==0:
+    if reminder_h==0:
         for x in range(width):
             for i in range(0, height, spacing):
                 for j in range(stripe_width):
@@ -62,7 +62,7 @@ def holo(G):
                     if i+j<height:
                         pixels[x,i+j]=(G,0,0)
             i2=0
-            while i2 < reminder_w-1:
+            while i2 < reminder_h-1:
               
                 pixels[x,i2+1+(round(loop_h)-2)*stripe_width]=(0,0,0) 
                 # print(i2+1+(round(loop_w)-1)*stripe_width)
