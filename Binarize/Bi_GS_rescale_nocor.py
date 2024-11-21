@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Binarize")
-filename="lemon_h16"
+filename="lemon_sh"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -204,6 +204,11 @@ im_modify_c[:,:,0] = phase_rr_modi+arr_r_modified
 im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
 im_modify_c[:,:,2] = phase_br_modi+arr_b_modified
 
+im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+im_modify_noL[:,:,0] = phase_rr_modi
+im_modify_noL[:,:,1] = phase_gr_modi
+im_modify_noL[:,:,2] = phase_br_modi
+
 def crop(im_modify,name):
     y_offset=center_h-1080//2
     im_cropped=im_modify[y_offset:y_offset+1080,:]
@@ -214,6 +219,7 @@ def crop(im_modify,name):
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
 C=crop(im_modify_c, "c")
+C_noL=crop(im_modify_noL, "nL")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")

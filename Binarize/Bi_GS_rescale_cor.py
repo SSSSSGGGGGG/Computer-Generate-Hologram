@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Binarize")
-filename="lemon_h16"
+filename="lotus_H_270"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -189,6 +189,11 @@ im_modify_c[:,:,0] = phase_rr_modi_mod+arr_r_modified
 im_modify_c[:,:,1] = phase_gr_modi_mod+arr_g_modified
 im_modify_c[:,:,2] = phase_br_modi_mod+arr_b_modified
 
+im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+im_modify_noL[:,:,0] = phase_rr_modi_mod
+im_modify_noL[:,:,1] = phase_gr_modi_mod
+im_modify_noL[:,:,2] = phase_br_modi_mod
+
 def crop(im_modify,name):
     y_offset=center_h-1080//2
     im_cropped=im_modify[y_offset:y_offset+1080,:]
@@ -199,3 +204,4 @@ def crop(im_modify,name):
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
 C=crop(im_modify_c, "c")
+C_noL=crop(im_modify_noL, "nL")
