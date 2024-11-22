@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Binarize")
-filename="lotus_H_270"
+filename="colorful_lotus_H_270"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]

@@ -48,8 +48,8 @@ rgb_image[:, :, 2] = arr_b_modified
 arr_r_im=Image.fromarray(rgb_image)
 # arr_r_im.save(f"Lens_rgb{f}.png")
 
-im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/Binarize/Bi_lotus_H_270_GS_10_l_C_nL.png")
-im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/Binarize/Bi_lotus_V_GS_10_l_C_nL.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/Binarize/Bi_colorful_lotus_H_pi_10_l_C_nL.png")
+im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/Binarize/Bi_colorful_lotus_V_pi_10_l_C_nL.png")
 
 im_rh_array = np.array(im_rh)*255
 im_gh_array = np.array(im_gh)*255
@@ -62,7 +62,7 @@ im_new_array[:,:,2] = im_rh_array[:,:,2]+im_gh_array[:,:,2]+arr_b_modified
 im_new_array = im_new_array.astype(np.uint8)
 
 im_new = Image.fromarray(im_new_array)
-im_new.save('Bi_Combined_lotus_c_270.png')
+im_new.save('Bi_Cb_color_lotus_c_0.png')
 # im_new.show()
 # # Display results
 # plt.figure()
