@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Binarize")
-filename="colorful_lotus_H_270"
+filename="lotus_FH_0"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -77,7 +77,7 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 
-iterations=10
+iterations=1
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -106,12 +106,12 @@ for i in range(iterations):
 # Final optimized phase for display or application on SLM
 optimized_phase_r_o = np.angle(current_field_r)
 optimized_phase_r = np.where(optimized_phase_r_o < 0, 0, 1)
-phase_rr_modi=optimized_phase_r*92#(optimized_phase_r/np.pi+1)*(255/1.85)
+phase_rr_modi=optimized_phase_r*184#(optimized_phase_r/np.pi+1)*(255/1.85)
 phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
 optimized_phase_g_o = np.angle(current_field_g)
 optimized_phase_g = np.where(optimized_phase_g_o < 0, 0, 1)
-phase_gr_modi=optimized_phase_g*145#(optimized_phase_g/np.pi+1)*(255/2.63)
+phase_gr_modi=optimized_phase_g*136#(optimized_phase_g/np.pi+1)*(255/2.63)
 phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 optimized_phase_b_o = np.angle(current_field_b)
@@ -199,9 +199,9 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"Bi_{filename}_GS_{iterations}_l_C_{name}.png")
+    im_modi.save(f"Bi_{filename}_184_136_112{iterations}_C_{name}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
-C=crop(im_modify_c, "c")
+C=crop(im_modify_c, "L")
 C_noL=crop(im_modify_noL, "nL")

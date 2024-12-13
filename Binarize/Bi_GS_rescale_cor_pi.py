@@ -111,12 +111,12 @@ phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
 optimized_phase_g_o = np.angle(current_field_g)
 optimized_phase_g = np.where(optimized_phase_g_o < 0, 0, 1)
-phase_gr_modi=optimized_phase_g*112#(optimized_phase_g/np.pi+1)*(255/2.63)
+phase_gr_modi=optimized_phase_g*128#(optimized_phase_g/np.pi+1)*(255/2.63)
 phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 optimized_phase_b_o = np.angle(current_field_b)
 optimized_phase_b = np.where(optimized_phase_b_o < 0, 0, 1)
-phase_br_modi=optimized_phase_b*80#(optimized_phase_b/np.pi+1)*(255/3.55)
+phase_br_modi=optimized_phase_b*96#(optimized_phase_b/np.pi+1)*(255/3.55)
 phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 # plt.figure()
@@ -199,7 +199,7 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"Bi_{filename}_pi_{iterations}_l_C_{name}.png")
+    im_modi.save(f"Bi_{filename}_any_{iterations}_l_C_{name}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")

@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS")
-filename="lemon_sh_H"
+filename="lotus_V_b"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -82,7 +82,7 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 
-iterations=10
+iterations=1
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -102,24 +102,24 @@ for i in range(iterations):
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
 
-plt.figure()
-plt.imshow(target_phase_constraint,cmap="gray")
-plt.title("average phase")
-plt.colorbar()
-plt.show()
+# plt.figure()
+# plt.imshow(target_phase_constraint,cmap="gray")
+# plt.title("average phase")
+# plt.colorbar()
+# plt.show()
 
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
 phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
-phase_rr_modi_mod=np.mod(phase_rr_modi,255)
+# phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
 optimized_phase_g = np.angle(current_field_g)
 phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2.63)
-phase_gr_modi_mod=np.mod(phase_gr_modi,255)
+# phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 optimized_phase_b = np.angle(current_field_b)
 phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.55)
-phase_br_modi_mod=np.mod(phase_br_modi,255)
+# phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""
 lambda_r = 0.633e-6  # Red wavelength
@@ -148,19 +148,43 @@ arr_b_mod=np.mod(arr_b,2)
 arr_r_modified=arr_r_mod*(255/1.85)
 arr_g_modified=arr_g_mod*(255/2.63)
 arr_b_modified=arr_b_mod*(255/3.55)
+
+im_modify_r = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
+im_modify_g = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
+im_modify_b = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
+im_modify_r_nl = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
+im_modify_g_nl = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
+im_modify_b_nl = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
+
+# Fill each channel with respective modifications
+im_modify_r[:,:,0] = phase_rr_modi + arr_r_modified
+im_modify_g[:,:,1]= phase_gr_modi+ arr_g_modified
+im_modify_b[:,:,2] = phase_br_modi + arr_b_modified
+
+im_modify_r_nl[:,:,0] = phase_rr_modi 
+im_modify_g_nl[:,:,1]= phase_gr_modi
+im_modify_b_nl[:,:,2] = phase_br_modi
 # Create a new array for the new image with the same shape as the original
 im_modify_c = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
-im_modify_c[:,:,0] = phase_rr_modi_mod+arr_r_modified
-im_modify_c[:,:,1] = phase_gr_modi_mod+arr_g_modified
-im_modify_c[:,:,2] = phase_br_modi_mod+arr_b_modified
+im_modify_c[:,:,0] = phase_rr_modi+arr_r_modified
+im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
+im_modify_c[:,:,2] = phase_br_modi+arr_b_modified
 
+im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+im_modify_noL[:,:,0] = phase_rr_modi
+im_modify_noL[:,:,1] = phase_gr_modi
+im_modify_noL[:,:,2] = phase_br_modi
 def crop(im_modify,name):
     y_offset=center_h-1080//2
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_GS_{iterations}_l_C_{name}.png")
-# R=crop(im_modify_r, "r")
-# G=crop(im_modify_g, "g")
-# B=crop(im_modify_b, "b")
-C=crop(im_modify_c, "c")
+    im_modi.save(f"{filename}_{iterations}_C_{name}.png")
+# R=crop(im_modify_r, "L")
+# R_noL=crop(im_modify_r_nl, "noL")
+# G=crop(im_modify_g, "L")
+# G_noL=crop(im_modify_g_nl, "noL")
+B=crop(im_modify_b, "L")
+B_noL=crop(im_modify_b_nl, "noL")
+# C=crop(im_modify_c, "L")
+# C_noL=crop(im_modify_noL, "nL")

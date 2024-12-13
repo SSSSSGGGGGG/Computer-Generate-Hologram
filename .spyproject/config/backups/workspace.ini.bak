@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['Binarize\\Bi_GS_rescale_cor.py', 'Binarize\\Combine_holos_Lens.py']
+recent_files = ['FFT of imgs\\GS\\FFT_GS_rescale_cor.py', 'FFT of imgs\\GS\\Combine_holos_Lens.py']
 
 [main]
 version = 0.2.0

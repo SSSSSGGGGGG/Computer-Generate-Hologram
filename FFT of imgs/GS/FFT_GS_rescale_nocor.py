@@ -194,8 +194,8 @@ im_modify_b[:,:,2] = phase_br_modi + arr_b_modified
 # im_modify_b_norm = (im_modify_b - np.min(im_modify_b)) / (np.max(im_modify_b) - np.min(im_modify_b))
 
 # Save each modified channel with color mapping
-plt.imsave("im_modify_r.png", phase_rr_modi, cmap="Reds")
-plt.imsave("im_modify_b.png", phase_br_modi, cmap="Blues")
+# plt.imsave("im_modify_r.png", phase_rr_modi, cmap="Reds")
+# plt.imsave("im_modify_b.png", phase_br_modi, cmap="Blues")
 im_modify_c = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_modify_c[:,:,0] = phase_rr_modi+arr_r_modified
 im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
