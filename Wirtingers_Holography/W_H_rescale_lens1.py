@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="flowers_hr"
+filename="flowers_z"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -69,7 +69,7 @@ im_re = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_re[:,:,0]=fftshift(scaled_red)
 im_re[:,:,1]=fftshift(im[:,:,1])
 im_re[:,:,2]=fftshift(scaled_blue)
-power=1
+power=8
 iterations=10 #!!!!!!
 # use W gradient to improve phase
 def wirtinger_phase_improve(intensity,iterations,lr,verbose=False):
@@ -79,14 +79,14 @@ def wirtinger_phase_improve(intensity,iterations,lr,verbose=False):
     intensity_b=intensity[:,:,2]
     size=intensity_r.shape
     # generate ramdom magnitude and phase
-    reconstruted_field_r=intensity_r**2*np.exp(1j*np.random.uniform(0,2*np.pi,size))
-    reconstruted_field_g=intensity_g**2*np.exp(1j*np.random.uniform(0,2*np.pi,size))
-    reconstruted_field_b=intensity_b**2*np.exp(1j*np.random.uniform(0,2*np.pi,size))    
+    reconstruted_field_r=intensity_r**power*np.exp(1j*np.random.uniform(0,2*np.pi,size))
+    reconstruted_field_g=intensity_g**power*np.exp(1j*np.random.uniform(0,2*np.pi,size))
+    reconstruted_field_b=intensity_b**power*np.exp(1j*np.random.uniform(0,2*np.pi,size))    
     for it in range (iterations):
         # calculate intensity of the mimiced
-        current_in_r=np.abs(reconstruted_field_r)**power
-        current_in_g=np.abs(reconstruted_field_g)**power
-        current_in_b=np.abs(reconstruted_field_b)**power
+        current_in_r=np.abs(reconstruted_field_r)# power was here
+        current_in_g=np.abs(reconstruted_field_g)
+        current_in_b=np.abs(reconstruted_field_b)
         # define a loss function: mean square error
         loss = (np.mean((current_in_r - intensity_r)**2) +np.mean((current_in_g - intensity_g)**2) +np.mean((current_in_b - intensity_b)**2))
 
@@ -114,6 +114,7 @@ phase_in_r=np.angle(measurd_in_FT_r)
 
 final_field_r,final_field_g,final_field_b=wirtinger_phase_improve(measurd_in, iterations, 0.01)
 final_field_FT_r=fftshift(fft2(final_field_r))
+mag_final_field_FT_r=np.abs(final_field_r)
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(final_field_FT_r)
 phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)

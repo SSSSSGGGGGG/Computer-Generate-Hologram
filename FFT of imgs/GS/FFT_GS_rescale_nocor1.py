@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="flowers_hr"
+filename="flowers_z"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -85,7 +85,7 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 iterations=10
-power=8
+power=1
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
