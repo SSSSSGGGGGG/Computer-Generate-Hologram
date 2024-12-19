@@ -10,7 +10,9 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
 import cv2
+import time
 
+start_t=time.time()
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
 filename="flowers_z"
 im=plt.imread(f"{filename}.png")
@@ -60,13 +62,13 @@ im_manipulated[:,:,2]=scaled_blue#scaled_blue
 # # plt.colorbar()
 # plt.title("RGB")
 # plt.show()
-
+power2=3
 #R
-im_shift_r=fftshift(scaled_red)
+im_shift_r=fftshift(scaled_red**power2)
 #G
-im_shift_g=fftshift(im[:,:,1])
+im_shift_g=fftshift(im[:,:,1]**power2)
 #B
-im_shift_b=fftshift(scaled_blue)
+im_shift_b=fftshift(scaled_blue**power2)
 
 # random
 rand=np.random.uniform(0, 1, (height, width))
@@ -85,7 +87,7 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 iterations=10
-power=1
+power=4
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -102,41 +104,6 @@ for i in range(iterations):
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
 
-# plt.figure()
-# plt.imshow(np.angle(current_field_r),cmap="Reds")
-# plt.title("R")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(current_field_r),cmap="Reds")
-# plt.title("R")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(np.angle(current_field_g),cmap="Greens")
-# plt.title("G")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(current_field_g),cmap="Greens")
-# plt.title("G")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(np.angle(current_field_b),cmap="Blues")
-# plt.title("B")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(current_field_b),cmap="Blues")
-# plt.title("B")
-# plt.colorbar()
-# plt.show()
 
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
@@ -207,12 +174,14 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_GS_{iterations}_l_NC_{power,name}.png")
+    im_modi.save(f"{filename}_GS_{iterations}_l_NC_p{power,name}_p2_{power2}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
-C=crop(im_modify_c, "c")
+C=crop(im_modify_c, "mInI")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
 # blue_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_b.png")
+end_t=time.time()
+print(f"Time consuming {end_t-start_t}s, iteration {iterations}")
