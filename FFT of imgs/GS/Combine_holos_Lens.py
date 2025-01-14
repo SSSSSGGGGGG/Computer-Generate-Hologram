@@ -48,8 +48,8 @@ rgb_image[:, :, 2] = arr_b_modified
 arr_r_im=Image.fromarray(rgb_image)
 # arr_r_im.save(f"Lens_rgb{f}.png")
 
-im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS/lotus_r_FH_1_C_noL.png")
-im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS/lotus_r_FH180_1_C_noL.png")
+im_rh=plt.imread("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS/lotus_FH_0_1_C_nL.png")
+im_gh=plt.imread("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS/lotus_V_1_C_nL.png")
 
 im_rh_array = np.array(im_rh)*255
 im_gh_array = np.array(im_gh)*255
@@ -67,7 +67,7 @@ im_new_array[:,:,0] = im_rh_array[:,:,0]+im_gh_array[:,:,0]#+arr_r_modified
 im_new_array = im_new_array.astype(np.uint8)
 
 im_new = Image.fromarray(im_new_array)
-im_new.save('Cb_lotus_c_rr_H0180_.png')
+im_new.save('Cb_lotus_c_w_H0V0_.png')
 # im_new.show()
 # # Display results
 # plt.figure()

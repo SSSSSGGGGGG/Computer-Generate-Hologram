@@ -11,8 +11,8 @@ from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
 import cv2
 
-os.chdir("C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT of imgs/GS")
-filename="3D_dear_fit_sh"
+os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS")
+filename="flowers_z"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -82,7 +82,7 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 
-iterations=1
+iterations=10
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -179,12 +179,12 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_{iterations}_C_{name}.png")
+    im_modi.save(f"{filename}_{iterations}_c_{name}.png")
 # R=crop(im_modify_r, "L")
-R_noL=crop(im_modify_r_nl, "noL")
+# R_noL=crop(im_modify_r_nl, "noL")
 # G=crop(im_modify_g, "L")
 # G_noL=crop(im_modify_g_nl, "noL")
 # B=crop(im_modify_b, "L")
 # B_noL=crop(im_modify_b_nl, "noL")
-# C=crop(im_modify_c, "L")
+C=crop(im_modify_c, "L")
 # C_noL=crop(im_modify_noL, "nL")

@@ -12,7 +12,7 @@ import os
 import cv2
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT of imgs/GS")
-filename="lemon_sh_H"
+filename="flowers_z"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
