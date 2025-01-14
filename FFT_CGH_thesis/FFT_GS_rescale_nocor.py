@@ -10,6 +10,9 @@ import matplotlib.pyplot as plt
 from scipy.fft import fft2, fftshift,ifft2,ifftshift
 import os
 import cv2
+import time
+
+start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis")
 filename="flowers_z"
@@ -84,7 +87,7 @@ im_b_rand=exp_rand*im_shift_b
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=10
+iterations=1
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -189,13 +192,11 @@ im_modify_r[:,:,0] = phase_rr_modi + arr_r_modified
 im_modify_g[:,:,1]= phase_gr_modi + arr_g_modified
 im_modify_b[:,:,2] = phase_br_modi + arr_b_modified
 
-# # Normalize values to 0-1 range for proper colormap application
-# im_modify_r_norm = (im_modify_r - np.min(im_modify_r)) / (np.max(im_modify_r) - np.min(im_modify_r))
-# im_modify_b_norm = (im_modify_b - np.min(im_modify_b)) / (np.max(im_modify_b) - np.min(im_modify_b))
+im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+im_modify_noL[:,:,0] = phase_rr_modi
+im_modify_noL[:,:,1] = phase_gr_modi
+im_modify_noL[:,:,2] = phase_br_modi
 
-# Save each modified channel with color mapping
-# plt.imsave("im_modify_r.png", phase_rr_modi, cmap="Reds")
-# plt.imsave("im_modify_b.png", phase_br_modi, cmap="Blues")
 im_modify_c = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_modify_c[:,:,0] = phase_rr_modi+arr_r_modified
 im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
@@ -206,12 +207,15 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_GS_{iterations}_l_NC_{name}.png")
+    im_modi.save(f"{filename}_GS_{iterations}_{name}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
-C=crop(im_modify_c, "c")
+# C=crop(im_modify_c, "c")
+C_noL=crop(im_modify_noL, "nL")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
 # blue_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_b.png")
+end_t=time.time()
+print(f"Time consuming {end_t-start_t}s, iteration {iterations}")

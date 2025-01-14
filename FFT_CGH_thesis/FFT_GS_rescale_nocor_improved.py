@@ -13,7 +13,7 @@ import cv2
 import time
 
 start_t=time.time()
-os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
+os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis")
 filename="flowers_z"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
@@ -62,13 +62,13 @@ im_manipulated[:,:,2]=scaled_blue#scaled_blue
 # # plt.colorbar()
 # plt.title("RGB")
 # plt.show()
-power2=3
+power1=2
 #R
-im_shift_r=fftshift(scaled_red**power2)
+im_shift_r=fftshift(scaled_red**power1)
 #G
-im_shift_g=fftshift(im[:,:,1]**power2)
+im_shift_g=fftshift(im[:,:,1]**power1)
 #B
-im_shift_b=fftshift(scaled_blue**power2)
+im_shift_b=fftshift(scaled_blue**power1)
 
 # random
 rand=np.random.uniform(0, 1, (height, width))
@@ -86,8 +86,8 @@ im_b_rand=exp_rand*im_shift_b
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=10
-power=4
+iterations=50
+power2=2
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -95,9 +95,9 @@ for i in range(iterations):
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
     
-    current_field_r_n =im_shift_r**power*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
-    current_field_g_n =im_shift_g**power*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
-    current_field_b_n =im_shift_b**power*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
+    current_field_r_n =im_shift_r**power2*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
+    current_field_g_n =im_shift_g**power2*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
+    current_field_b_n =im_shift_b**power2*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
@@ -157,13 +157,11 @@ im_modify_r[:,:,0] = phase_rr_modi + arr_r_modified
 im_modify_g[:,:,1]= phase_gr_modi + arr_g_modified
 im_modify_b[:,:,2] = phase_br_modi + arr_b_modified
 
-# # Normalize values to 0-1 range for proper colormap application
-# im_modify_r_norm = (im_modify_r - np.min(im_modify_r)) / (np.max(im_modify_r) - np.min(im_modify_r))
-# im_modify_b_norm = (im_modify_b - np.min(im_modify_b)) / (np.max(im_modify_b) - np.min(im_modify_b))
+im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
+im_modify_noL[:,:,0] = phase_rr_modi
+im_modify_noL[:,:,1] = phase_gr_modi
+im_modify_noL[:,:,2] = phase_br_modi
 
-# Save each modified channel with color mapping
-# plt.imsave("im_modify_r.png", phase_rr_modi, cmap="Reds")
-# plt.imsave("im_modify_b.png", phase_br_modi, cmap="Blues")
 im_modify_c = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_modify_c[:,:,0] = phase_rr_modi+arr_r_modified
 im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
@@ -174,11 +172,12 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_GS_{iterations}_l_NC_p{power,name}_p2_{power2}.png")
+    im_modi.save(f"{filename}_GS_{iterations,name}_input_{power1}_p2_{power2}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
-C=crop(im_modify_c, "mInI")
+# C=crop(im_modify_c, "mInI")
+C_noL=crop(im_modify_noL, "nL")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
