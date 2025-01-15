@@ -14,7 +14,7 @@ import time
 
 start_t=time.time()
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis")
-filename="flowers_z"
+filename="flowers_960"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -86,7 +86,7 @@ im_b_rand=exp_rand*im_shift_b
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=50
+iterations=10
 power2=2
 for i in range(iterations):
     
@@ -168,8 +168,8 @@ im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
 im_modify_c[:,:,2] = phase_br_modi+arr_b_modified
 
 def crop(im_modify,name):
-    y_offset=center_h-1080//2
-    im_cropped=im_modify[y_offset:y_offset+1080,:]
+    # y_offset=center_h-1080//2
+    im_cropped=im_modify#[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
     im_modi.save(f"{filename}_GS_{iterations,name}_input_{power1}_p2_{power2}.png")
