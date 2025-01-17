@@ -17,8 +17,8 @@ from skimage import  color
 # original_path1="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/lemon_in.png"
 original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960.png"
 
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_wh_(4, 'nL')_p3_2_input2.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_wh_(5, 'nL')_p3_2_input2.png"
+file_path1 = "C:/Users/Laboratorio/OneDrive/Documents/Microstar/Simulation of difference of CGHs/holograms/flowers_960_wh_(10, 'nL')_p3_1_input1.png"
+file_path2 = "C:/Users/Laboratorio/OneDrive/Documents/Microstar/Simulation of difference of CGHs/holograms/flowers_960_GS_10_nL.png"
 
 # Automatically retrieve image names
 holo1_name = os.path.basename(file_path1)
@@ -104,20 +104,20 @@ print(f"D1 { D1}, D2 {D2}")
 # plt.show()
 
 
-# plt.figure()
-# plt.title(f"{holo1_name} rgb")
-# plt.imshow(I1_rgb)
-# plt.axis("off")
-# plt.show()
-plt.imsave(f"{holo1_name}_rgb.png", I1_rgb/np.max(I1_rgb))
+plt.figure()
+plt.title(f"{holo1_name} rgb")
+plt.imshow(I1_rgb/np.max(I1_rgb))
+plt.axis("off")
+plt.show()
+# plt.imsave(f"{holo1_name}_rgb.png", I1_rgb/np.max(I1_rgb))
 
 
-# plt.figure()
-# plt.title(f"{holo2_name} rgb")
-# plt.imshow(I2_rgb)
-# plt.axis("off")
-# plt.show()
-plt.imsave(f"{holo2_name}_rgb.png", I2_rgb/np.max(I2_rgb))
+plt.figure()
+plt.title(f"{holo2_name} rgb")
+plt.imshow(I2_rgb/np.max(I2_rgb))
+plt.axis("off")
+plt.show()
+# plt.imsave(f"{holo2_name}_rgb.png", I2_rgb/np.max(I2_rgb))
 
 # plt.figure()
 # plt.title(f"{holo2_name} G")

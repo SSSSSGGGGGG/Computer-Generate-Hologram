@@ -13,8 +13,8 @@ import cv2
 import time
 
 start_t=time.time()
-os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis")
-filename="flowers_z"
+os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
+filename="flowers_tf"
 im=plt.imread(f"{filename}.png")
 height=im.shape[0]
 width=im.shape[1]
@@ -72,8 +72,8 @@ im_re[:,:,0]=fftshift(scaled_red)
 im_re[:,:,1]=fftshift(im[:,:,1])
 im_re[:,:,2]=fftshift(scaled_blue)
 power2=1
-power3=3
-iterations=1 #!!!!!!
+power3=2
+iterations=50 #!!!!!!
 # use W gradient to improve phase
 def wirtinger_phase_improve(intensity,iterations,lr):
     
@@ -105,37 +105,7 @@ def wirtinger_phase_improve(intensity,iterations,lr):
         grad_b=(current_in_b-intensity_b)*reconstruted_field_b/np.abs(reconstruted_field_b+1e-8)
         reconstruted_field_b-=lr*grad_b
         reconstruted_field_b=intensity_b**power3*np.exp(1j*np.angle(reconstruted_field_b))
-        # # define a loss function: mean square error
-        # loss = (np.mean((current_in_r - intensity_r)**2) +np.mean((current_in_g - intensity_g)**2) +np.mean((current_in_b - intensity_b)**2))
-
-        # h,w=intensity_r.shape
-        # # compute gradient, this is the gradient of loss respective to imaginary field
-        # grad_r = np.sqrt(np.abs(current_in_r - intensity_r)) * reconstruted_field_r / (np.abs(reconstruted_field_r) + 1e-8)
-        # for i in range(h):
-        #     for j in range(w):
-        #         if current_in_r[i, j] - intensity_r[i, j] > 0:
-        #             reconstruted_field_r[i, j] -= lr * grad_r[i, j]
-        #         else:
-        #             reconstruted_field_r[i, j] += lr * grad_r[i, j]
-        # reconstruted_field_r = intensity_r ** power2 * np.exp(1j * np.angle(reconstruted_field_r))
         
-        # grad_g = np.sqrt(np.abs(current_in_g - intensity_g)) * reconstruted_field_g / (np.abs(reconstruted_field_g) + 1e-8)
-        # for i in range(h):
-        #     for j in range(w):
-        #         if current_in_g[i, j] - intensity_g[i, j] > 0:
-        #             reconstruted_field_g[i, j] -= lr * grad_g[i, j]
-        #         else:
-        #             reconstruted_field_g[i, j] += lr * grad_g[i, j]
-        # reconstruted_field_g = intensity_g ** power2 * np.exp(1j * np.angle(reconstruted_field_g))
-        
-        # grad_b = np.sqrt(np.abs(current_in_b - intensity_b)) * reconstruted_field_b / (np.abs(reconstruted_field_b) + 1e-8)
-        # for i in range(h):
-        #     for j in range(w):
-        #         if current_in_b[i, j] - intensity_b[i, j] > 0:
-        #             reconstruted_field_b[i, j] -= lr * grad_b[i, j]
-        #         else:
-        #             reconstruted_field_b[i, j] += lr * grad_b[i, j]
-        # reconstruted_field_b = intensity_b ** power2 * np.exp(1j * np.angle(reconstruted_field_b))
 
     
     return reconstruted_field_r,reconstruted_field_g,reconstruted_field_b
@@ -227,7 +197,7 @@ def crop(im_modify,name):
 # G_noL=crop(im_modify_g_nl, "noL")
 # B=crop(im_modify_b, "L")
 # B_noL=crop(im_modify_b_nl, "noL")
-# C=crop(im_modify_c, "nL")
-C_noL=crop(im_modify_noL, "nL")
+C=crop(im_modify_c, "L")
+# C_noL=crop(im_modify_noL, "nL")
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s, iteration {iterations}")

@@ -12,13 +12,10 @@ import os
 import cv2
 import time
 
-
 start_t=time.time()
-
-os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis")
-filename="flowers_960"
+os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
+filename="flowers_tf"
 im=plt.imread(f"{filename}.png")
-
 height=im.shape[0]
 width=im.shape[1]
 
@@ -65,13 +62,13 @@ im_manipulated[:,:,2]=scaled_blue#scaled_blue
 # # plt.colorbar()
 # plt.title("RGB")
 # plt.show()
-
+power1=2
 #R
-im_shift_r=fftshift(scaled_red)
+im_shift_r=fftshift(scaled_red**power1)
 #G
-im_shift_g=fftshift(im[:,:,1])
+im_shift_g=fftshift(im[:,:,1]**power1)
 #B
-im_shift_b=fftshift(scaled_blue)
+im_shift_b=fftshift(scaled_blue**power1)
 
 # random
 rand=np.random.uniform(0, 1, (height, width))
@@ -90,6 +87,7 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 iterations=1
+power2=2
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -97,50 +95,15 @@ for i in range(iterations):
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
     
-    current_field_r_n =im_shift_r*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
-    current_field_g_n =im_shift_g*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
-    current_field_b_n =im_shift_b*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
+    current_field_r_n =im_shift_r**power2*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
+    current_field_g_n =im_shift_g**power2*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
+    current_field_b_n =im_shift_b**power2*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
 
-# plt.figure()
-# plt.imshow(np.angle(current_field_r),cmap="Reds")
-# plt.title("R")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(current_field_r),cmap="Reds")
-# plt.title("R")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(np.angle(current_field_g),cmap="Greens")
-# plt.title("G")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(current_field_g),cmap="Greens")
-# plt.title("G")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(np.angle(current_field_b),cmap="Blues")
-# plt.title("B")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(current_field_b),cmap="Blues")
-# plt.title("B")
-# plt.colorbar()
-# plt.show()
 
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
@@ -205,16 +168,16 @@ im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
 im_modify_c[:,:,2] = phase_br_modi+arr_b_modified
 
 def crop(im_modify,name):
-    # y_offset=center_h-1080//2
-    im_cropped=im_modify#[y_offset:y_offset+1080,:]
+    y_offset=center_h-1080//2
+    im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_GS_{iterations}_{name}.png")
+    im_modi.save(f"{filename}_GS_{iterations,name}_input_{power1}_p2_{power2}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
-# C=crop(im_modify_c, "c")
-C_noL=crop(im_modify_noL, "nL")
+C=crop(im_modify_c, "L")
+# C_noL=crop(im_modify_noL, "nL")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")

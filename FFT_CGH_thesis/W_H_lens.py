@@ -36,8 +36,8 @@ im_re[:,:,0]=fftshift(im[:,:,0])
 im_re[:,:,1]=fftshift(im[:,:,1])
 im_re[:,:,2]=fftshift(im[:,:,2])
 power2=1
-power3=2
-iterations=50 #!!!!!!
+power3=1
+iterations=10 #!!!!!!
 # use W gradient to improve phase
 def wirtinger_phase_improve(intensity,iterations,lr):
     
@@ -73,7 +73,7 @@ def wirtinger_phase_improve(intensity,iterations,lr):
 
     
     return reconstruted_field_r,reconstruted_field_g,reconstruted_field_b
-power1=2
+power1=1
 # measurd_in_r=np.abs(im_shift_r)**2
 measurd_in=im_re**power1
 measurd_in_FT_r=fftshift(fft2(im_shift_r))

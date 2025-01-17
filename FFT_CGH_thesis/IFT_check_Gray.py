@@ -17,9 +17,9 @@ from skimage import  color
 original_path1="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/lemon_in.png"
 original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960.png"
 
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_G_GS_50_nL.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_G_GS_(50, 'nL')_input_2_p2_3.png"
-file_path3 ="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_G_wh_(50, 'nL')_p3_3_input2.png"
+file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_G_GS_(10, 'nL')_input_2_p2_2.png"
+file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_G_GS_(25, 'nL')_input_2_p2_2.png"
+file_path3 ="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_G_GS_(50, 'nL')_input_2_p2_2.png"
 # Automatically retrieve image names
 holo1_name = os.path.basename(file_path1)
 holo2_name = os.path.basename(file_path2)
@@ -63,28 +63,28 @@ print(f"D1 { D1}, D2 {D2},D3 {D3}")
 
 
 plt.figure()
-plt.title(f"{holo2_name}")
-plt.imshow(im2_normalized_1, cmap="rainbow")
+plt.title(f"original")
+plt.imshow(im2_normalized,vmin=0, cmap="rainbow")
 plt.colorbar()
 plt.show()
 
 plt.figure()
 plt.title(f"{holo1_name}")
-plt.imshow(I1_normalized_1,cmap="rainbow")
+plt.imshow(I1_normalized,vmin=0,cmap="rainbow")
 plt.colorbar()
 plt.axis("off")
 plt.show()
 
 plt.figure()
 plt.title(f"{holo2_name}")
-plt.imshow(I2_normalized_1,cmap="rainbow")
+plt.imshow(I2_normalized,vmin=0,cmap="rainbow")
 plt.axis("off")
 plt.colorbar()
 plt.show()
 
 plt.figure()
 plt.title(f"{holo3_name}")
-plt.imshow(I3_normalized_1,cmap="rainbow")
+plt.imshow(I3_normalized,vmin=0,cmap="rainbow")
 plt.axis("off")
 plt.colorbar()
 plt.show()

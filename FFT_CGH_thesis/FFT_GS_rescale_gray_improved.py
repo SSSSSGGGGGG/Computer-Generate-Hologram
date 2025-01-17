@@ -89,8 +89,8 @@ im_b_rand=exp_rand*im_shift_b
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=50
-power2=3
+iterations=25
+power2=2
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane

@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['FFT_CGH_thesis\\FFT_GS_rescale_nocor.py', 'FFT_CGH_thesis\\IFT_check.py', 'FFT_CGH_thesis\\FFT_GS_rescale_nocor_improved.py', 'FFT_CGH_thesis\\W_H_rescale_lens_inUse.py']
+recent_files = ['FFT_CGH_thesis\\IFT_check_Gray.py', 'FFT_CGH_thesis\\IFT_check_RGB.py', 'FFT_CGH_thesis\\W_H_lens.py']
 
 [main]
 version = 0.2.0
