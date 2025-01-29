@@ -18,9 +18,9 @@ height=im.shape[0]
 width=im.shape[1]
 
 # Define wavelengths (in meters, for rescale)
-lambda_r = 0.680e-6  # Red wavelength
-lambda_g = 0.532e-6  # Green wavelength (reference)
-lambda_b = 0.461e-6  # Blue wavelength
+lambda_r = 0.662e-6  # Red wavelength
+lambda_g = 0.518e-6  # Green wavelength (reference)
+lambda_b = 0.449e-6    # Blue wavelength
 # Calculate scaling factors with respect to green
 scale_r =  lambda_r/lambda_g
 scale_b =  lambda_b/lambda_g
@@ -129,9 +129,9 @@ phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.55)
 # phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""
-lambda_r = 0.633e-6  # Red wavelength
-lambda_g = 0.532e-6  # Green wavelength (reference)
-lambda_b = 0.450e-6  
+lambda_r = 0.662e-6  # Red wavelength
+lambda_g = 0.518e-6  # Green wavelength (reference)
+lambda_b = 0.449e-6  
 arr_r=np.zeros((height, width))
 arr_g=np.zeros((height, width))
 arr_b=np.zeros((height, width))

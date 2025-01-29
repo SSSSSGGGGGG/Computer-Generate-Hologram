@@ -20,9 +20,9 @@ height=im.shape[0]
 width=im.shape[1]
 
 # Define wavelengths (in meters, for rescale)
-lambda_r = 0.680e-6  # Red wavelength
-lambda_g = 0.532e-6  # Green wavelength (reference)
-lambda_b = 0.461e-6  # Blue wavelength
+lambda_r = 0.662e-6  # Red wavelength
+lambda_g = 0.518e-6  # Green wavelength (reference)
+lambda_b = 0.449e-6   # Blue wavelength
 # Calculate scaling factors with respect to green
 scale_r =  lambda_r/lambda_g
 scale_b =  lambda_b/lambda_g
@@ -50,10 +50,10 @@ cropped_blue = im[:, :, 2][y_offset_b:y_offset_b + h_b, x_offset_b:x_offset_b + 
 scaled_red = cv2.resize(padded_red, (width, height), interpolation=cv2.INTER_LINEAR)
 scaled_blue = cv2.resize(cropped_blue, (width, height), interpolation=cv2.INTER_LINEAR)
 
-im_manipulated=np.zeros((height,width,3))
-im_manipulated[:,:,0]=scaled_red
-im_manipulated[:,:,1]=im[:,:,1]
-im_manipulated[:,:,2]=scaled_blue
+# im_manipulated=np.zeros((height,width,3))
+# im_manipulated[:,:,0]=scaled_red
+# im_manipulated[:,:,1]=im[:,:,1]
+# im_manipulated[:,:,2]=scaled_blue
 # plt.imsave(f"scaled {filename}.png", im_manipulated)
 # plt.figure()
 # plt.imshow(im_manipulated)
@@ -133,9 +133,9 @@ phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.55)
 # phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""
-lambda_r = 0.633e-6  # Red wavelength
-lambda_g = 0.532e-6  # Green wavelength (reference)
-lambda_b = 0.450e-6  
+lambda_r = 0.662e-6  # Red wavelength
+lambda_g = 0.518e-6  # Green wavelength (reference)
+lambda_b = 0.449e-6   
 arr_r=np.zeros((height, width))
 arr_g=np.zeros((height, width))
 arr_b=np.zeros((height, width))

@@ -16,7 +16,7 @@ import time
 start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis")
-filename="flowers_960"
+filename="RGB_1024"  #flowers_960 RGB_1024
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -27,6 +27,40 @@ lambda_r = 0.680e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
 lambda_b = 0.461e-6  # Blue wavelength
 
+l=250#♦250
+c_w,c_h=width//2,height//2
+# lh,lw=height-2*l,width-2*l
+# # #R
+# im_shift_r=fftshift(im[:,:,0])
+# #G
+# im_shift_g=fftshift(im[:,:,1])
+# #B
+# im_shift_b=fftshift(im[:,:,2])
+
+# # Random phase generation
+# rand = np.random.uniform(0, 1, (height - 2 * l, width - 2 * l))
+# rand_2pi = 2 * np.pi * rand  # Full phase range [0, 2π]
+# exp_rand = np.exp(1j * rand_2pi)  # Complex exponential
+
+# # Initialize complex-valued arrays
+# im_n_r = np.zeros_like(im[:, :, 0], dtype=complex)
+# im_n_g = np.zeros_like(im[:, :, 1], dtype=complex)
+# im_n_b = np.zeros_like(im[:, :, 2], dtype=complex)
+
+# # Combine random phase with intensity for each channel
+# im_r_rand = exp_rand * np.sqrt(im[:, :, 0][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+# im_n_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_r_rand
+
+# im_g_rand = exp_rand * np.sqrt(im[:, :, 1][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+# im_n_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_g_rand
+
+# im_b_rand = exp_rand * np.sqrt(im[:, :, 2][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+# im_n_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_b_rand
+
+# # Fourier Transform for each channel
+# current_field_r = fftshift(fft2(fftshift(im_n_r)))  # Red channel
+# current_field_g = fftshift(fft2(fftshift(im_n_g)))  # Green channel
+# current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 
 #R
 im_shift_r=fftshift(im[:,:,0])
@@ -35,6 +69,7 @@ im_shift_g=fftshift(im[:,:,1])
 #B
 im_shift_b=fftshift(im[:,:,2])
 
+
 # random
 rand=np.random.uniform(0, 1, (height, width))
 rand_2pi=np.pi*rand
@@ -42,27 +77,59 @@ rand_ma=np.max(rand_2pi)
 rand_mi=np.min(rand_2pi)
 exp_rand=np.exp(1j*rand_2pi)
 #R
-im_r_rand=exp_rand*im_shift_r
+im_r_rand=exp_rand*np.sqrt(im_shift_r)
 
-im_g_rand=exp_rand*im_shift_g
+im_g_rand=exp_rand*np.sqrt(im_shift_g)
 
-im_b_rand=exp_rand*im_shift_b
+im_b_rand=exp_rand*np.sqrt(im_shift_b)
 
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=20
+iterations=1
+factor=1
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
     current_field_r_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
+    # plt.figure()
+    # plt.imshow(abs(current_field_b_i)**2/(np.max(factor*abs(current_field_b_i)**2)),cmap="hot")
+    # plt.colorbar()
+    # plt.show()
+    # plt.figure()
+    # plt.hist(abs(current_field_b_i).flatten(), bins=30, color='red', alpha=0.5, label='Red')
+    # plt.axvline(np.average(abs(current_field_b_i)), color='red', linestyle='dashed', linewidth=2, label=f'Mean R') 
+    # # Add labels, legend, and title
+    # plt.xlabel('Pixel Intensity')
+    # plt.ylabel('Frequency')
+    # plt.legend()
     
-    current_field_r_n =im_shift_r*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
-    current_field_g_n =im_shift_g*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
-    current_field_b_n =im_shift_b*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
+    current_field_r_i_t =np.sqrt(abs(current_field_r_i)**2/np.max(abs(current_field_r_i)**2)) *np.exp(1j * np.angle(current_field_r_i))
+    current_field_g_i_t =np.sqrt(abs(current_field_g_i)**2/np.max(abs(current_field_g_i)**2)) *np.exp(1j * np.angle(current_field_g_i))
+    current_field_b_i_t =np.sqrt(abs(current_field_b_i)**2/np.max(abs(current_field_b_i)**2)) *np.exp(1j * np.angle(current_field_b_i))
     
+    current_field_r_n =np.sqrt(im_shift_r)*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
+    current_field_g_n =np.sqrt(im_shift_g)*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
+    current_field_b_n =np.sqrt(im_shift_b)*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
+    
+    current_field_r_n[:,c_w-l:c_w+l]=current_field_r_i_t[:,c_w-l:c_w+l]
+    current_field_g_n[:,c_w-l:c_w+l]=current_field_g_i_t[:,c_w-l:c_w+l]
+    current_field_b_n[:,c_w-l:c_w+l]=current_field_b_i_t[:,c_w-l:c_w+l]
+    
+    current_field_r_n[c_h-l:c_h+l,0:c_w-l]=current_field_r_i_t[c_h-l:c_h+l,0:c_w-l]
+    current_field_g_n[c_h-l:c_h+l,0:c_w-l]=current_field_g_i_t[c_h-l:c_h+l,0:c_w-l]
+    current_field_b_n[c_h-l:c_h+l,0:c_w-l]=current_field_b_i_t[c_h-l:c_h+l,0:c_w-l]
+    
+    current_field_r_n[c_h-l:c_h+l,c_w+l:width]=current_field_r_i_t[c_h-l:c_h+l,c_w+l:width]
+    current_field_g_n[c_h-l:c_h+l,c_w+l:width]=current_field_g_i_t[c_h-l:c_h+l,c_w+l:width]
+    current_field_b_n[c_h-l:c_h+l,c_w+l:width]=current_field_b_i_t[c_h-l:c_h+l,c_w+l:width]
+    
+    # plt.figure()
+    # plt.imshow(abs(current_field_b_n),cmap="hot")
+    # plt.colorbar()
+    # plt.show()
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
     current_field_g = fftshift(fft2(current_field_g_n ))
@@ -141,7 +208,7 @@ def crop(im_modify,name):
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
 # C=crop(im_modify_c, "c")
-C_noL=crop(im_modify_noL, "nL")
+C_noL=crop(im_modify_noL, f"{factor},nl,s")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")

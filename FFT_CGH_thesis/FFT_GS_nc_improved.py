@@ -24,7 +24,7 @@ lambda_r = 0.680e-6  # Red wavelength
 lambda_g = 0.532e-6  # Green wavelength (reference)
 lambda_b = 0.461e-6  # Blue wavelength
 
-power1=1
+power1=1/2
 #R
 im_shift_r=fftshift(im[:,:,0]**power1)
 #G
@@ -39,17 +39,17 @@ rand_ma=np.max(rand_2pi)
 rand_mi=np.min(rand_2pi)
 exp_rand=np.exp(1j*rand_2pi)
 #R
-im_r_rand=exp_rand*im_shift_r
+im_r_rand=exp_rand*np.sqrt(im_shift_r)
 
-im_g_rand=exp_rand*im_shift_g
+im_g_rand=exp_rand*np.sqrt(im_shift_g)
 
-im_b_rand=exp_rand*im_shift_b
+im_b_rand=exp_rand*np.sqrt(im_shift_b)
 
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=50
-power2=2
+iterations=1
+power2=1/2
 for i in range(iterations):
     
     # Inverse Fourier Transform to initial plane
@@ -57,9 +57,9 @@ for i in range(iterations):
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
     
-    current_field_r_n =im_shift_r**power2*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
-    current_field_g_n =im_shift_g**power2*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
-    current_field_b_n =im_shift_b**power2*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
+    current_field_r_n =np.sqrt(im_shift_r)**power2*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
+    current_field_g_n =np.sqrt(im_shift_g)**power2*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
+    current_field_b_n =np.sqrt(im_shift_b)**power2*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
