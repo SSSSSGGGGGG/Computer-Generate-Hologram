@@ -15,10 +15,12 @@ from scipy.interpolate import interp1d
 from skimage import  color
 # File paths
 # original_path1="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/lemon_in.png"
-original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960.png"
+original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf.png"
 
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_GS_25_1,nl.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/flowers_960_GS_1_1,nl.png"
+file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_0,n2_10_1,nl,p.png"
+file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_5,n2_5_1,nl,p.png"
+# file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/RGB_1024_GS_25x2_1,nl,s.png"
+
 
 # Automatically retrieve image names
 holo1_name = os.path.basename(file_path1)
@@ -27,6 +29,8 @@ holo2_name = os.path.basename(file_path2)
 holo1 = plt.imread(file_path1)
 holo2 = plt.imread(file_path2)
 
+height=holo1.shape[0]
+width=holo1.shape[1]
 
 holo1_R_angle=holo1[:,:,0]*2*np.pi
 holo2_R_angle=holo2[:,:,0]*2*np.pi
@@ -51,13 +55,15 @@ original2_r=original2[:,:,0]/np.sum(original2[:,:,0])
 original2_g=original2[:,:,1]/np.sum(original2[:,:,1])
 original2_b=original2[:,:,2]/np.sum(original2[:,:,2])
 
-factor=0.4#1#0.4#0.7#0.025
+factor=0.8#0.1#1#0.4#0.7#0.025
 original2_nor=plt.imread(original_path2)
 original2_nor_r=original2_r/np.max(original2_r*factor)
 original2_nor_g=original2_g/np.max(original2_g*factor)
 original2_nor_b=original2_b/np.max(original2_b*factor)
 
-
+l=391
+c_w,c_h=width//2,height//2
+lh,lw=height-2*l,width-2*l
 
 I1_r=np.abs(Reconstruction_holo1_r)**2
 I1_r_normalized = I1_r / np.sum(I1_r)
@@ -70,10 +76,19 @@ I1_rgb=np.zeros_like(holo1)
 I1_rgb[:, :, 0] = I1_r_normalized/(np.max(I1_r_normalized)*factor)
 I1_rgb[:, :, 1] = I1_g_normalized/(np.max(I1_g_normalized)*factor)
 I1_rgb[:, :, 2] = I1_b_normalized/(np.max(I1_b_normalized)*factor)
-
-D1_r=np.sqrt(np.sum((original2_r-I1_r_normalized)**2))
-D1_g=np.sqrt(np.sum((original2_g-I1_g_normalized)**2))
-D1_b=np.sqrt(np.sum((original2_b-I1_b_normalized)**2))
+#SNR
+D1_r_snr=np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I1_r)-np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
+D1_g_snr=np.sum(I1_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I1_g)-np.sum(I1_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
+D1_b_snr=np.sum(I1_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I1_b)-np.sum(I1_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
+D1_snr=(D1_r_snr+D1_g_snr+D1_b_snr)/3
+# noise
+# D1_r=(np.sum(I1_r)-np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I1_r)
+# D1_g=(np.sum(I1_g)-np.sum(I1_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I1_g)
+# D1_b=(np.sum(I1_b)-np.sum(I1_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I1_b)
+# Diff
+D1_r=np.sqrt(np.sum((original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
+D1_g=np.sqrt(np.sum((original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
+D1_b=np.sqrt(np.sum((original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
 D1=(D1_r+D1_g+D1_b)/3
 
 print(f"For I2 ")
@@ -95,15 +110,25 @@ I2_rgb[:, :, 1] = I2_g_normalized/(np.max(I2_g_normalized)*factor)
 I2_rgb[:, :, 2] = I2_b_normalized/(np.max(I2_b_normalized)*factor)
 # print(f"max R {np.max(I2_rgb[:, :, 0])}, max G {np.max(I2_rgb[:, :, 1])}, max B{np.max(I2_rgb[:, :, 2])}")
 # print(f"max Rnorm {np.max(I2_r_normalized)}, max Gnorm {np.max(I2_g_normalized)}, max Bnorm{np.max(I2_b_normalized)}")
-print(f"mean Rnorm {np.average(I2_r_normalized)}, mean Gnorm {np.average(I2_g_normalized)}, mean Bnorm{np.average(I2_b_normalized)}")
-# print(f"max Rnorm {np.max(I2_r)}, max Gnorm {np.max(I2_g)}, max Bnorm{np.max(I2_b)}")
-print(f"mean Rnorm {np.average(I2_r)}, mean Gnorm {np.average(I2_g)}, mean Bnorm{np.average(I2_b)}")
+# print(f"mean Rnorm {np.average(I2_r_normalized)}, mean Gnorm {np.average(I2_g_normalized)}, mean Bnorm{np.average(I2_b_normalized)}")
+# # print(f"max Rnorm {np.max(I2_r)}, max Gnorm {np.max(I2_g)}, max Bnorm{np.max(I2_b)}")
+# print(f"mean Rnorm {np.average(I2_r)}, mean Gnorm {np.average(I2_g)}, mean Bnorm{np.average(I2_b)}")
+#SNR
+D2_r_snr=np.sum(I2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I2_r)-np.sum(I2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
+D2_g_snr=np.sum(I2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I2_g)-np.sum(I2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
+D2_b_snr=np.sum(I2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I2_b)-np.sum(I2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
+D2_snr=(D2_r_snr+D2_g_snr+D2_b_snr)/3
+# noise
+# D2_r=(np.sum(I2_r)-np.sum(I2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I2_r)
+# D2_g=(np.sum(I2_g)-np.sum(I2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I2_g)
+# D2_b=(np.sum(I2_b)-np.sum(I2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I2_b)
 
-D2_r=np.sqrt(np.sum((original2_r-I2_r_normalized)**2))
-D2_g=np.sqrt(np.sum((original2_g-I2_g_normalized)**2))
-D2_b=np.sqrt(np.sum((original2_b-I2_b_normalized)**2))
+# Diff
+D2_r=np.sqrt(np.sum((original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
+D2_g=np.sqrt(np.sum((original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
+D2_b=np.sqrt(np.sum((original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
 D2=(D2_r+D2_g+D2_b)/3
-
+print(f"D1_snr { D1_snr}, D2_snr {D2_snr}")
 print(f"D1 { D1}, D2 {D2}")
 
 def hist(r,g,b,name):
@@ -139,8 +164,14 @@ def hist(r,g,b,name):
 
 # plt.figure()
 # plt.title(f"{holo1_name} no nor")
-# plt.imshow(np.clip(original2_nor, 0, 1))
-# plt.axis("off")
+# plt.imshow(np.clip(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1))
+# # plt.axis("off")
+# plt.show()
+
+# plt.figure()
+# plt.title(f"{holo1_name} no nor")
+# plt.imshow(np.clip(I1_r, 0, 1))
+# # plt.axis("off")
 # plt.show()
 # # plt.imsave(f"{holo1_name}_no nor f {factor}.png", np.clip(I2_rgb_o, 0, 1))
 
@@ -149,7 +180,7 @@ plt.title(f"{holo1_name}")
 plt.imshow(np.clip(I1_rgb, 0, 1)) #np.clip(I1_rgb, 0, 1)
 plt.axis("off")
 plt.show()
-# plt.imsave(f"{holo1_name} f {factor}_win.png", np.clip(I1_rgb, 0, 1))
+plt.imsave(f"{holo1_name} f {factor}_win.png", np.clip(I1_rgb, 0, 1))
 # I1_fin_hist=hist(np.clip(I1_rgb, 0, 1)[:,:,0],np.clip(I1_rgb, 0, 1)[:,:,1],np.clip(I1_rgb, 0, 1)[:,:,2],f"{holo1_name} f {factor}")
 
 
@@ -158,7 +189,7 @@ plt.title(f"{holo2_name}")
 plt.imshow(np.clip(I2_rgb, 0, 1))
 plt.axis("off")
 plt.show()
-# plt.imsave(f"{holo2_name} f {factor}_win.png", np.clip(I2_rgb, 0, 1))
+plt.imsave(f"{holo2_name} f {factor}_win.png", np.clip(I2_rgb, 0, 1))
 # I2_fin_hist=hist(np.clip(I2_rgb, 0, 1)[:,:,0],np.clip(I2_rgb, 0, 1)[:,:,1],np.clip(I2_rgb, 0, 1)[:,:,2],f"{holo2_name} f {factor}")
 
 # plt.figure()

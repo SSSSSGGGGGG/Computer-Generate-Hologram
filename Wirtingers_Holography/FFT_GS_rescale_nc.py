@@ -16,7 +16,7 @@ import time
 start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="flowers_tf" #flowers_tf  RGB 3circles_exp
+filename="whiteRing" #flowers_tf  RGB 3circles_exp
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -59,21 +59,26 @@ im_manipulated=np.zeros((height,width,3))
 im_manipulated[:,:,0]=scaled_red
 im_manipulated[:,:,1]=im[:,:,1]
 im_manipulated[:,:,2]=scaled_blue#scaled_blue
-# # plt.imsave(f"scaled {filename}.png", im_manipulated)
+plt.imsave(f"{filename} R re.png", im_manipulated[:,:,0],cmap="Reds")
+plt.imsave(f"{filename} G re.png", im_manipulated[:,:,1],cmap="Greens")
+plt.imsave(f"{filename} B re.png", im_manipulated[:,:,2],cmap="Blues")
 # plt.figure()
 # plt.imshow(im_manipulated)
 # # plt.colorbar()
 # plt.title("RGB")
 # plt.show()
-l=450
-c_w,c_h=width//2,height//2
-factor=1
 #R
-im_shift_r=fftshift(scaled_red)
+im_shift_r=fftshift(im[:,:,0])
 #G
 im_shift_g=fftshift(im[:,:,1])
 #B
-im_shift_b=fftshift(scaled_blue)
+im_shift_b=fftshift(im[:,:,2])
+# #R
+# im_shift_r=fftshift(scaled_red)
+# #G
+# im_shift_g=fftshift(im[:,:,1])
+# #B
+# im_shift_b=fftshift(scaled_blue)
 
 # random
 rand=np.random.uniform(0, 1, (height, width))
@@ -99,25 +104,9 @@ for i in range(iterations):
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
     
-    current_field_r_i_t =np.sqrt(abs(current_field_r_i)**2/np.max(abs(current_field_r_i)**2)) *np.exp(1j * np.angle(current_field_r_i))
-    current_field_g_i_t = np.sqrt(abs(current_field_g_i)**2/np.max(abs(current_field_g_i)**2)) *np.exp(1j * np.angle(current_field_g_i))
-    current_field_b_i_t =np.sqrt(abs(current_field_b_i)**2/np.max(abs(current_field_b_i)**2)) *np.exp(1j * np.angle(current_field_b_i))
-    
     current_field_r_n =np.sqrt(im_shift_r)*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
     current_field_g_n =np.sqrt(im_shift_g)*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
     current_field_b_n =np.sqrt(im_shift_b)*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
-    
-    current_field_r_n[:,c_w-l:c_w+l]=current_field_r_i_t[:,c_w-l:c_w+l]
-    current_field_g_n[:,c_w-l:c_w+l]=current_field_g_i_t[:,c_w-l:c_w+l]
-    current_field_b_n[:,c_w-l:c_w+l]=current_field_b_i_t[:,c_w-l:c_w+l]
-    
-    current_field_r_n[c_h-l:c_h+l,0:c_w-l]=current_field_r_i_t[c_h-l:c_h+l,0:c_w-l]
-    current_field_g_n[c_h-l:c_h+l,0:c_w-l]=current_field_g_i_t[c_h-l:c_h+l,0:c_w-l]
-    current_field_b_n[c_h-l:c_h+l,0:c_w-l]=current_field_b_i_t[c_h-l:c_h+l,0:c_w-l]
-    
-    current_field_r_n[c_h-l:c_h+l,c_w+l:width]=current_field_r_i_t[c_h-l:c_h+l,c_w+l:width]
-    current_field_g_n[c_h-l:c_h+l,c_w+l:width]=current_field_g_i_t[c_h-l:c_h+l,c_w+l:width]
-    current_field_b_n[c_h-l:c_h+l,c_w+l:width]=current_field_b_i_t[c_h-l:c_h+l,c_w+l:width]
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
@@ -174,9 +163,9 @@ im_modify_g = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_modify_b = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 
 # Fill each channel with respective modifications
-im_modify_r[:,:,0] = phase_rr_modi + arr_r_modified
-im_modify_g[:,:,1]= phase_gr_modi + arr_g_modified
-im_modify_b[:,:,2] = phase_br_modi + arr_b_modified
+im_modify_r[:,:,0] =arr_r_modified #phase_rr_modi# + arr_r_modified
+im_modify_g[:,:,1]=arr_g_modified #phase_gr_modi# + arr_g_modified
+im_modify_b[:,:,2] =arr_b_modified #phase_br_modi #+ arr_b_modified
 
 im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
 im_modify_noL[:,:,0] = phase_rr_modi
@@ -194,14 +183,16 @@ def crop(im_modify,name):
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
     im_modi.save(f"{filename}_GS_{iterations}_{name}.png")
-# R=crop(im_modify_r, "r")
-# G=crop(im_modify_g, "g")
-# B=crop(im_modify_b, "b")
+# R=crop(im_modify_r, "lensr")
+# G=crop(im_modify_g, "lensg")
+# B=crop(im_modify_b, "lensb")
 C=crop(im_modify_c, "L")
-# C_noL=crop(im_modify_noL, "nL")
+# C_noL=crop(im_modify_noL, "re_nL")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
 # blue_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_b.png")
+
+
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s, iteration {iterations}")
