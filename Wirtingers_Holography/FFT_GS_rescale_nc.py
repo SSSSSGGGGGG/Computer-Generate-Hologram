@@ -49,8 +49,8 @@ padded_red[y_offset_r:y_offset_r + height, x_offset_r:x_offset_r + width] = im[:
 cropped_blue=np.zeros((h_b, w_b))
 cropped_blue = im[:, :, 2][y_offset_b:y_offset_b + h_b, x_offset_b:x_offset_b + w_b]
 t=1
-padded_B = np.zeros((int(t*h_r), int(t*w_r)))
-padded_B[y_offset_r:y_offset_r + height, x_offset_r:x_offset_r + width] = im[:, :, 2]
+# padded_B = np.zeros((int(t*h_r), int(t*w_r)))
+# padded_B[y_offset_r:y_offset_r + height, x_offset_r:x_offset_r + width] = im[:, :, 2]
 # Step 3: Resize both channels back to the original dimensions
 scaled_red = cv2.resize(padded_red, (width, height), interpolation=cv2.INTER_LINEAR)
 scaled_blue = cv2.resize(cropped_blue, (width, height), interpolation=cv2.INTER_LINEAR)
@@ -117,15 +117,15 @@ for i in range(iterations):
 
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
-phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
+phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.78)
 # phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
 optimized_phase_g = np.angle(current_field_g)
-phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2.63)
+phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2.56)
 # phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 optimized_phase_b = np.angle(current_field_b)
-phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.55)
+phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.5)
 # phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""
@@ -152,9 +152,9 @@ arr_g_mod=np.mod(arr_g,2)
 arr_b_mod=np.mod(arr_b,2)    
 
 """Map phase to gray level for diff laser"""
-arr_r_modified=arr_r_mod*(255/1.85)
-arr_g_modified=arr_g_mod*(255/2.63)
-arr_b_modified=arr_b_mod*(255/3.55)
+arr_r_modified=arr_r_mod*(255/1.78) #♥1.85
+arr_g_modified=arr_g_mod*(255/2.56) #2.63
+arr_b_modified=arr_b_mod*(255/3.5) #3.55
 # Create a new array for the new image with the same shape as the original
 
 # Assuming phase_rr_modi and arr_r_modified are already defined and have matching shapes

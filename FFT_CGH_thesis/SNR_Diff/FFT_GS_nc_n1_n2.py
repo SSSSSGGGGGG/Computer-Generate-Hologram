@@ -23,7 +23,7 @@ height=im.shape[0]
 width=im.shape[1]
 
 
-l=391 # from edge to center 250 for 3circles
+l=390 # from edge to center 250 for 3circles
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
 # #R
@@ -83,7 +83,8 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # current_field_g =fftshift(fft2(im_g_rand))
 # current_field_b =fftshift(fft2(im_b_rand))
 iterations1=5
-iterations2=5
+iterations2=10
+
 factor=1
 for j in range(iterations1):
     
