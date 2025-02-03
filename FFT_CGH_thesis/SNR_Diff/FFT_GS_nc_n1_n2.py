@@ -82,8 +82,8 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # current_field_r = fftshift(fft2(im_r_rand ))
 # current_field_g =fftshift(fft2(im_g_rand))
 # current_field_b =fftshift(fft2(im_b_rand))
-iterations1=5
-iterations2=10
+iterations1=0
+iterations2=18
 
 factor=1
 for j in range(iterations1):

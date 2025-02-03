@@ -17,8 +17,8 @@ from skimage import  color
 # original_path1="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/lemon_in.png"
 original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf.png"
 
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_5,n2_10_1,nl,p.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_5,n2_15_1,nl,p.png"
+file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_0,n2_15_1,nl,p.png"
+file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_0,n2_18_1,nl,p.png"
 # file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/RGB_1024_GS_25x2_1,nl,s.png"
 
 
