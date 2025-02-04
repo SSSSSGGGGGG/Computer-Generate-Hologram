@@ -16,7 +16,7 @@ import time
 start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="flowers_tf" #flowers_tf  RGB 3circles_exp
+filename="fl_one" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -59,13 +59,16 @@ im_manipulated=np.zeros((height,width,3))
 im_manipulated[:,:,0]=scaled_red
 im_manipulated[:,:,1]=im[:,:,1]
 im_manipulated[:,:,2]=scaled_blue#scaled_blue
-# # plt.imsave(f"scaled {filename}.png", im_manipulated)
 # plt.figure()
-# plt.imshow(im_manipulated)
-# # plt.colorbar()
-# plt.title("RGB")
+# plt.imshow(im_manipulated[:,:,0])
 # plt.show()
-l=600
+# plt.figure()
+# plt.imshow(im_manipulated[:,:,1])
+# plt.show()
+# plt.figure()
+# plt.imshow(im_manipulated[:,:,2])
+# plt.show()
+l=620#390
 c_w,c_h=width//2,height//2
 factor=1
 #R
@@ -91,8 +94,29 @@ im_b_rand=exp_rand*np.sqrt(im_shift_b)
 current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
-iterations=1
-for i in range(iterations):
+
+iterations1=40
+iterations2=0
+
+factor=1
+for j in range(iterations1):
+    
+    # Inverse Fourier Transform to initial plane
+    current_field_r_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
+    current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
+    current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
+    
+    
+    current_field_r_n =np.sqrt(im_shift_r)*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
+    current_field_g_n =np.sqrt(im_shift_g)*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
+    current_field_b_n =np.sqrt(im_shift_b)*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
+    
+    # Forward Fourier Transform to the target plane
+    current_field_r = fftshift(fft2(current_field_r_n ))
+    current_field_g = fftshift(fft2(current_field_g_n ))
+    current_field_b = fftshift(fft2(current_field_b_n ))
+    
+for i in range(iterations2):
     
     # Inverse Fourier Transform to initial plane
     current_field_r_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
@@ -106,37 +130,38 @@ for i in range(iterations):
     current_field_r_n =np.sqrt(im_shift_r)*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
     current_field_g_n =np.sqrt(im_shift_g)*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
     current_field_b_n =np.sqrt(im_shift_b)*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
-    
-    current_field_r_n[:,c_w-l:c_w+l]=current_field_r_i_t[:,c_w-l*scale_r:c_w+l*scale_r]
+    lr=690#int(l*scale_r)
+    lb=558#int(l*scale_b)
+    current_field_r_n[:,c_w-lr:c_w+lr]=current_field_r_i_t[:,c_w-lr:c_w+lr]
     current_field_g_n[:,c_w-l:c_w+l]=current_field_g_i_t[:,c_w-l:c_w+l]
-    current_field_b_n[:,c_w-l:c_w+l]=current_field_b_i_t[:,c_w-l*scale_b:c_w+l*scale_b]
+    current_field_b_n[:,c_w-lb:c_w+lb]=current_field_b_i_t[:,c_w-lb:c_w+lb]
     
-    current_field_r_n[c_h-l:c_h+l,0:c_w-l]=current_field_r_i_t[c_h-l*scale_r:c_h+l*scale_r,0:c_w-l*scale_r]
+    current_field_r_n[c_h-lr:c_h+lr,0:c_w-lr]=current_field_r_i_t[c_h-lr:c_h+lr,0:c_w-lr]
     current_field_g_n[c_h-l:c_h+l,0:c_w-l]=current_field_g_i_t[c_h-l:c_h+l,0:c_w-l]
-    current_field_b_n[c_h-l:c_h+l,0:c_w-l]=current_field_b_i_t[c_h-l*scale_b:c_h+l*scale_b,0:c_w-l*scale_b]
+    current_field_b_n[c_h-lb:c_h+lb,0:c_w-lb]=current_field_b_i_t[c_h-lb:c_h+lb,0:c_w-lb]
     
-    current_field_r_n[c_h-l:c_h+l,c_w+l:width]=current_field_r_i_t[c_h-l*scale_r:c_h+l*scale_r,c_w+l*scale_r:width]
+    current_field_r_n[c_h-lr:c_h+lr,c_w+lr:width]=current_field_r_i_t[c_h-lr:c_h+lr,c_w+lr:width]
     current_field_g_n[c_h-l:c_h+l,c_w+l:width]=current_field_g_i_t[c_h-l:c_h+l,c_w+l:width]
-    current_field_b_n[c_h-l:c_h+l,c_w+l:width]=current_field_b_i_t[c_h-l*scale_b:c_h+l*scale_b,c_w+l*scale_b:width]
+    current_field_b_n[c_h-lb:c_h+lb,c_w+lb:width]=current_field_b_i_t[c_h-lb:c_h+lb,c_w+lb:width]
     
     # Forward Fourier Transform to the target plane
     current_field_r = fftshift(fft2(current_field_r_n ))
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
 
-
+rdp,gdp,bdp=1.78,2.56,3.5#1.85,2.63,3.55 #1.78,2.56,3.5
 
 # Final optimized phase for display or application on SLM
 optimized_phase_r = np.angle(current_field_r)
-phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/1.85)
+phase_rr_modi=(optimized_phase_r/np.pi+1)*(255/rdp)
 # phase_rr_modi_mod=np.mod(phase_rr_modi,255)
 
 optimized_phase_g = np.angle(current_field_g)
-phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2.63)
+phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/gdp)
 # phase_gr_modi_mod=np.mod(phase_gr_modi,255)
 
 optimized_phase_b = np.angle(current_field_b)
-phase_br_modi=(optimized_phase_b/np.pi+1)*(255/3.55)
+phase_br_modi=(optimized_phase_b/np.pi+1)*(255/bdp)
 # phase_br_modi_mod=np.mod(phase_br_modi,255)
 
 """Lens"""
@@ -163,9 +188,9 @@ arr_g_mod=np.mod(arr_g,2)
 arr_b_mod=np.mod(arr_b,2)    
 
 """Map phase to gray level for diff laser"""
-arr_r_modified=arr_r_mod*(255/1.85)
-arr_g_modified=arr_g_mod*(255/2.63)
-arr_b_modified=arr_b_mod*(255/3.55)
+arr_r_modified=arr_r_mod*(255/rdp)#1.78)
+arr_g_modified=arr_g_mod*(255/gdp)#2.56)
+arr_b_modified=arr_b_mod*(255/bdp)#3.5)
 # Create a new array for the new image with the same shape as the original
 
 # Assuming phase_rr_modi and arr_r_modified are already defined and have matching shapes
@@ -193,7 +218,7 @@ def crop(im_modify,name):
     im_cropped=im_modify[y_offset:y_offset+1080,:]
     im_cropped = im_cropped.astype(np.uint8)
     im_modi = Image.fromarray(im_cropped)
-    im_modi.save(f"{filename}_GS_{iterations}_{name}.png")
+    im_modi.save(f"{filename}_GS_It1_{iterations1}_It2_{iterations2}_{name}.png")
 # R=crop(im_modify_r, "r")
 # G=crop(im_modify_g, "g")
 # B=crop(im_modify_b, "b")
@@ -204,4 +229,4 @@ C=crop(im_modify_c, "L")
 # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
 # blue_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_b.png")
 end_t=time.time()
-print(f"Time consuming {end_t-start_t}s, iteration {iterations}")
+print(f"Time consuming {end_t-start_t}s, iteration {iterations1+iterations2}")
