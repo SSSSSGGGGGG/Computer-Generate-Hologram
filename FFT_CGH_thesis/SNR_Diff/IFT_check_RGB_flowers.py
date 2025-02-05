@@ -15,10 +15,10 @@ from scipy.interpolate import interp1d
 from skimage import  color
 # File paths
 # original_path1="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/lemon_in.png"
-original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf.png"
+original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one.png"
 
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_0,n2_15_1,nl,p.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/flowers_tf_GS_n1_0,n2_18_1,nl,p.png"
+file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one_GS_n1_0,n2_10_p_2,nl.png"
+file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one_GS_n1_0,n2_20_p_2,nl.png"
 # file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/RGB_1024_GS_25x2_1,nl,s.png"
 
 
@@ -55,6 +55,32 @@ original2_r=original2[:,:,0]/np.sum(original2[:,:,0])
 original2_g=original2[:,:,1]/np.sum(original2[:,:,1])
 original2_b=original2[:,:,2]/np.sum(original2[:,:,2])
 
+def hist(r,g,b,name):
+    plt.figure()
+    
+    # Plot histograms for each channel
+    plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label="Red")
+    plt.hist(g.flatten(), bins=30, color='green', alpha=0.5, label="Green")
+    plt.hist(b.flatten(), bins=30, color='blue', alpha=0.5, label="Blue")
+    
+    # Add mean intensity markers
+    plt.axvline(np.average(r), color='red', linestyle='dashed', linewidth=2, label=f"Mean R={np.average(r):.10f}")
+    plt.axvline(np.average(g), color='green', linestyle='dashed', linewidth=2, label=f"Mean G={np.average(g):.10f}")
+    plt.axvline(np.average(b), color='blue', linestyle='dashed', linewidth=2, label=f"Mean B={np.average(b):.10f}")
+    
+    # plt.text(20, 20, f"Mean R={np.average(r)}", color='red')
+    # Add labels, legend, and title
+    plt.xlabel('Pixel Intensity')
+    plt.ylabel('Frequency')
+    plt.title(f"{name} RGB Histogram")
+    plt.legend()
+    
+    # Save the histogram plot
+    plt.savefig(f"{name}_histogram.png")  # Correct function to save the plot
+    
+    # Show the plot
+    # plt.show()
+# O_hist=hist(original2[:,:,0],original2[:,:,1],original2[:,:,2],f"Original")
 def changef(f):
     factor=f#0.1#1#0.4#0.7#0.025
     # original2_nor=plt.imread(original_path2)
@@ -62,7 +88,7 @@ def changef(f):
     # original2_nor_g=original2_g/np.max(original2_g*factor)
     # original2_nor_b=original2_b/np.max(original2_b*factor)
     
-    l=390
+    l=680#◘390
     c_w,c_h=width//2,height//2
     lh,lw=height-2*l,width-2*l
     
@@ -86,10 +112,19 @@ def changef(f):
     # D1_r=(np.sum(I1_r)-np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I1_r)
     # D1_g=(np.sum(I1_g)-np.sum(I1_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I1_g)
     # D1_b=(np.sum(I1_b)-np.sum(I1_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I1_b)
+    diff_r1=original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
+    diff_g1=original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
+    diff_b1=original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
+    
+    # plt.figure()
+    # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1))
+    # plt.axis("off")
+    # plt.show()
     # Diff
-    D1_r=np.sqrt(np.sum((original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
-    D1_g=np.sqrt(np.sum((original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
-    D1_b=np.sqrt(np.sum((original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
+    D1_r=np.sqrt(np.sum((diff_r1)**2))
+    D1_g=np.sqrt(np.sum((diff_g1)**2))
+    D1_b=np.sqrt(np.sum((diff_b1)**2))
     D1=(D1_r+D1_g+D1_b)/3
     
     print(f"For I2 ")
@@ -123,48 +158,36 @@ def changef(f):
     # D2_r=(np.sum(I2_r)-np.sum(I2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I2_r)
     # D2_g=(np.sum(I2_g)-np.sum(I2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I2_g)
     # D2_b=(np.sum(I2_b)-np.sum(I2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))/np.sum(I2_b)
-    
+    diff_r2=original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
+    diff_g2=original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
+    diff_b2=original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
     # Diff
-    D2_r=np.sqrt(np.sum((original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
-    D2_g=np.sqrt(np.sum((original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
-    D2_b=np.sqrt(np.sum((original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])**2))
+    D2_r=np.sqrt(np.sum((diff_r2)**2))
+    D2_g=np.sqrt(np.sum((diff_g2)**2))
+    D2_b=np.sqrt(np.sum((diff_b2)**2))
     D2=(D2_r+D2_g+D2_b)/3
     print(f"D1_snr { D1_snr}, D2_snr {D2_snr}")
     print(f"D1 { D1}, D2 {D2}")
     plt.imsave(f"{holo1_name} f {factor}_win.png", np.clip(I1_rgb, 0, 1))
     plt.imsave(f"{holo2_name} f {factor}_win.png", np.clip(I2_rgb, 0, 1))
-
-def hist(r,g,b,name):
-    plt.figure()
     
-    # Plot histograms for each channel
-    plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label='Red')
-    plt.hist(g.flatten(), bins=30, color='green', alpha=0.5, label='Green')
-    plt.hist(b.flatten(), bins=30, color='blue', alpha=0.5, label='Blue')
-    
-    # Add mean intensity markers
-    plt.axvline(np.average(r), color='red', linestyle='dashed', linewidth=2, label=f'Mean R')
-    plt.axvline(np.average(g), color='green', linestyle='dashed', linewidth=2, label=f'Mean G')
-    plt.axvline(np.average(b), color='blue', linestyle='dashed', linewidth=2, label=f'Mean B')
-    
-    # Add labels, legend, and title
-    plt.xlabel('Pixel Intensity')
-    plt.ylabel('Frequency')
-    plt.title(f"{name} RGB Histogram")
-    plt.legend()
-    
-    # Save the histogram plot
-    # plt.savefig(f"{name}_histogram.png")  # Correct function to save the plot
-    
-    # Show the plot
-    plt.show()
+    I1_diff_hist=hist(I1_rgb[:, :, 0],I1_rgb[:, :, 1],I1_rgb[:, :, 2],f"{holo1_name}")
+    I2_diff_hist=hist(I2_rgb[:, :, 0],I2_rgb[:, :, 1],I2_rgb[:, :, 2],f"{holo2_name}")
+    # I1_diff_hist=hist(diff_r1,diff_g1,diff_b1,f"{holo1_name} diff")
+    # I2_diff_hist=hist(diff_r2,diff_g2,diff_b2,f"{holo2_name} diff")
+    # print(f"R1:max {np.max(I1_rgb[:, :, 0])}-ave {np.max(I1_rgb[:, :, 0])-np.average(I1_rgb[:, :, 0])}")
+    # print(f"G1:max {np.max(I1_rgb[:, :, 1])}-ave {np.max(I1_rgb[:, :, 1])-np.average(I1_rgb[:, :, 1])}")
+    # print(f"B1:max {np.max(I1_rgb[:, :, 2])}-ave {np.max(I1_rgb[:, :, 2])-np.average(I1_rgb[:, :, 2])}")
+    # print(f"R2:max {np.max(I2_rgb[:, :, 0])}-ave {np.max(I2_rgb[:, :, 0])-np.average(I2_rgb[:, :, 0])}")
+    # print(f"G2:max {np.max(I2_rgb[:, :, 1])}-ave {np.max(I2_rgb[:, :, 1])-np.average(I2_rgb[:, :, 1])}")
+    # print(f"B2:max {np.max(I2_rgb[:, :, 2])}-ave {np.max(I2_rgb[:, :, 2])-np.average(I2_rgb[:, :, 2])}")
 # I1_hist=hist(I1_r_normalized,I1_g_normalized,I1_b_normalized,f"{holo1_name}")
 # I2_hist=hist(I2_r_normalized,I2_g_normalized,I2_b_normalized,f"{holo2_name}")
 # I2_hist=hist(original2_r,original2_g,original2_b,f"{holo2_name}")
 # I2_r_hist=hist(original2_nor_r,original2_nor_g,original2_nor_b,f"{holo2_name} I2_r")
 
 # f1=changef(0.8)
-f2=changef(0.05)
+# f2=changef(0.05)
 f3=changef(1)
 # plt.figure()
 # plt.title(f"{holo1_name} no nor")

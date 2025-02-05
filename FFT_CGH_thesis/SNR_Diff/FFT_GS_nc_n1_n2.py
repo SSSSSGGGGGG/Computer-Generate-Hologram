@@ -23,7 +23,7 @@ height=im.shape[0]
 width=im.shape[1]
 
 
-l=390 # from edge to center 250 for 3circles
+l=690 # from edge to center 250 for 3circles 390
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
 # #R
