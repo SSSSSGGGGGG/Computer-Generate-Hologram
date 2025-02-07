@@ -16,7 +16,7 @@ import time
 start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="fl_one" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
+filename="RGB_500" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]

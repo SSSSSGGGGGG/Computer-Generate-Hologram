@@ -26,7 +26,7 @@ width=im.shape[1]
 l=680 # from edge to center 250 for 3circles
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
-power1=2
+power1=4
 #R
 im_shift_r=fftshift(im[:,:,0]**power1)
 #G
@@ -84,8 +84,8 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # current_field_r = fftshift(fft2(im_r_rand ))
 # current_field_g =fftshift(fft2(im_g_rand))
 # current_field_b =fftshift(fft2(im_b_rand))
-iterations1=0
-iterations2=1
+iterations1=40
+iterations2=0
 factor=1
 for j in range(iterations1):
     
