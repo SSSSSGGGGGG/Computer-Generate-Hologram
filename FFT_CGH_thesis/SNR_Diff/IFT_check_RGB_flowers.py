@@ -15,10 +15,10 @@ from scipy.interpolate import interp1d
 from skimage import  color
 # File paths
 # original_path1="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/lemon_in.png"
-original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one.png"
+original_path2="C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff/fl_one_s.png"
 
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one_GS_n1_0,n2_10_p_3,nl.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one_GS_n1_0,n2_10_p_4,nl.png"
+file_path1 = "C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff/fl_one_s_GS_n1_1,n2_0_p_1,nl.png"
+file_path2 = "C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff/fl_one_s_GS_n1_1,n2_0_p_2,nl.png"
 # file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/RGB_1024_GS_25x2_1,nl,s.png"
 
 
@@ -54,24 +54,24 @@ original2=plt.imread(original_path2)
 original2_r=original2[:,:,0]/np.sum(original2[:,:,0])
 original2_g=original2[:,:,1]/np.sum(original2[:,:,1])
 original2_b=original2[:,:,2]/np.sum(original2[:,:,2])
-l=680
+l=0#680
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
-plt.figure()
-# plt.title(f"{holo1_name} no nor")
-plt.imshow(original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],cmap="Reds")
-plt.axis("off")
-plt.show()
-plt.figure()
-# plt.title(f"{holo1_name} no nor")
-plt.imshow(original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],cmap="Greens")
-plt.axis("off")
-plt.show()
-plt.figure()
-# plt.title(f"{holo1_name} no nor")
-plt.imshow(original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],cmap="Blues")
-plt.axis("off")
-plt.show()
+# plt.figure()
+# # plt.title(f"{holo1_name} no nor")
+# plt.imshow(original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],cmap="Reds")
+# plt.axis("off")
+# plt.show()
+# plt.figure()
+# # plt.title(f"{holo1_name} no nor")
+# plt.imshow(original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],cmap="Greens")
+# plt.axis("off")
+# plt.show()
+# plt.figure()
+# # plt.title(f"{holo1_name} no nor")
+# plt.imshow(original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],cmap="Blues")
+# plt.axis("off")
+# plt.show()
 
 def hist(r,g,b,name):
     plt.figure()
@@ -98,7 +98,7 @@ def hist(r,g,b,name):
     
     # Show the plot
     # plt.show()
-O_hist=hist(original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"flower Original")
+# O_hist=hist(original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"flower Original")
 def changef(f):
     factor=f#0.1#1#0.4#0.7#0.025
     # original2_nor=plt.imread(original_path2)
@@ -132,21 +132,21 @@ def changef(f):
     diff_g1=original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
     diff_b1=original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]-I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]
     
-    plt.figure()
-    # plt.title(f"{holo1_name} no nor")
-    plt.imshow(np.clip(I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Reds")
-    plt.axis("off")
-    plt.show()
-    plt.figure()
-    # plt.title(f"{holo1_name} no nor")
-    plt.imshow(np.clip(I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Greens")
-    plt.axis("off")
-    plt.show()
-    plt.figure()
-    # plt.title(f"{holo1_name} no nor")
-    plt.imshow(np.clip(I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Blues")
-    plt.axis("off")
-    plt.show()
+    # plt.figure()
+    # # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Reds")
+    # plt.axis("off")
+    # plt.show()
+    # plt.figure()
+    # # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Greens")
+    # plt.axis("off")
+    # plt.show()
+    # plt.figure()
+    # # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Blues")
+    # plt.axis("off")
+    # plt.show()
     # Diff
     D1_r=np.sqrt(np.sum((diff_r1)**2))
     D1_g=np.sqrt(np.sum((diff_g1)**2))
@@ -170,21 +170,21 @@ def changef(f):
     I2_rgb[:, :, 0] = I2_r_normalized/(np.max(I2_r_normalized)*factor)
     I2_rgb[:, :, 1] = I2_g_normalized/(np.max(I2_g_normalized)*factor)
     I2_rgb[:, :, 2] = I2_b_normalized/(np.max(I2_b_normalized)*factor)
-    plt.figure()
-    # plt.title(f"{holo1_name} no nor")
-    plt.imshow(np.clip(I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Reds")
-    plt.axis("off")
-    plt.show()
-    plt.figure()
-    # plt.title(f"{holo1_name} no nor")
-    plt.imshow(np.clip(I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Greens")
-    plt.axis("off")
-    plt.show()
-    plt.figure()
-    # plt.title(f"{holo1_name} no nor")
-    plt.imshow(np.clip(I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Blues")
-    plt.axis("off")
-    plt.show()
+    # plt.figure()
+    # # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Reds")
+    # plt.axis("off")
+    # plt.show()
+    # plt.figure()
+    # # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Greens")
+    # plt.axis("off")
+    # plt.show()
+    # plt.figure()
+    # # plt.title(f"{holo1_name} no nor")
+    # plt.imshow(np.clip(I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2], 0, 1),cmap="Blues")
+    # plt.axis("off")
+    # plt.show()
     #SNR
     D2_r_snr=np.sum(I2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I2_r)-np.sum(I2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
     D2_g_snr=np.sum(I2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I2_g)-np.sum(I2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
@@ -207,8 +207,8 @@ def changef(f):
     plt.imsave(f"{holo1_name} f {factor}_win.png", np.clip(I1_rgb, 0, 1))
     plt.imsave(f"{holo2_name} f {factor}_win.png", np.clip(I2_rgb, 0, 1))
     
-    I1_diff_hist=hist(I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo1_name}")
-    I2_diff_hist=hist(I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo2_name}")
+    # I1_diff_hist=hist(I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo1_name}")
+    # I2_diff_hist=hist(I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo2_name}")
     # I1_diff_hist=hist(diff_r1,diff_g1,diff_b1,f"{holo1_name} diff")
     # I2_diff_hist=hist(diff_r2,diff_g2,diff_b2,f"{holo2_name} diff")
     # print(f"R1:max {np.max(I1_rgb[:, :, 0])}-ave {np.max(I1_rgb[:, :, 0])-np.average(I1_rgb[:, :, 0])}")
@@ -219,7 +219,7 @@ def changef(f):
     # print(f"B2:max {np.max(I2_rgb[:, :, 2])}-ave {np.max(I2_rgb[:, :, 2])-np.average(I2_rgb[:, :, 2])}")
 
 # f1=changef(0.8)
-# f2=changef(0.05)
+f2=changef(0.05)
 f3=changef(1)
 # plt.figure()
 # plt.title(f"{holo1_name} no nor")

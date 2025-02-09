@@ -17,7 +17,7 @@ start_t=time.time()
 
 
 os.chdir("C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff")
-filename="flowers_tf"  #flowers_960 RGB_1024
+filename="fl_one_s"  #flowers_960 RGB_1024
 
 im=plt.imread(f"{filename}.png")
 
@@ -26,44 +26,11 @@ width=im.shape[1]
 
 
 
-l=390 # from edge to center 250 for 3circles
+l=680 # from edge to center 250 for 3circles
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
-power1=1
+power1=4
 
-#R
-im_shift_r=fftshift(im[:,:,0]**power1)
-#G
-im_shift_g=fftshift(im[:,:,1]**power1)
-#B
-im_shift_b=fftshift(im[:,:,2]**power1)
-
-# Random phase generation
-rand = np.random.uniform(0, 1, (height - 2 * l, width - 2 * l))
-rand_2pi = 2 * np.pi * rand  # Full phase range [0, 2π]
-exp_rand = np.exp(1j * rand_2pi)  # Complex exponential
-
-# Initialize complex-valued arrays
-im_n_r = np.zeros_like(im[:, :, 0], dtype=complex)
-im_n_g = np.zeros_like(im[:, :, 1], dtype=complex)
-im_n_b = np.zeros_like(im[:, :, 2], dtype=complex)
-
-# Combine random phase with intensity for each channel
-im_r_rand = exp_rand * np.sqrt(im[:, :, 0][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
-im_n_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_r_rand
-
-im_g_rand = exp_rand * np.sqrt(im[:, :, 1][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
-im_n_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_g_rand
-
-im_b_rand = exp_rand * np.sqrt(im[:, :, 2][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
-im_n_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_b_rand
-
-# Fourier Transform for each channel
-current_field_r = fftshift(fft2(fftshift(im_n_r)))  # Red channel
-current_field_g = fftshift(fft2(fftshift(im_n_g)))  # Green channel
-current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
-
-# power1=2
 # #R
 # im_shift_r=fftshift(im[:,:,0]**power1)
 # #G
@@ -71,28 +38,58 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # #B
 # im_shift_b=fftshift(im[:,:,2]**power1)
 
+# # Random phase generation
+# rand = np.random.uniform(0, 1, (height - 2 * l, width - 2 * l))
+# rand_2pi = 2 * np.pi * rand  # Full phase range [0, 2π]
+# exp_rand = np.exp(1j * rand_2pi)  # Complex exponential
 
-# # random
-# rand=np.random.uniform(0, 1, (height, width))
-# rand_2pi=np.pi*rand
-# rand_ma=np.max(rand_2pi)
-# rand_mi=np.min(rand_2pi)
-# exp_rand=np.exp(1j*rand_2pi)
-# #R
-# im_r_rand=exp_rand*np.sqrt(im_shift_r)
+# # Initialize complex-valued arrays
+# im_n_r = np.zeros_like(im[:, :, 0], dtype=complex)
+# im_n_g = np.zeros_like(im[:, :, 1], dtype=complex)
+# im_n_b = np.zeros_like(im[:, :, 2], dtype=complex)
 
-# im_g_rand=exp_rand*np.sqrt(im_shift_g)
+# # Combine random phase with intensity for each channel
+# im_r_rand = exp_rand * np.sqrt(im[:, :, 0][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+# im_n_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_r_rand
 
-# im_b_rand=exp_rand*np.sqrt(im_shift_b)
+# im_g_rand = exp_rand * np.sqrt(im[:, :, 1][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+# im_n_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_g_rand
 
-# current_field_r = fftshift(fft2(im_r_rand ))
-# current_field_g =fftshift(fft2(im_g_rand))
-# current_field_b =fftshift(fft2(im_b_rand))
-<<<<<<< HEAD
-iterations1=10
-=======
-iterations1=40
->>>>>>> ee9e4f8296a4bb755e01d337b9d4e48340151433
+# im_b_rand = exp_rand * np.sqrt(im[:, :, 2][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+# im_n_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_b_rand
+
+# # Fourier Transform for each channel
+# current_field_r = fftshift(fft2(fftshift(im_n_r)))  # Red channel
+# current_field_g = fftshift(fft2(fftshift(im_n_g)))  # Green channel
+# current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
+
+# power1=2
+#R
+im_shift_r=fftshift(im[:,:,0]**power1)
+#G
+im_shift_g=fftshift(im[:,:,1]**power1)
+#B
+im_shift_b=fftshift(im[:,:,2]**power1)
+
+
+# random
+rand=np.random.uniform(0, 1, (height, width))
+rand_2pi=np.pi*rand
+rand_ma=np.max(rand_2pi)
+rand_mi=np.min(rand_2pi)
+exp_rand=np.exp(1j*rand_2pi)
+#R
+im_r_rand=exp_rand*np.sqrt(im_shift_r)
+
+im_g_rand=exp_rand*np.sqrt(im_shift_g)
+
+im_b_rand=exp_rand*np.sqrt(im_shift_b)
+
+current_field_r = fftshift(fft2(im_r_rand ))
+current_field_g =fftshift(fft2(im_g_rand))
+current_field_b =fftshift(fft2(im_b_rand))
+
+iterations1=1
 iterations2=0
 factor=1
 for j in range(iterations1):
@@ -158,56 +155,7 @@ phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2)
 optimized_phase_b = np.angle(current_field_b)
 phase_br_modi=(optimized_phase_b/np.pi+1)*(255/2)
 
-<<<<<<< HEAD
-r,g,b=abs(current_field_r),abs(current_field_g),abs(current_field_b)
 
-
-def radial_profile(image, center):
-    """ Compute the Radial Frequency Profile for a given Fourier magnitude image. """
-    y, x = np.indices(image.shape)
-    r = np.sqrt((x - center[1])**2 + (y - center[0])**2)  # Compute radial distances
-
-    r = r.astype(np.int32)  # Convert to integer for binning
-    max_r = r.max()
-    radial_sum = np.bincount(r.ravel(), weights=image.ravel())  # Sum intensities in each bin
-    radial_count = np.bincount(r.ravel())  # Count elements in each bin
-    radial_profile = radial_sum / np.maximum(radial_count, 1)  # Avoid division by zero
-
-    return radial_profile[:max_r]
-
-# Compute Radial Frequency Profile for R, G, and B channels
-center = (r.shape[0] // 2, r.shape[1] // 2)
-r_profile = radial_profile(r, center)
-g_profile = radial_profile(g, center)
-b_profile = radial_profile(b, center)
-
-# Plot the Radial Frequency Profiles
-plt.figure(figsize=(6, 4))
-plt.plot(r_profile, 'r', label='Red Channel')
-plt.plot(g_profile, 'g', label='Green Channel')
-plt.plot(b_profile, 'b', label='Blue Channel')
-plt.xlabel("Radial Frequency")
-plt.ylabel("Mean Intensity")
-plt.legend()
-plt.title("Radial Frequency Profile")
-plt.show()
-
-# plt.figure()
-# plt.imshow(r,cmap="Reds")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(g,cmap="Greens")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(b,cmap="Blues")
-# plt.colorbar()
-# plt.show()
-
-=======
 r, g, b = abs(current_field_r), abs(current_field_g), abs(current_field_b)
 
 i_sum = 0
@@ -280,7 +228,7 @@ for radi in range(height // 2):
 # plt.legend()
 # plt.title(f"B y-axis")
 # plt.show()
->>>>>>> ee9e4f8296a4bb755e01d337b9d4e48340151433
+
 # plt.figure()
 # # Plot histograms for each channel
 # plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label='Red')
