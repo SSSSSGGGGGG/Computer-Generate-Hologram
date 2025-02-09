@@ -15,7 +15,7 @@ import time
 
 start_t=time.time()
 
-os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff")
+os.chdir("C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff")
 filename="flowers_tf"  #flowers_960 RGB_1024
 im=plt.imread(f"{filename}.png")
 
@@ -23,15 +23,16 @@ height=im.shape[0]
 width=im.shape[1]
 
 
-l=391 # from edge to center 250 for 3circles
+l=390 # from edge to center 250 for 3circles
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
-# #R
-im_shift_r=fftshift(im[:,:,0])
+power1=1
+#R
+im_shift_r=fftshift(im[:,:,0]**power1)
 #G
-im_shift_g=fftshift(im[:,:,1])
+im_shift_g=fftshift(im[:,:,1]**power1)
 #B
-im_shift_b=fftshift(im[:,:,2])
+im_shift_b=fftshift(im[:,:,2]**power1)
 
 # Random phase generation
 rand = np.random.uniform(0, 1, (height - 2 * l, width - 2 * l))
@@ -82,7 +83,7 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # current_field_r = fftshift(fft2(im_r_rand ))
 # current_field_g =fftshift(fft2(im_g_rand))
 # current_field_b =fftshift(fft2(im_b_rand))
-iterations1=5
+iterations1=10
 iterations2=0
 factor=1
 for j in range(iterations1):
@@ -148,45 +149,76 @@ phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2)
 optimized_phase_b = np.angle(current_field_b)
 phase_br_modi=(optimized_phase_b/np.pi+1)*(255/2)
 
-r,g,b=abs(ifft2(current_field_r)),abs(ifft2(current_field_g)),abs(ifft2(current_field_b))
+r,g,b=abs(current_field_r),abs(current_field_g),abs(current_field_b)
 
-plt.figure()
-plt.imshow(r,cmap="Reds")
-plt.colorbar()
-plt.show()
 
-plt.figure()
-plt.imshow(g,cmap="Greens")
-plt.colorbar()
-plt.show()
+def radial_profile(image, center):
+    """ Compute the Radial Frequency Profile for a given Fourier magnitude image. """
+    y, x = np.indices(image.shape)
+    r = np.sqrt((x - center[1])**2 + (y - center[0])**2)  # Compute radial distances
 
-plt.figure()
-plt.imshow(b,cmap="Blues")
-plt.colorbar()
-plt.show()
+    r = r.astype(np.int32)  # Convert to integer for binning
+    max_r = r.max()
+    radial_sum = np.bincount(r.ravel(), weights=image.ravel())  # Sum intensities in each bin
+    radial_count = np.bincount(r.ravel())  # Count elements in each bin
+    radial_profile = radial_sum / np.maximum(radial_count, 1)  # Avoid division by zero
 
-plt.figure()
-# Plot histograms for each channel
-plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label='Red')
-plt.hist(g.flatten(), bins=30, color='green', alpha=0.5, label='Green')
-plt.hist(b.flatten(), bins=30, color='blue', alpha=0.5, label='Blue')
+    return radial_profile[:max_r]
 
-# Add mean intensity markers
-plt.axvline(np.average(r), color='red', linestyle='dashed', linewidth=2, label=f'Mean R')
-plt.axvline(np.average(g), color='green', linestyle='dashed', linewidth=2, label=f'Mean G')
-plt.axvline(np.average(b), color='blue', linestyle='dashed', linewidth=2, label=f'Mean B')
+# Compute Radial Frequency Profile for R, G, and B channels
+center = (r.shape[0] // 2, r.shape[1] // 2)
+r_profile = radial_profile(r, center)
+g_profile = radial_profile(g, center)
+b_profile = radial_profile(b, center)
 
-# Add labels, legend, and title
-plt.xlabel('Pixel Intensity')
-plt.ylabel('Frequency')
-
+# Plot the Radial Frequency Profiles
+plt.figure(figsize=(6, 4))
+plt.plot(r_profile, 'r', label='Red Channel')
+plt.plot(g_profile, 'g', label='Green Channel')
+plt.plot(b_profile, 'b', label='Blue Channel')
+plt.xlabel("Radial Frequency")
+plt.ylabel("Mean Intensity")
 plt.legend()
-
-# Save the histogram plot
-# plt.savefig(f"{name}_histogram.png")  # Correct function to save the plot
-
-# Show the plot
+plt.title("Radial Frequency Profile")
 plt.show()
+
+# plt.figure()
+# plt.imshow(r,cmap="Reds")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(g,cmap="Greens")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(b,cmap="Blues")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# # Plot histograms for each channel
+# plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label='Red')
+# plt.hist(g.flatten(), bins=30, color='green', alpha=0.5, label='Green')
+# plt.hist(b.flatten(), bins=30, color='blue', alpha=0.5, label='Blue')
+
+# # Add mean intensity markers
+# plt.axvline(np.average(r), color='red', linestyle='dashed', linewidth=2, label=f'Mean R')
+# plt.axvline(np.average(g), color='green', linestyle='dashed', linewidth=2, label=f'Mean G')
+# plt.axvline(np.average(b), color='blue', linestyle='dashed', linewidth=2, label=f'Mean B')
+
+# # Add labels, legend, and title
+# plt.xlabel('Pixel Intensity')
+# plt.ylabel('Frequency')
+
+# plt.legend()
+
+# # Save the histogram plot
+# # plt.savefig(f"{name}_histogram.png")  # Correct function to save the plot
+
+# # Show the plot
+# plt.show()
 # Assuming phase_rr_modi and arr_r_modified are already defined and have matching shapes
 im_modify_r = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
 im_modify_g = np.zeros_like(im, shape=(im.shape[0], im.shape[1],3))
