@@ -15,18 +15,22 @@ import time
 
 start_t=time.time()
 
+
 os.chdir("C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff")
 filename="flowers_tf"  #flowers_960 RGB_1024
+
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
 width=im.shape[1]
 
 
+
 l=390 # from edge to center 250 for 3circles
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
 power1=1
+
 #R
 im_shift_r=fftshift(im[:,:,0]**power1)
 #G
@@ -59,12 +63,13 @@ current_field_r = fftshift(fft2(fftshift(im_n_r)))  # Red channel
 current_field_g = fftshift(fft2(fftshift(im_n_g)))  # Green channel
 current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 
+# power1=2
 # #R
-# im_shift_r=fftshift(im[:,:,0])
+# im_shift_r=fftshift(im[:,:,0]**power1)
 # #G
-# im_shift_g=fftshift(im[:,:,1])
+# im_shift_g=fftshift(im[:,:,1]**power1)
 # #B
-# im_shift_b=fftshift(im[:,:,2])
+# im_shift_b=fftshift(im[:,:,2]**power1)
 
 
 # # random
@@ -83,7 +88,11 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # current_field_r = fftshift(fft2(im_r_rand ))
 # current_field_g =fftshift(fft2(im_g_rand))
 # current_field_b =fftshift(fft2(im_b_rand))
+<<<<<<< HEAD
 iterations1=10
+=======
+iterations1=40
+>>>>>>> ee9e4f8296a4bb755e01d337b9d4e48340151433
 iterations2=0
 factor=1
 for j in range(iterations1):
@@ -149,6 +158,7 @@ phase_gr_modi=(optimized_phase_g/np.pi+1)*(255/2)
 optimized_phase_b = np.angle(current_field_b)
 phase_br_modi=(optimized_phase_b/np.pi+1)*(255/2)
 
+<<<<<<< HEAD
 r,g,b=abs(current_field_r),abs(current_field_g),abs(current_field_b)
 
 
@@ -197,6 +207,80 @@ plt.show()
 # plt.colorbar()
 # plt.show()
 
+=======
+r, g, b = abs(current_field_r), abs(current_field_g), abs(current_field_b)
+
+i_sum = 0
+r_sum = []
+for radi in range(height // 2):
+    if (c_h - radi >= 0 and c_h + radi < height) and (c_w - radi >= 0 and c_w + radi < width):  
+        avg_intensity = np.mean(r[c_h + radi, c_w + radi])  # Compute mean directly
+        r_sum.append(avg_intensity)  # Store the value for plotting
+
+# plt.figure()
+# plt.plot(r_sum/np.sum(r_sum))
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity')
+# plt.axhline(np.average(r_sum/np.sum(r_sum)), color='red', linestyle='dashed', linewidth=2, label=f"Mean R={np.average(r_sum/np.sum(r_sum)):.10f}")
+# plt.title("R ")
+# plt.legend()
+# plt.show()
+
+
+# plt.figure()
+# plt.plot(abs(r[:,959]-np.average(r[:,959])))
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity')
+# plt.axhline(np.average(r[:,959]), color='red', linestyle='dashed', linewidth=2, label=f"Mean R={np.average(r[:,959]):.10f}")
+# plt.title(f"R x-axis variation")
+# plt.legend()
+# plt.show()
+
+# plt.figure()
+# plt.plot(abs(r[959,:]-np.average(r[959,:])))
+# plt.axhline(np.average(r[959,:]), color='red', linestyle='dashed', linewidth=2, label=f"Mean R={np.average(r[:,959]):.10f}")
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity variation')
+# plt.legend()
+# plt.title(f"R y-axis")
+# plt.show()
+
+# plt.figure()
+# plt.plot(abs(g[:,959]-np.average(g[:,959])))
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity variation')
+# plt.axhline(np.average(g[:,959]), color='green', linestyle='dashed', linewidth=2, label=f"Mean G={np.average(g[:,959]):.10f}")
+# plt.title(f"G x-axis")
+# plt.legend()
+# plt.show()
+
+# plt.figure()
+# plt.plot(abs(g[959,:]-np.average(g[959,:])))
+# plt.axhline(np.average(g[959,:]), color='green', linestyle='dashed', linewidth=2, label=f"Mean G={np.average(g[959,:]):.10f}")
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity variation')
+# plt.legend()
+# plt.title(f"G y-axis")
+# plt.show()
+
+# plt.figure()
+# plt.plot(abs(b[:,959]-np.average(b[:,959])))
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity variation')
+# plt.axhline(np.average(b[:,959]), color='blue', linestyle='dashed', linewidth=2, label=f"Mean B={np.average(b[:,959]):.10f}")
+# plt.title(f"B x-axis")
+# plt.legend()
+# plt.show()
+
+# plt.figure()
+# plt.plot(abs(b[959,:]-np.average(b[959,:])))
+# plt.axhline(np.average(b[959,:]), color='blue', linestyle='dashed', linewidth=2, label=f"Mean B={np.average(b[959,:]):.10f}")
+# plt.xlabel('Frequency')
+# plt.ylabel('Pixel Intensity variation')
+# plt.legend()
+# plt.title(f"B y-axis")
+# plt.show()
+>>>>>>> ee9e4f8296a4bb755e01d337b9d4e48340151433
 # plt.figure()
 # # Plot histograms for each channel
 # plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label='Red')
@@ -239,20 +323,20 @@ im_modify_noL[:,:,2] = phase_br_modi
 # im_modify_c[:,:,1] = phase_gr_modi+arr_g_modified
 # im_modify_c[:,:,2] = phase_br_modi+arr_b_modified
 
-# def crop(im_modify,name):
-#     # y_offset=center_h-1080//2
-#     im_cropped=im_modify#[y_offset:y_offset+1080,:]
-#     im_cropped = im_cropped.astype(np.uint8)
-#     im_modi = Image.fromarray(im_cropped)
-#     im_modi.save(f"{filename}_GS_n1_{iterations1},n2_{iterations2}_{name}.png")
-# # R=crop(im_modify_r, "r")
-# # G=crop(im_modify_g, "g")
-# # B=crop(im_modify_b, "b")
-# # C=crop(im_modify_c, "c")
-# C_noL=crop(im_modify_noL, f"{factor},nl,p")
-# # Save each channel separately
-# # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
-# # green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
-# # blue_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_b.png")
+def crop(im_modify,name):
+    # y_offset=center_h-1080//2
+    im_cropped=im_modify#[y_offset:y_offset+1080,:]
+    im_cropped = im_cropped.astype(np.uint8)
+    im_modi = Image.fromarray(im_cropped)
+    im_modi.save(f"{filename}_GS_n1_{iterations1},n2_{iterations2}_{name}.png")
+# R=crop(im_modify_r, "r")
+# G=crop(im_modify_g, "g")
+# B=crop(im_modify_b, "b")
+# C=crop(im_modify_c, "c")
+C_noL=crop(im_modify_noL, f"p_{power1},nl")
+# Save each channel separately
+# red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")
+# green_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_g.png")
+# blue_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_b.png")
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s, iteration {iterations1+iterations2}")

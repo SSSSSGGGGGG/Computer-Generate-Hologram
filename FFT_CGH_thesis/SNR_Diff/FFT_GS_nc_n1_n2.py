@@ -16,14 +16,14 @@ import time
 start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff")
-filename="flowers_tf"  #flowers_960 RGB_1024
+filename="RGB_500"  #flowers_960 RGB_1024
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
 width=im.shape[1]
 
 
-l=390 # from edge to center 250 for 3circles
+l=680 # from edge to center 250 for 3circles 390
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
 # #R
@@ -82,8 +82,8 @@ current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
 # current_field_r = fftshift(fft2(im_r_rand ))
 # current_field_g =fftshift(fft2(im_g_rand))
 # current_field_b =fftshift(fft2(im_b_rand))
-iterations1=5
-iterations2=10
+iterations1=0
+iterations2=20
 
 factor=1
 for j in range(iterations1):
