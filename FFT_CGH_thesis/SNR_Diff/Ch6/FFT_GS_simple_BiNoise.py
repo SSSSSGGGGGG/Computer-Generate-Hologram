@@ -26,22 +26,22 @@ field_b=np.sqrt(im[:,:,2])
 
 # Random phase generation
 rand = np.random.uniform(0, 1, (height , width))
-plt.imshow(rand,cmap="Grays")
-cbar = plt.colorbar(ticks=[0, 0.25, 0.5, 0.75, 1])
-cbar.ax.set_yticklabels(['0', '0.25', '0.5', '0.75', '1']) 
+# Convert to binary noise: 1 if >= 0.5, else 0
+binary_noise = (rand >= 0.5).astype(int)
+plt.imshow(binary_noise,cmap="Grays")
+cbar = plt.colorbar(ticks=[0, 1])
+cbar.ax.set_yticklabels(['0','1']) 
 plt.axis("off")
 # plt.imsave("Random noise.png",rand,cmap="Grays")
 plt.show()
-rand_2pi = 2 * np.pi * rand  # Full phase range [0, 2π]
-exp_rand =np.exp(1j * rand_2pi)  # Complex exponential
 # if you want to apply niose inout y.
-noise=input(f"Do you want to employ noise (y/n):")
+noise="y"#input(f"Do you want to employ noise (y/n):")
 try:
     if noise == "y":
         # Apply noise to the filed which is the squareroot of intensity. Compute forward FT.
-        current_field_r = fftshift(fft2(exp_rand * field_r))  # Red channel
-        current_field_g = fftshift(fft2(exp_rand * field_g))  # Green channel
-        current_field_b = fftshift(fft2(exp_rand * field_b))  # Blue channel
+        current_field_r = fftshift(fft2(binary_noise * field_r))  # Red channel
+        current_field_g = fftshift(fft2(binary_noise * field_g))  # Green channel
+        current_field_b = fftshift(fft2(binary_noise * field_b))  # Blue channel
     elif noise == "n":
         # Without noise
         current_field_r = fftshift(fft2(field_r))  # Red channel
@@ -75,7 +75,7 @@ im_modify_m[:,:,1] = magnitude_g*255
 im_modify_m[:,:,2] = magnitude_b*255
 im_m = im_modify_m.astype(np.uint8)
 im_m_ = Image.fromarray(im_m)
-im_m_.save(f"{filename} Mag_Noise_{noise}.png")
+im_m_.save(f"{filename} Mag_BiNoise_{noise}.png")
 
 # Save phase-only holograms.
 im_modify_noL = np.zeros_like(im,shape=(im.shape[0], im.shape[1], 3))
@@ -84,7 +84,7 @@ im_modify_noL[:,:,1] = phase_gr_modi
 im_modify_noL[:,:,2] = phase_br_modi
 im_cropped = im_modify_noL.astype(np.uint8)
 im_modi = Image.fromarray(im_cropped)
-im_modi.save(f"{filename} Holo_Noise_{noise}.png")
+im_modi.save(f"{filename} Holo_BiNoise_{noise}.png")
 # Compute inverse FT of phase, and the amplitudes are 1.
 Reconstruction_holo1_r = ifft2(ifftshift(np.exp(1j * optimized_phase_r )))
 Reconstruction_holo1_g = ifft2(ifftshift(np.exp(1j * optimized_phase_g )))
@@ -105,11 +105,7 @@ I1_rgb[:, :, 1] = I1_g_normalized/(np.max(I1_g_normalized)*factor)*255
 I1_rgb[:, :, 2] = I1_b_normalized/(np.max(I1_b_normalized)*factor)*255
 I_tf=I1_rgb.astype(np.uint8)
 Irgb=Image.fromarray(I_tf)
-Irgb.save(f"{filename} Reconstruction_Noise_{noise}.png") # Save reconstruction results.
-plt.figure()
-plt.imshow(im_modify_noL/255,cmap="gray")
-plt.axis("off")
-plt.colorbar()
-plt.show()
+Irgb.save(f"{filename} Reconstruction_BiNoise_{noise}.png") # Save reconstruction results.
+
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s")
