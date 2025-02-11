@@ -130,8 +130,8 @@ for i in range(iterations2):
     current_field_r_n =np.sqrt(im_shift_r)*np.exp(1j * np.angle(current_field_r_i))#*exp_rand
     current_field_g_n =np.sqrt(im_shift_g)*np.exp(1j * np.angle(current_field_g_i))#*exp_rand
     current_field_b_n =np.sqrt(im_shift_b)*np.exp(1j * np.angle(current_field_b_i))#*exp_rand
-    lr=690#int(l*scale_r)
-    lb=558#int(l*scale_b)
+    lr=int((height*(scale_r-1)+2*l)/(2*scale_r)) #690
+    lb=int((height*(scale_b-1)+2*l)/(2*scale_b))#558
     current_field_r_n[:,c_w-lr:c_w+lr]=current_field_r_i_t[:,c_w-lr:c_w+lr]
     current_field_g_n[:,c_w-l:c_w+l]=current_field_g_i_t[:,c_w-l:c_w+l]
     current_field_b_n[:,c_w-lb:c_w+lb]=current_field_b_i_t[:,c_w-lb:c_w+lb]
