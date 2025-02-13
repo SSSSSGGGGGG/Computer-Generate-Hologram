@@ -49,8 +49,8 @@ current_field_r =fftshift(fft2(im_r_rand))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 # Iteration1 and iteration2 are for GS algorithm without and width window.
-iterations1=35
-iterations2=5
+iterations1=1
+iterations2=0
 
 for j in range(iterations1):
     

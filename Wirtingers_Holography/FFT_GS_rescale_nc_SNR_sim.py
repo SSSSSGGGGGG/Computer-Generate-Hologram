@@ -2,7 +2,7 @@
 """
 Created on Sun Oct 27 10:45:57 2024
 
-@author: gaosh
+@author: GaoShang
 """
 from PIL import Image
 import numpy as np
@@ -16,7 +16,7 @@ import time
 start_t=time.time()
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="fl_one" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
+filename="RGB_500" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -68,7 +68,7 @@ im_manipulated[:,:,2]=scaled_blue#scaled_blue
 # plt.figure()
 # plt.imshow(im_manipulated[:,:,2])
 # plt.show()
-l=620#390
+l=680#620
 c_w,c_h=width//2,height//2
 factor=1
 #R
@@ -95,8 +95,8 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 
-iterations1=40
-iterations2=0
+iterations1=0
+iterations2=1
 
 factor=1
 for j in range(iterations1):
