@@ -16,7 +16,7 @@ im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
 width=im.shape[1]
-l=12
+l=250
 ofs=0
 c_w=width//2+ofs
 c_h=height//2+ofs
@@ -32,15 +32,19 @@ def powerf(p):
     
     print(f"power={p}: max {np.max(abs(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l]))}-min {abs(np.min(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l]))}={abs(np.max(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l])-np.min(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l]))}")
     
-    FT_r=fftshift(fft2(p_im_r))
-    FT_g=fftshift(fft2(p_im_g))
-    FT_b=fftshift(fft2(p_im_b))
+    FT_r=fftshift(fft2(fftshift(p_im_r)))
+    FT_g=fftshift(fft2(fftshift(p_im_g)))
+    FT_b=fftshift(fft2(fftshift(p_im_b)))
+    
+    # FT_r=fftshift(fft2(p_im_r))
+    # FT_g=fftshift(fft2(p_im_g))
+    # FT_b=fftshift(fft2(p_im_b))
     
     FT_r_m=np.abs(FT_r)
     FT_g_m=np.abs(FT_g)
     FT_b_m=np.abs(FT_b)
     
-    return np.abs(p_im_r),FT_r_m
+    return np.abs(p_im_r),FT_r_m, np.angle(FT_r)
 
 P1=powerf(1)
 P2=powerf(2)
@@ -67,23 +71,83 @@ P4=powerf(4)
 # plt.colorbar()
 # plt.show()
 
+# plt.figure()
+# plt.imshow(P1[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P1[1]),cmap="hot")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(P2[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P2[1]),cmap="hot")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(P3[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P3[1]),cmap="hot")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(P4[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P4[1]),cmap="hot")
+# plt.colorbar()
+# plt.show()
+
+crop_1=P1[2][c_h-l:c_h+l,c_w-l:c_w+l]
+crop_2=P2[2][c_h-l:c_h+l,c_w-l:c_w+l]
+crop_3=P3[2][c_h-l:c_h+l,c_w-l:c_w+l]
+crop_4=P4[2][c_h-l:c_h+l,c_w-l:c_w+l]
+# Inverse
+# iF1=ifft2(ifftshift(np.exp(1j*crop_1)))
+# iF2=ifft2(ifftshift(np.exp(1j*crop_2)))
+# iF3=ifft2(ifftshift(np.exp(1j*crop_3)))
+# iF4=ifft2(ifftshift(np.exp(1j*crop_4)))
+
+# iF1=ifftshift(ifft2(ifftshift(np.exp(1j*crop_1))))
+# iF2=ifftshift(ifft2(ifftshift(np.exp(1j*crop_2))))
+# iF3=ifftshift(ifft2(ifftshift(np.exp(1j*crop_3))))
+# iF4=ifftshift(ifft2(ifftshift(np.exp(1j*crop_4))))
+
+iF1=ifftshift(ifft2(np.exp(1j*crop_1)))
+iF2=ifftshift(ifft2(np.exp(1j*crop_2)))
+iF3=ifftshift(ifft2(np.exp(1j*crop_3)))
+iF4=ifftshift(ifft2(np.exp(1j*crop_4)))
+
+# plt.figure()
+# plt.imshow(crop_1,cmap="hot")#/np.max(P1[1])
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(crop_2,cmap="hot")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(crop_3,cmap="hot")
+# plt.colorbar()
+# plt.show()
+
+# plt.figure()
+# plt.imshow(crop_4,cmap="hot")
+# plt.colorbar()
+# plt.show()
+
 plt.figure()
-plt.imshow(P1[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P1[1]),cmap="hot")
+plt.imshow(abs(iF1),cmap="Reds")
 plt.colorbar()
 plt.show()
 
 plt.figure()
-plt.imshow(P2[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P2[1]),cmap="hot")
+plt.imshow(abs(iF2),cmap="Reds")
 plt.colorbar()
 plt.show()
 
 plt.figure()
-plt.imshow(P3[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P3[1]),cmap="hot")
+plt.imshow(abs(iF3),cmap="Reds")
 plt.colorbar()
 plt.show()
 
 plt.figure()
-plt.imshow(P4[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P4[1]),cmap="hot")
+plt.imshow(abs(iF4),cmap="Reds")
 plt.colorbar()
 plt.show()
 
