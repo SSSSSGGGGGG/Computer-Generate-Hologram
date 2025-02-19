@@ -14,8 +14,8 @@ import os
 # Read the path of original image.
 original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/One circle_1024.png"
 # Read the path of RGB CGHs.
-file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/One circle_1024_GS_n1_30,n2_5_nl.png"
-file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/One circle_1024_GS_n1_35,n2_5_nl.png"
+file_path1 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/One circle_1024_GS_n1_2_nl.png"
+file_path2 = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/One circle_1024_GS_n2_2_nl.png"
 # Automatically retrieve image names
 holo1_name = os.path.basename(file_path1)
 holo2_name = os.path.basename(file_path2)
@@ -48,33 +48,33 @@ Reconstruction_holo2_g = fftshift(ifft2(np.exp(1j * holo2_G_angle)))
 Reconstruction_holo1_b = fftshift(ifft2(np.exp(1j * holo1_B_angle)))
 Reconstruction_holo2_b = fftshift(ifft2(np.exp(1j * holo2_B_angle)))
 
-l=560 
+l=300 
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l # The size of the window.
 
-def hist(r,g,b,name):
-    # Plot histograms for each channel.
-    plt.figure()   
-    plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label="Red")
-    plt.hist(g.flatten(), bins=30, color='green', alpha=0.5, label="Green")
-    plt.hist(b.flatten(), bins=30, color='blue', alpha=0.5, label="Blue")
+# def hist(r,g,b,name):
+#     # Plot histograms for each channel.
+#     plt.figure()   
+#     plt.hist(r.flatten(), bins=30, color='red', alpha=0.5, label="Red")
+#     plt.hist(g.flatten(), bins=30, color='green', alpha=0.5, label="Green")
+#     plt.hist(b.flatten(), bins=30, color='blue', alpha=0.5, label="Blue")
     
-    # Add mean intensity markers.
-    plt.axvline(np.average(r), color='red', linestyle='dashed', linewidth=2, label=f"Mean R={np.average(r):.10f}")
-    plt.axvline(np.average(g), color='green', linestyle='dashed', linewidth=2, label=f"Mean G={np.average(g):.10f}")
-    plt.axvline(np.average(b), color='blue', linestyle='dashed', linewidth=2, label=f"Mean B={np.average(b):.10f}")
+#     # Add mean intensity markers.
+#     plt.axvline(np.average(r), color='red', linestyle='dashed', linewidth=2, label=f"Mean R={np.average(r):.10f}")
+#     plt.axvline(np.average(g), color='green', linestyle='dashed', linewidth=2, label=f"Mean G={np.average(g):.10f}")
+#     plt.axvline(np.average(b), color='blue', linestyle='dashed', linewidth=2, label=f"Mean B={np.average(b):.10f}")
     
-    # Add labels, legend, and title.
-    plt.xlabel('Pixel Intensity')
-    plt.ylabel('Frequency')
-    plt.title(f"{name} RGB Histogram")
-    plt.legend()   
-    # Save the histogram plot
-    plt.savefig(f"{name}_histogram.png")      
-    # Show the plot
-    plt.show()
-# Histgram of the original image in the window.
-O_hist=hist(original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"RGB Original")
+#     # Add labels, legend, and title.
+#     plt.xlabel('Pixel Intensity')
+#     plt.ylabel('Frequency')
+#     plt.title(f"{name} RGB Histogram")
+#     plt.legend()   
+#     # Save the histogram plot
+#     plt.savefig(f"{name}_histogram.png")      
+#     # Show the plot
+#     plt.show()
+# # Histgram of the original image in the window.
+# O_hist=hist(original2_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],original2_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"RGB Original")
 # Calculate SNR and Diff for different RGB CGHs, and save the reconstrutions by defined factor, which is designed for visulizing noise.
 def changef(f):
     factor=f#0.1#1#0.4#0.7#0.025
@@ -114,9 +114,9 @@ def changef(f):
     I2_b_normalized = I2_b / np.sum(I2_b)
     
     I2_rgb_o=np.zeros_like(holo1)
-    I2_rgb_o[:, :, 0] = I2_r_normalized
-    I2_rgb_o[:, :, 1] = I2_g_normalized
-    I2_rgb_o[:, :, 2] = I2_b_normalized
+    I2_rgb_o[:, :, 0] = I2_r/ np.max(I2_r)
+    I2_rgb_o[:, :, 1] = I2_g/ np.max(I2_g)
+    I2_rgb_o[:, :, 2] = I2_b/ np.max(I2_b)
 
     I2_rgb=np.zeros_like(holo1)
     I2_rgb[:, :, 0] = I2_r_normalized/(np.max(I2_r_normalized)*factor)
@@ -140,10 +140,10 @@ def changef(f):
     print(f"D1 { D1}, D2 {D2}")
     # Save the correspnding reconstrutions.
     plt.imsave(f"{holo1_name} f {factor}_win.png", np.clip(I1_rgb, 0, 1))
-    plt.imsave(f"{holo2_name} f {factor}_win.png", np.clip(I2_rgb, 0, 1))
-    # Show the histgrams of reconstrutions in the window.
-    I1_diff_hist=hist(I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo1_name}")
-    I2_diff_hist=hist(I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo2_name}")
+    plt.imsave(f"{holo2_name} f {factor}_win_o.png", np.clip(I2_rgb_o, 0, 1))
+    # # Show the histgrams of reconstrutions in the window.
+    # I1_diff_hist=hist(I1_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I1_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo1_name}")
+    # I2_diff_hist=hist(I2_r_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_g_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],I2_b_normalized[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2],f"{holo2_name}")
     
 # Call the funtion "changef" by factor "0.05" and "1".
 f2=changef(0.05)

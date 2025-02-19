@@ -69,7 +69,7 @@ for j in range(iterations1):
     current_field_b = fftshift(fft2(current_field_b_n ))
 for i in range(iterations2):
     
-    # Inverse FFT2 computation is the same as previous iterative loop.
+    # Inverse FFT2 computation that is the same as previous iterative loop.
     current_field_r_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
