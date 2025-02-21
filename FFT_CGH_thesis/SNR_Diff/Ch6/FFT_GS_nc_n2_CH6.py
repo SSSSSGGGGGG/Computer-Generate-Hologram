@@ -50,7 +50,7 @@ current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 # Iteration1 and iteration2 are for GS algorithm without and width window.
 
-iterations2=5
+iterations2=40
 
 for i in range(iterations2):
     
@@ -58,11 +58,11 @@ for i in range(iterations2):
     current_field_r_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
-    plt.figure()
-    plt.imshow(fftshift(abs(current_field_r_i)**2), cmap="hot")
-    plt.colorbar()
-    plt.show()
-    n=20
+    # plt.figure()
+    # plt.imshow(fftshift(abs(current_field_r_i)**2),vmax=4e-5, cmap="hot")
+    # plt.colorbar()
+    # plt.show()
+    n=1
     # Retrieve both amplitudes and phase of inverse FFT2 computation, and normalize amplitude part by the maximum in each channel.
     current_field_r_i_t =np.sqrt(n*abs(current_field_r_i)**2/np.max(abs(current_field_r_i)**2)) *np.exp(1j * np.angle(current_field_r_i))
     current_field_g_i_t =np.sqrt(n*abs(current_field_g_i)**2/np.max(abs(current_field_g_i)**2)) *np.exp(1j * np.angle(current_field_g_i))

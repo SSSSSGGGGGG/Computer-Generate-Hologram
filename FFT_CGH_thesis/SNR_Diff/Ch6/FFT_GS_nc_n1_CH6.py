@@ -49,7 +49,7 @@ current_field_r =fftshift(fft2(im_r_rand))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 # Iteration1 and iteration2 are for GS algorithm without and width window.
-iterations1=5
+iterations1=40
 
 
 for j in range(iterations1):
@@ -58,10 +58,10 @@ for j in range(iterations1):
     current_field_r_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
     current_field_g_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_g))))
     current_field_b_i = ifft2(ifftshift(np.exp(1j * np.angle(current_field_b))))
-    plt.figure()
-    plt.imshow(fftshift(abs(current_field_r_i)**2), cmap="hot")
-    plt.colorbar()
-    plt.show()
+    # plt.figure()
+    # plt.imshow(fftshift(abs(current_field_r_i)**2),vmax=4e-5, cmap="hot")
+    # plt.colorbar()
+    # plt.show()
     # Create new reconstrution fields, where the amplitudes are original object fields.
     current_field_r_n =np.sqrt(im_shift_r)*np.exp(1j * np.angle(current_field_r_i))
     current_field_g_n =np.sqrt(im_shift_g)*np.exp(1j * np.angle(current_field_g_i))
