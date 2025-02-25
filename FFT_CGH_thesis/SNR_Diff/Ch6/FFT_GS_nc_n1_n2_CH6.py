@@ -48,6 +48,17 @@ im_b_rand=exp_rand*np.sqrt(im_shift_b)
 current_field_r =fftshift(fft2(im_r_rand))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
+
+sum_o=np.sum(im[:,:,0])
+
+I=abs(current_field_r)**2
+sum_I=np.sum(I)
+
+current_field_r_if = ifft2(ifftshift(np.exp(1j * np.angle(current_field_r))))
+I_ift=abs(current_field_r_if)**2
+sum_I_ift=np.sum(I_ift)
+
+print(f"Sum of original={sum_o}, FT={sum_I/(height*width)}, iFT={sum_I_ift*height*width}")
 # Iteration1 and iteration2 are for GS algorithm without and width window.
 iterations1=1
 iterations2=0
