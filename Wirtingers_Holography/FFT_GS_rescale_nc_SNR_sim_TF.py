@@ -67,9 +67,7 @@ rand_mi=np.min(rand_2pi)
 exp_rand=np.exp(1j*rand_2pi)
 # Multiply noise with the field of the preprocessed orignal objects.
 im_r_rand=exp_rand*np.sqrt(im_shift_r)
-
 im_g_rand=exp_rand*np.sqrt(im_shift_g)
-
 im_b_rand=exp_rand*np.sqrt(im_shift_b)
 # Forward FFT of different channels
 current_field_r =fftshift(fft2(im_r_rand ))
@@ -78,7 +76,6 @@ current_field_b =fftshift(fft2(im_b_rand))
 
 iterations1=20 # Iteration number for the GS without window.
 iterations2=20 # Iteration number for the GS with window.
-
 # Loop for the GS without window.
 for j in range(iterations1): 
     # Reconstrution field that is computed by Inverse FFT2 of the phase value from the previous forward FFT2 computation, and the amplitudes are 1.
@@ -129,7 +126,6 @@ for i in range(iterations2):
     current_field_r = fftshift(fft2(current_field_r_n ))
     current_field_g = fftshift(fft2(current_field_g_n ))
     current_field_b = fftshift(fft2(current_field_b_n ))
-
 # Phase modulation depth for experiment, and they are all 2 for simulation.
 rdp,gdp,bdp=1.78,2.56,3.5
 # Final optimized phase for encoding on SLM, turn angles to grayscales.

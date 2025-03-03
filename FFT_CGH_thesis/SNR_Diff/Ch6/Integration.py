@@ -20,15 +20,14 @@ PI = np.pi
 
 Target = np.load('Target.npy')
 
-
-Iterations = 3
+Iterations = 1
 
 Intensity = np.zeros((1024, 1024), dtype=float)  # Sets Intensity to zero
 
 count = 0
 while count < Iterations:
     print(count)
-    
+    count += 1
     #----------------------------------
     # Creates the array of random numbers [0-1]
     RandomImage = Image.new("L", (N,N), "black") # Defines a gray scale image
@@ -41,8 +40,7 @@ while count < Iterations:
     FT_Field = ifftshift(ifft2(ifftshift(Field)))  
     FT_Magnitude = np.abs(FT_Field)
     FT_Phase = np.angle(FT_Field)
-    #----------------------------------c
-    
+    #----------------------------------
     # MAGNITUDE = 1
     FT_Field = np.exp(1j*FT_Phase)
     #----------------------------------
@@ -50,18 +48,16 @@ while count < Iterations:
     Field = fftshift(fft2(fftshift(FT_Field)))  
     Magnitude = np.abs(Field)
     Intensity = Intensity + np.square(Magnitude)
-    count += 1
+   
     #----------------------------------
-# Plots the magnitude and the intensity
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
-im1 = ax1.imshow(Magnitude, cmap='hot')
-ax1.axis('off')
-ax1.set_title(f" The {count} Mag ")
-im2 = ax2.imshow(Intensity, cmap='hot')
-ax2.axis('off')
-ax2.set_title(f" I {count}")
-plt.show()
-#---------------------------------- END OF THE LOOP
+    # Plots the magnitude and the intensity
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+    im1 = ax1.imshow(Magnitude, cmap='hot')
+    ax1.axis('off')
+    im2 = ax2.imshow(Intensity, cmap='hot')
+    ax2.axis('off')
+    plt.show()
+    #---------------------------------- END OF THE LOOP
 
 # Saves the images at the end
 plt.imsave("Rec_Intensity.bmp", Intensity, cmap='hot')

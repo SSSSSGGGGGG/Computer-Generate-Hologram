@@ -16,8 +16,8 @@ import time
 start_t=time.time()
 
 
-os.chdir("C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/FFT_CGH_thesis/SNR_Diff")
-filename="fl_one_s"  #flowers_960 RGB_1024
+os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff")
+filename="fl_one"  #flowers_960 RGB_1024
 
 im=plt.imread(f"{filename}.png")
 
@@ -26,51 +26,17 @@ width=im.shape[1]
 
 
 
-l=680 # from edge to center 250 for 3circles
+l=620 # from edge to center 250 for 3circles
 c_w,c_h=width//2,height//2
 lh,lw=height-2*l,width-2*l
 power1=4
 
-# #R
-# im_shift_r=fftshift(im[:,:,0]**power1)
-# #G
-# im_shift_g=fftshift(im[:,:,1]**power1)
-# #B
-# im_shift_b=fftshift(im[:,:,2]**power1)
-
-# # Random phase generation
-# rand = np.random.uniform(0, 1, (height - 2 * l, width - 2 * l))
-# rand_2pi = 2 * np.pi * rand  # Full phase range [0, 2π]
-# exp_rand = np.exp(1j * rand_2pi)  # Complex exponential
-
-# # Initialize complex-valued arrays
-# im_n_r = np.zeros_like(im[:, :, 0], dtype=complex)
-# im_n_g = np.zeros_like(im[:, :, 1], dtype=complex)
-# im_n_b = np.zeros_like(im[:, :, 2], dtype=complex)
-
-# # Combine random phase with intensity for each channel
-# im_r_rand = exp_rand * np.sqrt(im[:, :, 0][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
-# im_n_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_r_rand
-
-# im_g_rand = exp_rand * np.sqrt(im[:, :, 1][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
-# im_n_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_g_rand
-
-# im_b_rand = exp_rand * np.sqrt(im[:, :, 2][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
-# im_n_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2] = im_b_rand
-
-# # Fourier Transform for each channel
-# current_field_r = fftshift(fft2(fftshift(im_n_r)))  # Red channel
-# current_field_g = fftshift(fft2(fftshift(im_n_g)))  # Green channel
-# current_field_b = fftshift(fft2(fftshift(im_n_b)))  # Blue channel
-
-# power1=2
 #R
 im_shift_r=fftshift(im[:,:,0]**power1)
 #G
 im_shift_g=fftshift(im[:,:,1]**power1)
 #B
 im_shift_b=fftshift(im[:,:,2]**power1)
-
 
 # random
 rand=np.random.uniform(0, 1, (height, width))

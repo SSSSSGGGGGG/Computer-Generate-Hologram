@@ -12,7 +12,11 @@ from scipy.fft import fft2, fftshift,ifft2,ifftshift
 
 os.chdir("C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff")
 filename="fl_one_s"  
-im=plt.imread(f"{filename}.png")
+im=plt.imread(f"{filename}.png")[8:580,8:580]
+
+im_r=im[:,:,0]/np.sum(im[:,:,0])
+im_g=im[:,:,1]/np.sum(im[:,:,1])
+im_b=im[:,:,2]/np.sum(im[:,:,2])
 
 height=im.shape[0]
 width=im.shape[1]
@@ -20,7 +24,9 @@ l=250
 ofs=0
 c_w=width//2+ofs
 c_h=height//2+ofs
-def powerf(p):
+
+power=[1,2,3,4] # ,2,3,4
+for p in power:
     
     power=p
     rand = np.random.uniform(0, 1, (height , width))
@@ -29,170 +35,112 @@ def powerf(p):
     p_im_g=np.sqrt(im[:,:,1]**power)#* np.exp(1j * rand_2pi) 
     p_im_b=np.sqrt(im[:,:,2]**power)#* np.exp(1j * rand_2pi)
     
+    plt.figure()
+    plt.imshow(im**power)
+    # plt.colorbar()
+    plt.axis("off")
+    plt.savefig(f"Full I p_{power}.png", dpi=300, bbox_inches='tight')
+    plt.close()
     
-    print(f"power={p}: max {np.max(abs(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l]))}-min {abs(np.min(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l]))}={abs(np.max(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l])-np.min(p_im_r[c_h-l:c_h+l,c_w-l:c_w+l]))}")
+    plt.figure()
+    plt.imshow((im**power)[:,:,1], cmap="Greens")
+    plt.colorbar()
+    plt.axis("off")
+    plt.savefig(f"Full I p_{power} g.png", dpi=300, bbox_inches='tight')
+    plt.close()
     
-    FT_r=fftshift(fft2(fftshift(p_im_r)))
-    FT_g=fftshift(fft2(fftshift(p_im_g)))
-    FT_b=fftshift(fft2(fftshift(p_im_b)))
+    plt.figure()
+    plt.imshow((im**power)[:,:,2], cmap="Blues")
+    plt.colorbar()
+    plt.axis("off")
+    plt.savefig(f"Full I p_{power} b.png", dpi=300, bbox_inches='tight')
+    plt.close()
+    # FT_r=fftshift(fft2(fftshift(p_im_r)))
+    # FT_g=fftshift(fft2(fftshift(p_im_g)))
+    # FT_b=fftshift(fft2(fftshift(p_im_b)))
+
+    # FT_r_m=np.abs(FT_r)
+    # FT_g_m=np.abs(FT_g)
+    # FT_b_m=np.abs(FT_b)
     
-    # FT_r=fftshift(fft2(p_im_r))
-    # FT_g=fftshift(fft2(p_im_g))
-    # FT_b=fftshift(fft2(p_im_b))
+    # iFr=ifftshift(ifft2(np.exp(1j*np.angle(FT_r))))
+    # iFg=ifftshift(ifft2(np.exp(1j*np.angle(FT_g))))
+    # iFb=ifftshift(ifft2(np.exp(1j*np.angle(FT_b))))
     
-    FT_r_m=np.abs(FT_r)
-    FT_g_m=np.abs(FT_g)
-    FT_b_m=np.abs(FT_b)
+    # iFT_r_m=np.abs(iFr)
+    # iFT_g_m=np.abs(iFg)
+    # iFT_b_m=np.abs(iFb)
     
-    return np.abs(p_im_r),FT_r_m, np.angle(FT_r)
+    # f=200 # Small value for seeing noise.
+    # M_rgb=np.zeros((height,width,3))
+    # M_rgb[:, :, 0] = iFT_r_m*f
+    # M_rgb[:, :, 1] = iFT_g_m*f
+    # M_rgb[:, :, 2] = iFT_b_m*f
+    
+    # plt.figure()
+    # plt.plot(M_rgb[c_h,:])# 
+    # plt.show()
+    
+    # # plt.figure()
+    # # plt.imshow(M_rgb[:, :, 2],cmap="Reds")# M_rgb[c_h,:]
+    # # plt.show()
+    # # # print(f"max {np.max(M_rgb)}")
+    # plt.figure()
+    # plt.imshow(M_rgb)
+    # # plt.colorbar()
+    # plt.axis("off")
+    # plt.savefig(f"Full Re Mag p_{power}.png", dpi=300, bbox_inches='tight')
+    # plt.close()
+    
+    # plt.figure()
+    # plt.plot(iFT_r_m[c_h,:], label="R channel", color='red')
+    # plt.plot(iFT_g_m[c_h,:], label="G channel", color='green')
+    # plt.plot(iFT_b_m[c_h,:], label="B channel", color='blue')
+    # plt.ylim(0,0.02)
+    # plt.legend()
+    # plt.gca().xaxis.set_visible(False)
+    # plt.savefig(f"Mag profile p_{p}.png", dpi=300, bbox_inches='tight')
+    # plt.close()
 
-P1=powerf(1)
-P2=powerf(2)
-P3=powerf(3)
-P4=powerf(4)
+
+
+# f=100
+# M_o=np.zeros((height,width,3))
+# M_o[:, :, 0] = np.sqrt(im_r)*f
+# M_o[:, :, 1] = np.sqrt(im_g)*f
+# M_o[:, :, 2] = np.sqrt(im_b)*f
 
 # plt.figure()
-# plt.imshow(P1[0],cmap="Reds")
-# plt.colorbar()
+# plt.plot(M_o[c_h,:])
 # plt.show()
 
 # plt.figure()
-# plt.imshow(P2[0],cmap="Reds")
-# plt.colorbar()
-# plt.show()
+# plt.imshow(M_o)
+# plt.axis("off")
+# # plt.colorbar()
+# plt.savefig(f"Full Mag Or.png", dpi=300, bbox_inches='tight')
+# plt.close()
 
 # plt.figure()
-# plt.imshow(P3[0],cmap="Reds")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(P4[0],cmap="Reds")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(P1[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P1[1]),cmap="hot")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(P2[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P2[1]),cmap="hot")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(P3[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P3[1]),cmap="hot")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(P4[1][c_h-l:c_h+l,c_w-l:c_w+l]/np.max(P4[1]),cmap="hot")
-# plt.colorbar()
-# plt.show()
-
-crop_1=P1[2][c_h-l:c_h+l,c_w-l:c_w+l]
-crop_2=P2[2][c_h-l:c_h+l,c_w-l:c_w+l]
-crop_3=P3[2][c_h-l:c_h+l,c_w-l:c_w+l]
-crop_4=P4[2][c_h-l:c_h+l,c_w-l:c_w+l]
-# Inverse
-# iF1=ifft2(ifftshift(np.exp(1j*crop_1)))
-# iF2=ifft2(ifftshift(np.exp(1j*crop_2)))
-# iF3=ifft2(ifftshift(np.exp(1j*crop_3)))
-# iF4=ifft2(ifftshift(np.exp(1j*crop_4)))
-
-# iF1=ifftshift(ifft2(ifftshift(np.exp(1j*crop_1))))
-# iF2=ifftshift(ifft2(ifftshift(np.exp(1j*crop_2))))
-# iF3=ifftshift(ifft2(ifftshift(np.exp(1j*crop_3))))
-# iF4=ifftshift(ifft2(ifftshift(np.exp(1j*crop_4))))
-
-iF1=ifftshift(ifft2(np.exp(1j*crop_1)))
-iF2=ifftshift(ifft2(np.exp(1j*crop_2)))
-iF3=ifftshift(ifft2(np.exp(1j*crop_3)))
-iF4=ifftshift(ifft2(np.exp(1j*crop_4)))
-
-# plt.figure()
-# plt.imshow(crop_1,cmap="hot")#/np.max(P1[1])
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(crop_2,cmap="hot")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(crop_3,cmap="hot")
-# plt.colorbar()
-# plt.show()
-
-# plt.figure()
-# plt.imshow(crop_4,cmap="hot")
-# plt.colorbar()
-# plt.show()
+# plt.plot(original2_r[c_h,:], label="R channel", color='red')
+# plt.plot(original2_g[c_h,:], label="G channel", color='green')
+# plt.plot(original2_b[c_h,:], label="B channel", color='blue')
+# plt.ylim(0,2.5e-5)
+# plt.legend()
+# plt.gca().xaxis.set_visible(False)
+# plt.savefig(f"I profile Or.png", dpi=300, bbox_inches='tight')
+# plt.close()
 
 plt.figure()
-plt.imshow(abs(iF1),cmap="Reds")
-plt.colorbar()
-plt.show()
-
-plt.figure()
-plt.imshow(abs(iF2),cmap="Reds")
-plt.colorbar()
-plt.show()
-
-plt.figure()
-plt.imshow(abs(iF3),cmap="Reds")
-plt.colorbar()
-plt.show()
-
-plt.figure()
-plt.imshow(abs(iF4),cmap="Reds")
-plt.colorbar()
-plt.show()
-
-h=P1[1].shape[0]
-w=P1[1].shape[1]
-c_hs=h//2
-c_ws=w//2
-max_=np.max(P1[1][c_hs, :])
-le=10
-plt.figure()
-plt.plot(P1[1][c_hs,c_ws-le :c_ws+le]/np.max(P1[1]), label=f'p=1, center')
-plt.plot(P2[1][c_hs, c_ws-le :c_ws+le]/np.max(P2[1]), label=f'p=2, center')
-plt.plot(P3[1][c_hs, c_ws-le :c_ws+le]/np.max(P3[1]), label=f'p=3, center')
-plt.plot(P4[1][c_hs, c_ws-le :c_ws+le]/np.max(P4[1]), label=f'p=4, center')
-plt.xlabel('Column Index')
-# plt.ylim(0,max_)
-plt.ylabel('Magnitude Value')
-plt.title('Magnitude Profile Along Row')
+plt.plot(np.sqrt(im_r)[c_h,:], label="R channel", color='red')
+plt.plot(np.sqrt(im_g)[c_h,:], label="G channel", color='green')
+plt.plot(np.sqrt(im_b)[c_h,:], label="B channel", color='blue')
+plt.ylim(0,0.02)
 plt.legend()
-plt.show()
-
-# plt.figure()
-# plt.plot(P2[1][c_hs, :]/np.sum(P2[1][c_hs, :]), label=f'p=2,Row {c_hs}')
-# plt.xlabel('Column Index')
-# # plt.ylim(0,max_)
-# plt.ylabel('Intensity Value')
-# plt.title('Intensity Profile Along Row')
-# plt.legend()
-# plt.show()
-
-# plt.figure()
-# plt.plot(P3[1][c_hs, :]/np.sum(P3[1][c_hs, :]), label=f'p=3,Row {c_hs}')
-# plt.xlabel('Column Index')
-# # plt.ylim(0,max_)
-# plt.ylabel('Intensity Value')
-# plt.title('Intensity Profile Along Row')
-# plt.legend()
-# plt.show()
-
-# plt.figure()
-# plt.plot(P4[1][c_hs, :]/np.sum(P4[1][c_hs, :]), label=f'p=4, Row {c_hs}')
-# plt.xlabel('Column Index')
-# # plt.ylim(0,max_)
-# plt.ylabel('Intensity Value')
-# plt.title('Intensity Profile Along Row')
-# plt.legend()
-# plt.show()
-
+plt.gca().xaxis.set_visible(False)
+plt.savefig(f"M profile Or.png", dpi=300, bbox_inches='tight')
+plt.close()
+# crop_1=P1[2][c_h-l:c_h+l,c_w-l:c_w+l]
+# crop_2=P2[2][c_h-l:c_h+l,c_w-l:c_w+l]
+# crop_3=P3[2][c_h-l:c_h+l,c_w-l:c_w+l]
+# crop_4=P4[2][c_h-l:c_h+l,c_w-l:c_w+l]
