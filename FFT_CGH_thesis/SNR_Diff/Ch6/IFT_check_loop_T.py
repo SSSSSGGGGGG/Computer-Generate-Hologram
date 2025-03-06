@@ -20,17 +20,17 @@ original2_g=original2[:,:,1]/np.sum(original2[:,:,1])
 original2_b=original2[:,:,2]/np.sum(original2[:,:,2])
 # Save the iteration numbers in different arrays.
 r1=np.array([0])
-r2=np.array([ 1,5,10,20,40]) # ,5,10,20,40
-r3=np.array([5, 10, 15])
+r2=np.array([ 1,5,10,15,20,25,30,35,40]) # ,5,10,20,40
+r3=np.array([5, 10, 20,30,35])
 # n1 and n2 are iterations for the GS without and with the wimdow.
-for n1 in r3:
+for n1 in r2:
     # r4=np.arange(5,41-n1,5)
     
-    # for n2 in r1:
-        n2=20-n1
+    for n2 in r1:
+        # n2=40-n1
         # Use n1, n2 to complete the file path for reading different holograms.
-        # file_path1 = f"C:/Users/Laboratorio/OneDrive/Documents/Microstar/Simulation of difference of CGHs/SNR_Diff_whitecircle_TF/L300/n1 or n2/One circle_1024_GS_n1_{n1},n2_{n2}_nl n_noise.png"
-        file_path1 = f"C:/Users/Laboratorio/OneDrive/Documents/Microstar/Simulation of difference of CGHs/SNR_Diff_whitecircle_TF/L300/n1 and n2/One circle_1024_GS_n1_{n1},n2_{n2}_nl.png"
+        file_path1 = f"C:/Users/Laboratorio/OneDrive/Documents/Microstar/Simulation of difference of CGHs/SNR_Diff_whitecircle_TF/L300/n1 or n2/One circle_1024_GS_n1_{n1},n2_{n2}_nl n_noise.png"
+        # file_path1 = f"C:/Users/Laboratorio/OneDrive/Documents/Microstar/Simulation of difference of CGHs/SNR_Diff_whitecircle_TF/L300/n1 and n2/One circle_1024_GS_n1_{n1},n2_{n2}_nl.png"
         
         # Read RGB CGHs.
         holo1 = plt.imread(file_path1)
@@ -82,13 +82,13 @@ for n1 in r3:
         # plt.savefig(f"Full Re I n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
         # plt.close() 
         # Save the reconstructed magnitude.
-        maxM=0.004
-        plt.figure()
-        plt.imshow(np.abs(Reconstruction_holo1_r),vmax=maxM,cmap="hot")
-        plt.colorbar()
-        plt.axis("off")
-        plt.savefig(f"Full Re mag n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
-        plt.close() 
+        # maxM=0.004
+        # plt.figure()
+        # plt.imshow(np.abs(Reconstruction_holo1_r),vmax=maxM,cmap="hot")
+        # plt.colorbar()
+        # plt.axis("off")
+        # plt.savefig(f"Full Re mag n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
+        # plt.close() 
         
         # factor=0.02 # Small value for seeing noise.
         # I1_rgb=np.zeros_like(holo1)
@@ -104,14 +104,14 @@ for n1 in r3:
         # plt.savefig(f"Full Re n1_{n1} n2_{n2} vf {factor}.png", dpi=300, bbox_inches='tight')
         # plt.close() 
         
-        # max_Diff=1.702944609860424e-05#8.241445357271004e-06
-        # # Save the absolute of the difference distribution between reconstruction and the original, here the absolute calculation is applied.
-        # plt.figure()
-        # plt.imshow(abs(diff_r1),vmax=max_Diff,cmap="YlGnBu")
-        # plt.colorbar()
-        # plt.axis("off")
-        # plt.savefig(f"Diff n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
-        # plt.close()         
+        max_Diff=3.3e-06#8.241445357271004e-06
+        # Save the absolute of the difference distribution between reconstruction and the original, here the absolute calculation is applied.
+        plt.figure()
+        plt.imshow(abs(diff_r1),vmax=max_Diff,cmap="YlGnBu")
+        plt.colorbar()
+        plt.axis("off")
+        plt.savefig(f"Diff n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
+        plt.close()         
         # # Save the intensity profile crossing the center row.
         # plt.figure()
         # plt.plot(I1_r_normalized[c_h,:])
@@ -120,12 +120,12 @@ for n1 in r3:
         # plt.savefig(f"I profile n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
         # plt.close()
         # Save the magnitude profile crossing the center row.
-        plt.figure()
-        plt.plot(np.abs(Reconstruction_holo1_r)[c_h,:])
-        plt.ylim(0,0.005)
-        plt.gca().xaxis.set_visible(False)
-        plt.savefig(f"Mag profile n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
-        plt.close()
+        # plt.figure()
+        # plt.plot(np.abs(Reconstruction_holo1_r)[c_h,:])
+        # plt.ylim(0,0.005)
+        # plt.gca().xaxis.set_visible(False)
+        # plt.savefig(f"Mag profile n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
+        # plt.close()
 # Original Intensity that is normalized.        
 # plt.figure()
 # plt.imshow(original2_r,vmax=max_n1_1,cmap="hot")
@@ -134,12 +134,12 @@ for n1 in r3:
 # plt.savefig("Full Or.png", dpi=300, bbox_inches='tight')
 # plt.close()
 # Magnitude that is the square root of the original normalized intensity.
-plt.figure()
-plt.imshow(np.sqrt(original2_r),vmax=maxM,cmap="hot")
-plt.colorbar()
-plt.axis("off")
-plt.savefig("Full Or Mag.png", dpi=300, bbox_inches='tight')
-plt.close()
+# plt.figure()
+# plt.imshow(np.sqrt(original2_r),vmax=maxM,cmap="hot")
+# plt.colorbar()
+# plt.axis("off")
+# plt.savefig("Full Or Mag.png", dpi=300, bbox_inches='tight')
+# plt.close()
 # Intensity profile.
 # plt.figure()
 # plt.plot(original2_r[c_h,:])
