@@ -17,7 +17,7 @@ original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/On
 # Save the iteration numbers in different arrays.
 r1=np.array([0])
 r2=np.array([ 1,5,10,20,40]) # ,5,10,20,40 ,5,10,15,20,25,30,35,40
-r3=np.array([5,10,20,30,35]) # ,15,20,25,30,35
+r3=np.array([15,25]) # ,15,20,25,30,35
 # n1 and n2 are iterations for the GS without and with the wimdow.
 for n1 in r3:
     # r4=np.arange(5,41-n1,5)

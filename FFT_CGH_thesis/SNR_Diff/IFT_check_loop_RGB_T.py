@@ -13,11 +13,6 @@ from scipy.fft import ifft2,ifftshift
 """This file can process multiple holograms together and automatically, where the SNR and Diff are calculated for each one."""
 # Read the path of original image.
 original_path2="C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/fl_one.png"
-
-original2=plt.imread(original_path2)
-original2_r=original2[:,:,0]/np.sum(original2[:,:,0])
-original2_g=original2[:,:,1]/np.sum(original2[:,:,1])
-original2_b=original2[:,:,2]/np.sum(original2[:,:,2])
 # Save the iteration numbers in different arrays.
 r1=[0]
 r2=[1,40] 
@@ -46,16 +41,20 @@ for n1 in r2:
             Reconstruction_holo1_g = ifftshift(ifft2(np.exp(1j * holo1_G_angle)))
             Reconstruction_holo1_b = ifftshift(ifft2(np.exp(1j * holo1_B_angle)))
               
-            I1_r=np.abs(Reconstruction_holo1_r)**2
-            I1_r_normalized = I1_r / np.sum(I1_r) 
-            I1_g=np.abs(Reconstruction_holo1_g)**2
-            I1_g_normalized = I1_g / np.sum(I1_g)
-            I1_b=np.abs(Reconstruction_holo1_b)**2
-            I1_b_normalized = I1_b / np.sum(I1_b)
-            
             l=620
             c_w,c_h=width//2,height//2
             lh,lw=height-2*l,width-2*l # The size of the window.
+            I1_r=np.abs(Reconstruction_holo1_r)**2
+            I1_r_normalized = I1_r / np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]) # All the sum is 1.
+            I1_g=np.abs(Reconstruction_holo1_g)**2
+            I1_g_normalized = I1_g / np.sum(I1_g[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+            I1_b=np.abs(Reconstruction_holo1_b)**2
+            I1_b_normalized = I1_b / np.sum(I1_b[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+            # Normalized Original
+            original2=plt.imread(original_path2)
+            original2_r=original2[:,:,0]/np.sum(original2[:,:,0][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+            original2_g=original2[:,:,1]/np.sum(original2[:,:,1][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
+            original2_b=original2[:,:,2]/np.sum(original2[:,:,2][c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])
             
             # SNR in the window.
             SNR_r=np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2])/(np.sum(I1_r)-np.sum(I1_r[c_h-lh//2:c_h+lh//2, c_w-lw//2:c_w+lw//2]))
@@ -72,6 +71,14 @@ for n1 in r2:
             D_b=np.sqrt(np.sum((diff_b)**2))
             D=(D_r+D_g+D_b)/3
             print(f"n1 {n1} n2 {n2} p{ p}: SNR={SNR} Diff={D}")
+            max_Diff=2.5e-06
+            # Save the absolute of the difference distribution between reconstruction and the original, here the absolute calculation is applied.
+            plt.figure()
+            plt.imshow(abs(diff_r)+abs(diff_g)+abs(diff_b),vmax=max_Diff,cmap="YlGnBu")
+            plt.colorbar()
+            plt.axis("off")
+            plt.savefig(f"Diff n1_{n1} n2_{n2}.png", dpi=300, bbox_inches='tight')
+            plt.close()  
             
             f=500**2 # Small value for seeing noise.
             I1_rgb=np.zeros_like(holo1)

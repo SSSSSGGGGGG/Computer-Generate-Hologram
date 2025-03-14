@@ -11,8 +11,8 @@ from pygments.lexers import PythonLexer
 from pygments.formatters import RtfFormatter
 
 # Input and output filenames
-input_file = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/Ch6/Integration_T.py"
-output_file = "C:/Users/Laboratorio/PhD_thesis/rft files/Integration_T.rtf"
+input_file = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/IFT_check_loop_RGB_T.py"
+output_file = "C:/Users/Laboratorio/PhD_thesis/rft files/IFT_check_loop_RGB_T.rtf"
 
 # Ensure the output directory exists
 output_dir = os.path.dirname(output_file)
@@ -25,7 +25,7 @@ with open(input_file, "r", encoding="utf-8") as f:
 highlighted_code = highlight(
     code,
     PythonLexer(),
-    RtfFormatter(style="default", fontface="Consolas", fontsize=20, fontweight="normal")
+    RtfFormatter(style="default", fontface="Consolas", fontsize=16, fontweight="normal")
 )
 # Write the RTF output
 with open(output_file, "w", encoding="utf-8") as f:

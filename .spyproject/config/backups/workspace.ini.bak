@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['FFT_CGH_thesis\\SNR_Diff\\Ch6\\Integration2.py', 'FFT_CGH_thesis\\SNR_Diff\\powered intensity.py', 'Covert_py_to_rft.py', 'FFT_demos for thesis\\FFT_demos.py', 'FFT_demos for thesis\\FFTofSLM.py']
+recent_files = ['FFT_CGH_thesis\\SNR_Diff\\Ch6\\Integration2.py', 'FFT_CGH_thesis\\SNR_Diff\\powered intensity.py', 'FFT_CGH_thesis\\SNR_Diff\\Ch6\\Integration_T.py', 'Covert_py_to_rft.py', 'FFT_CGH_thesis\\SNR_Diff\\Ch6\\IFT_check_loop_T_sW.py', 'FFT_CGH_thesis\\SNR_Diff\\FFT_GS_nc_power.py', 'FFT_CGH_thesis\\SNR_Diff\\IFT_check_loop_RGB_T.py', 'FFT_CGH_thesis\\SNR_Diff\\IFT_check_loop_RGB.py']
 
 [main]
 version = 0.2.0
