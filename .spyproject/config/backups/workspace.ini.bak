@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['Covert_py_to_rft.py', 'For Exp in thesis\\FFT_GS_rescale_nc_SNR_sim_TF.py', 'Con_Cor\\FFT_SameNoise.py', 'Con_Cor\\Bi_GS_rescale_cor.py', 'Con_Cor\\Combine_holos_Lens.py']
+recent_files = ['Covert_py_to_rft.py', 'For Exp in thesis\\FFT_GS_rescale_nc_SNR_sim_TF.py', 'Con_Cor\\FFT_SameNoise.py', 'Con_Cor\\Combine_holos_Lens.py', 'For Exp in thesis\\W_H_rescale_lens_inUse.py', 'Con_Cor\\FFT_SameNoise1.py']
 
 [main]
 version = 0.2.0

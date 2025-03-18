@@ -115,36 +115,58 @@ def FFT(im_shift_r,im_shift_g,im_shift_b):
     optimized_phase_g = np.angle(current_field_g)  
     optimized_phase_b = np.angle(current_field_b)
     
-    phase_r_conv=(optimized_phase_r/np.pi+1)*(255/rdp)
-    phase_g_conv=(optimized_phase_g/np.pi+1)*(255/gdp)
-    phase_b_conv=(optimized_phase_b/np.pi+1)*(255/bdp)
+    optimized_phase_r_bi = np.where(optimized_phase_r < 0, 0, 1) # Now there is no complex field for binarized.
+   
+    optimized_phase_g_bi = np.where(optimized_phase_g < 0, 0, 1)
     
-    return phase_r_conv,phase_g_conv,phase_b_conv
+    optimized_phase_b_bi = np.where(optimized_phase_b < 0, 0, 1)
+    return optimized_phase_r_bi,optimized_phase_g_bi,optimized_phase_b_bi
 
 v_phase_r,v_phase_g,v_phase_b=FFT(im_v_re_r,im_v_re_g,im_v_re_b)
 h_phase_r,h_phase_g,h_phase_b=FFT(im_l_re_r,im_l_re_g,im_l_re_b)
 
 h_phase_r_fl,h_phase_g_fl,h_phase_b_fl=FFT(im_l_re_r_fl,im_l_re_g_fl,im_l_re_b_fl)
 
-def con(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2):
+def convToGray(phase_r,phase_g,phase_b,type_):
+    if type_=="tri":
+            gr,gg,gb=184,136,112
+    else:
+            gr,gg,gb=136,136,136
+    
+    r_gray=phase_r*gr
+    
+    g_gray=phase_g*gg
+    
+    b_gray=phase_b*gb
+    
+    return r_gray,g_gray,b_gray
+
+def con_cor_Bi(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2,type_):
+    if type_=="tri":
+            gr,gg,gb=185,185,185
+    else:
+            gr,gg,gb=136,136,136
+            
     con_r=phase_r1+phase_r2
+    cor_r=abs(phase_r1-phase_r2)
+    con_r_gray=con_r*gr
+    cor_r_gray=cor_r*gr
     
     con_g=phase_g1+phase_g2
+    cor_g=abs(phase_g1-phase_g2)
+    con_g_gray=con_g*gg
+    cor_g_gray=cor_g*gg
     
     con_b=phase_b1+phase_b2
-    
-    return con_r,con_g,con_b
-
-def corr(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2):
-    cor_r=abs(phase_r1-phase_r2)
-
-    cor_g=abs(phase_g1-phase_g2)
-  
     cor_b=abs(phase_b1-phase_b2)
-    return cor_r,cor_g,cor_b
+    con_b_gray=con_b*gb
+    cor_b_gray=cor_b*gb
+    
+    return con_r_gray,con_g_gray,con_b_gray,cor_r_gray,cor_g_gray,cor_b_gray
 
-con_r,con_g,con_b=con(v_phase_r, h_phase_r, v_phase_g, h_phase_g, v_phase_b, h_phase_b)
-cor_r,cor_g,cor_b=corr(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl)
+t="tri"
+con_r,con_g,con_b,_,_,_=con_cor_Bi(v_phase_r, h_phase_r, v_phase_g, h_phase_g, v_phase_b, h_phase_b,t)
+_,_,_,cor_r,cor_g,cor_b=con_cor_Bi(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl,t)
 
 """Lens"""
 lambda_r = 0.662e-6  
@@ -194,40 +216,22 @@ def saveim(p_r,p_g,p_b):
     return im_modify_c,im_modify_c_r,im_modify_c_g,im_modify_c_b
 
 saved_1=saveim(con_r,con_g,con_b)[0]
-im_l_save=crop(saved_1,f"VH0 con L")
-saved_1=saveim(con_r,v_phase_g,v_phase_b)[0]
-im_l_save=crop(saved_1,f"VH0 con R_L")
-saved_1=saveim(v_phase_r,con_g,v_phase_b)[0]
-im_l_save=crop(saved_1,f"VH0 con G_L")
-saved_1=saveim(v_phase_r,v_phase_g,con_b)[0]
-im_l_save=crop(saved_1,f"VH0 con B_L")
+im_l_save=crop(saved_1,f"Bi_VH0 {t} con L")
 
 saved_1=saveim(cor_r,cor_g,cor_b)[0]
-im_l_save=crop(saved_1,f"VH180 cor L")
+im_l_save=crop(saved_1,f"Bi_VH180 {t} cor L")
 
-saved_1=saveim(cor_r,v_phase_g,v_phase_b)[0]
-im_l_save=crop(saved_1,f"VH180 cor R_L")
+phase_r,phase_g,phase_b=convToGray(v_phase_r, v_phase_g, v_phase_b, t)
+saved_1,saved_2,saved_3,saved_4=saveim(phase_r,phase_g,phase_b)
+im_l_save=crop(saved_1,f"Bi_VH0 {t} Sv L")
 
-saved_1=saveim(v_phase_r,cor_g,v_phase_b)[0]
-im_l_save=crop(saved_1,f"VH180 cor G_L")
+phase_r,phase_g,phase_b=convToGray(h_phase_r,h_phase_g,h_phase_b, t)
+saved_1,saved_2,saved_3,saved_4=saveim(phase_r,phase_g,phase_b)
+im_l_save=crop(saved_1,f"Bi_VH0 {t} Sh L")
 
-saved_1=saveim(v_phase_r,v_phase_g,cor_b)[0]
-im_l_save=crop(saved_1,f"VH180 cor B_L")
-
-saved_1,saved_2,saved_3,saved_4=saveim(v_phase_r,v_phase_g,v_phase_b)
-im_l_save=crop(saved_1,f"VH0 Sv L")
-
-saved_1,saved_2,saved_3,saved_4=saveim(h_phase_r,h_phase_g,h_phase_b)
-im_l_save=crop(saved_1,f"VH0 Sh L")
-im_lr_save=crop(saved_2,f"VH0 Sh R_L")
-im_lg_save=crop(saved_3,f"VH0 Sh G_L")
-im_lb_save=crop(saved_4,f"VH0 Sh B_L")
-
-saved_1,saved_2,saved_3,saved_4=saveim(h_phase_r_fl,h_phase_g_fl,h_phase_b_fl)
-im_l_save=crop(saved_1,f"VH180 Sh L")
-im_lr_save=crop(saved_2,f"VH180 Sh R_L")
-im_lg_save=crop(saved_3,f"VH180 Sh G_L")
-im_lb_save=crop(saved_4,f"VH180 Sh B_L")
+phase_r,phase_g,phase_b=convToGray(h_phase_r_fl,h_phase_g_fl,h_phase_b_fl, t)
+saved_1,saved_2,saved_3,saved_4=saveim(phase_r,phase_g,phase_b)
+im_l_save=crop(saved_1,f"Bi_VH180 {t} Sh L")
 
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s")
