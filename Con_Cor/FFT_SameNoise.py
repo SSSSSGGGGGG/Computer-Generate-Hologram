@@ -135,16 +135,16 @@ def con(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2):
     
     return con_r,con_g,con_b
 
-def corr(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2):
-    cor_r=abs(phase_r1-phase_r2)
+# def corr(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2):
+#     cor_r=abs(phase_r1-phase_r2)
 
-    cor_g=abs(phase_g1-phase_g2)
+#     cor_g=abs(phase_g1-phase_g2)
   
-    cor_b=abs(phase_b1-phase_b2)
-    return cor_r,cor_g,cor_b
+#     cor_b=abs(phase_b1-phase_b2)
+#     return cor_r,cor_g,cor_b
 
 con_r,con_g,con_b=con(v_phase_r, h_phase_r, v_phase_g, h_phase_g, v_phase_b, h_phase_b)
-cor_r,cor_g,cor_b=corr(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl)
+cor_r,cor_g,cor_b=con(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl)
 
 """Lens"""
 lambda_r = 0.662e-6  

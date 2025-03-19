@@ -148,25 +148,25 @@ def con_cor_Bi(phase_r1,phase_r2,phase_g1,phase_g2,phase_b1,phase_b2,type_):
             gr,gg,gb=136,136,136
             
     con_r=phase_r1+phase_r2
-    cor_r=abs(phase_r1-phase_r2)
+    # cor_r=abs(phase_r1-phase_r2)
     con_r_gray=con_r*gr
-    cor_r_gray=cor_r*gr
+    # cor_r_gray=cor_r*gr
     
     con_g=phase_g1+phase_g2
-    cor_g=abs(phase_g1-phase_g2)
+    # cor_g=abs(phase_g1-phase_g2)
     con_g_gray=con_g*gg
-    cor_g_gray=cor_g*gg
+    # cor_g_gray=cor_g*gg
     
     con_b=phase_b1+phase_b2
-    cor_b=abs(phase_b1-phase_b2)
+    # cor_b=abs(phase_b1-phase_b2)
     con_b_gray=con_b*gb
-    cor_b_gray=cor_b*gb
+    # cor_b_gray=cor_b*gb
     
-    return con_r_gray,con_g_gray,con_b_gray,cor_r_gray,cor_g_gray,cor_b_gray
+    return con_r_gray,con_g_gray,con_b_gray
 
 t="tri"
-con_r,con_g,con_b,_,_,_=con_cor_Bi(v_phase_r, h_phase_r, v_phase_g, h_phase_g, v_phase_b, h_phase_b,t)
-_,_,_,cor_r,cor_g,cor_b=con_cor_Bi(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl,t)
+con_r,con_g,con_b=con_cor_Bi(v_phase_r, h_phase_r, v_phase_g, h_phase_g, v_phase_b, h_phase_b,t)
+cor_r,cor_g,cor_b=con_cor_Bi(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl,t)
 
 """Lens"""
 lambda_r = 0.662e-6  
