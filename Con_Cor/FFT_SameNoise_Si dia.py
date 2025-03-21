@@ -13,7 +13,7 @@ import cv2
 import time
 
 start_t=time.time()
-os.chdir("C:/Users/gaosh/Documents/python/Computer-Generate-Hologram/Con_Cor")
+os.chdir("C:/Users/Laboratorio/MakeHologram/Con_Cor")
 filename="Lotus" 
 im_o=plt.imread(f"{filename}.png")
 h,w=im_o[:,:,0].shape
@@ -75,10 +75,6 @@ def FFT(im):
     optimized_phase_g = np.angle(current_field_g)  
     optimized_phase_b = np.angle(current_field_b)
     
-    # phase_r_conv=(optimized_phase_r/np.pi+1)*(255/rdp)
-    # phase_g_conv=(optimized_phase_g/np.pi+1)*(255/gdp)
-    # phase_b_conv=(optimized_phase_b/np.pi+1)*(255/bdp)
-    
     return optimized_phase_r,optimized_phase_g,optimized_phase_b
 
 v_phase_r,v_phase_g,v_phase_b=FFT(im_v)
@@ -114,15 +110,33 @@ V_cor_r,V_cor_g,V_cor_b=corr(v_phase_r, h_phase_r, v_phase_g, h_phase_g, v_phase
 VHfl_con_r,VHfl_con_g,VHfl_con_b=con(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl)
 VHfl_cor_r,VHfl_cor_g,VHfl_cor_b=corr(v_phase_r, h_phase_r_fl, v_phase_g, h_phase_g_fl, v_phase_b, h_phase_b_fl)
 
+test=np.pi-VHfl_con_r
+test=np.mod(test,2*np.pi)
 
-# plt.figure()
-# plt.imshow(np.abs(ifftshift(ifft2(np.exp(1j*VHfl_con_r)))),cmap="hot")
-# plt.colorbar()
-# plt.show()
-# plt.figure()
-# plt.imshow(np.abs(ifftshift(ifft2(np.exp(1j*VHfl_cor_r)))),cmap="hot")
-# plt.colorbar()
-# plt.show()
+im_modify_v = np.zeros((height, width, 3), dtype=np.float32)
+im_modify_v[:,:,0] = v_phase_r
+im_modify_v[:,:,1] = v_phase_g
+im_modify_v[:,:,2] = v_phase_b
+im_modify_1 = np.zeros((height, width, 3), dtype=np.float32)
+im_modify_1[:,:,0] = h_phase_r_fl
+im_modify_1[:,:,1] = h_phase_g_fl
+im_modify_1[:,:,2] = h_phase_b_fl
+im_modify_c = np.zeros((height, width, 3), dtype=np.float32)
+im_modify_c[:,:,0] = VHfl_con_r
+im_modify_c[:,:,1] = VHfl_con_g
+im_modify_c[:,:,2] = VHfl_con_b
+plt.figure()
+plt.imshow(np.abs(im_modify_v)[:,:,0],cmap="hsv")
+plt.colorbar()
+plt.show()
+plt.figure()
+plt.imshow(np.abs(im_modify_1)[:,:,0],cmap="hsv")
+plt.colorbar()
+plt.show()
+plt.figure()
+plt.imshow(np.abs(im_modify_c)[:,:,0],cmap="hsv")
+plt.colorbar()
+plt.show()
 def IFFT(p_r,p_g,p_b):
     IF_r=ifftshift(ifft2(np.exp(1j*p_r)))
     IF_g=ifftshift(ifft2(np.exp(1j*p_g)))
@@ -140,7 +154,10 @@ Vfl_con_ir,Vfl_con_ig,Vfl_con_ib=IFFT(VHfl_con_r,VHfl_con_g,VHfl_con_b)
 Vfl_cor_ir,Vfl_cor_ig,Vfl_cor_ib=IFFT(VHfl_cor_r,VHfl_cor_g,VHfl_cor_b)
 
 def display(i_r,name):
-    
+    # im_modify_c = np.zeros((height, width, 3), dtype=np.float32)
+    # im_modify_c[:,:,0] = p_r
+    # im_modify_c[:,:,1] = p_g
+    # im_modify_c[:,:,2] = p_b
     plt.figure()
     plt.imshow(i_r,cmap="hot")
     plt.colorbar()
@@ -156,17 +173,17 @@ def display(i_r,name):
     # fig = plt.figure()
     # ax = fig.add_subplot(111, projection='3d')
     # ax.plot_surface(X, Y, i_r, cmap='jet')
-    # ax.set_zlim(0, 0.000002) 
+    # ax.set_zlim(0, i_r.max()) 
     # ax.view_init(elev=35, azim=-20) 
     # ax.set_xlabel("x")
     # ax.set_ylabel("y")
     # # plt.savefig(f"Convolution {file1} {t} 3d.png", dpi=300, bbox_inches="tight")
     # plt.show()
-di_1=display(Vcon_ir,"Con V+H0")
-di_1=display(Vcor_ir,"Cor V+H0")    
+# di_1=display(Vcon_ir,"Con V+H0")
+# di_1=display(Vcor_ir,"Cor V+H0")    
 
-di_1=display(Vfl_con_ir,"Con V+H0_im fl")
-di_1=display(Vfl_cor_ir,"Cor V+H0_im fl") 
+# di_1=display(Vfl_con_ir,"Con V+H0_im fl")
+# di_1=display(Vfl_cor_ir,"Cor V+H0_im fl") 
     
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s")

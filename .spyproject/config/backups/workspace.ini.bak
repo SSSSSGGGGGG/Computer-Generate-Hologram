@@ -4,7 +4,7 @@ save_data_on_exit = True
 save_history = True
 save_non_project_files = False
 project_type = 'empty-project-type'
-recent_files = ['For Exp in thesis\\W_H_rescale_lens_inUse.py', 'Con_Cor\\FFT_SameNoise_Si.py', 'Con_Cor\\FFT_SameNoise.py']
+recent_files = ['For Exp in thesis\\W_H_rescale_lens_inUse.py', 'Con_Cor\\FFT_SameNoise_Si.py', 'Con_Cor\\FFT_SameNoise_Si dia.py', 'Con_Cor\\FFT_SameNoise.py', 'Con_Cor\\FFT_SameNoiseBi 4 H simple plus.py', 'Con_Cor\\FFT_SameNoiseBi 4H.py', 'Con_Cor\\FFT_SameNoise simple plus.py', 'Con_Cor\\FFT_SameNoiseBi .py']
 
 [main]
 version = 0.2.0

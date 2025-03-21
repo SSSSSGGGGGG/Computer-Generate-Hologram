@@ -11,8 +11,8 @@ from pygments.lexers import PythonLexer
 from pygments.formatters import RtfFormatter
 
 # Input and output filenames
-input_file = "C:/Users/Laboratorio/MakeHologram/FFT_CGH_thesis/SNR_Diff/IFT_check_loop_RGB_T.py"
-output_file = "C:/Users/Laboratorio/PhD_thesis/rft files/IFT_check_loop_RGB_T.rtf"
+input_file = "C:/Users/Laboratorio/MakeHologram/Con_Cor/FFT_SameNoiseBi T.py"
+output_file = "C:/Users/Laboratorio/PhD_thesis/rft files/FFT_SameNoiseBi_T.rtf"
 
 # Ensure the output directory exists
 output_dir = os.path.dirname(output_file)
