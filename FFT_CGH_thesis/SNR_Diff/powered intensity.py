@@ -25,36 +25,62 @@ ofs=0
 c_w=width//2+ofs
 c_h=height//2+ofs
 
-power=[1,2,3,4] # ,2,3,4
-for p in power:
-    
-    power=p
-    rand = np.random.uniform(0, 1, (height , width))
+powers = [1, 2, 3, 4]  # List of power values
+Ave_set = []
+
+for p in powers:  # Iterate over powers, not power
+    rand = np.random.uniform(0, 1, (height, width))
     rand_2pi = 2 * np.pi * rand
-    p_im_r=np.sqrt(im[:,:,0]**power)#* np.exp(1j * rand_2pi)
-    p_im_g=np.sqrt(im[:,:,1]**power)#* np.exp(1j * rand_2pi) 
-    p_im_b=np.sqrt(im[:,:,2]**power)#* np.exp(1j * rand_2pi)
-    
+    p_im_r = np.sqrt(im[:, :, 0] ** p)
+    p_im_g = np.sqrt(im[:, :, 1] ** p)
+    p_im_b = np.sqrt(im[:, :, 2] ** p)
+
+    p_set = [np.average(p_im_r), np.average(p_im_g), np.average(p_im_b)]
+    Ave_set.append(p_set)
+
+# Convert to NumPy array for plotting
+array2d = np.array(Ave_set)
+
+# Ensure dimensions match before plotting
+if len(powers) == array2d.shape[0]:  
     plt.figure()
-    plt.imshow(im**power)
+    plt.plot(powers, array2d[:, 0], label="R", color="r", marker="o")
+    plt.plot(powers, array2d[:, 1], label="G", color="g", marker="o")
+    plt.plot(powers, array2d[:, 2], label="B", color="b", marker="o")
+    plt.xticks(powers)
+    plt.xlabel("Power (p)")
+    plt.ylabel("Average Magnitude")
+    plt.title("Effect of Power on Average Magnitude")
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+else:
+    print(f"Dimension mismatch: powers has {len(powers)} elements, but array2d has shape {array2d.shape}")
+
+    
+    # plt.figure()
+    # plt.imshow(im**power)
+    # # plt.colorbar()
+    # plt.axis("off")
+    # plt.savefig(f"Full I p_{power}.png", dpi=300, bbox_inches='tight')
+    # plt.close()
+    
+    # plt.figure()
+    # plt.imshow((im**power)[:,:,1], cmap="Greens")
     # plt.colorbar()
-    plt.axis("off")
-    plt.savefig(f"Full I p_{power}.png", dpi=300, bbox_inches='tight')
-    plt.close()
+    # plt.axis("off")
+    # plt.savefig(f"Full I p_{power} g.png", dpi=300, bbox_inches='tight')
+    # plt.close()
     
-    plt.figure()
-    plt.imshow((im**power)[:,:,1], cmap="Greens")
-    plt.colorbar()
-    plt.axis("off")
-    plt.savefig(f"Full I p_{power} g.png", dpi=300, bbox_inches='tight')
-    plt.close()
+    # plt.figure()
+    # plt.imshow((im**power)[:,:,2], cmap="Blues")
+    # plt.colorbar()
+    # plt.axis("off")
+    # plt.savefig(f"Full I p_{power} b.png", dpi=300, bbox_inches='tight')
+    # plt.close()
     
-    plt.figure()
-    plt.imshow((im**power)[:,:,2], cmap="Blues")
-    plt.colorbar()
-    plt.axis("off")
-    plt.savefig(f"Full I p_{power} b.png", dpi=300, bbox_inches='tight')
-    plt.close()
+   
+
     # FT_r=fftshift(fft2(fftshift(p_im_r)))
     # FT_g=fftshift(fft2(fftshift(p_im_g)))
     # FT_b=fftshift(fft2(fftshift(p_im_b)))
