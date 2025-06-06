@@ -36,7 +36,7 @@ def holo(G):
       
     im_blank=Image.new("RGB",(width,height))
     pixels=im_blank.load()
-    stripe_width = 24#27 # period
+    stripe_width = 27#27 # period
     spacing=stripe_width*2   # 2 times period
     loop_w=width/stripe_width
     reminder_w=width%stripe_width
