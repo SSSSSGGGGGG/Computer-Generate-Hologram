@@ -1,0 +1,1 @@
+This project implements CGH generation using Fourier optics principles. It includes several typical diffraction phase gratings, Fresnel lens, RGB hologram synthesis (iterative algorithms included), and SLM-compatible phase map construction.
