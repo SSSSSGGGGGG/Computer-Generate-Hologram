@@ -72,6 +72,13 @@ plt.show()
 
 """ Superposition of vortex and binary grating"""
 Diffraction_pattern_C=fftshift(fft2(binary_phase*np.exp(1j*Spiral_phase))) # Spiral beam is multiplied by the binary phase grating
+Combined_phase=np.angle(binary_phase*np.exp(1j*Spiral_phase))
+plt.figure()
+plt.imshow(abs(Combined_phase), cmap='gray')
+plt.colorbar()
+plt.title('A combined_phase mask')
+plt.show()
+
 plt.figure()
 plt.imshow(abs(Diffraction_pattern_C), cmap="hot") # Convolution between diffraction orders and vortex beam
 plt.title("Superposition of vortex and binary grating")
