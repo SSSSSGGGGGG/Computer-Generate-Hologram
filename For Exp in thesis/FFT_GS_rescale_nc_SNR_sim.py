@@ -15,8 +15,8 @@ import time
 
 start_t=time.time()
 
-os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
-filename="RGB_500" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
+os.chdir("C:/Users/Laboratorio/MakeHologram/For Exp in thesis")
+filename="Grass" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -95,8 +95,8 @@ current_field_r = fftshift(fft2(im_r_rand ))
 current_field_g =fftshift(fft2(im_g_rand))
 current_field_b =fftshift(fft2(im_b_rand))
 
-iterations1=0
-iterations2=1
+iterations1=20
+iterations2=20
 
 factor=1
 for j in range(iterations1):

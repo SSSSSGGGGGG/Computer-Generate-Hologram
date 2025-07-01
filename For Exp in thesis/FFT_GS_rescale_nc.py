@@ -15,7 +15,7 @@ import time
 
 start_t=time.time()
 
-os.chdir("C:/Users/Laboratorio/MakeHologram/Wirtingers_Holography")
+os.chdir("C:/Users/Laboratorio/MakeHologram/For Exp in thesis")
 filename="whiteRing" #flowers_tf  RGB 3circles_exp
 im=plt.imread(f"{filename}.png")
 
@@ -59,20 +59,20 @@ im_manipulated=np.zeros((height,width,3))
 im_manipulated[:,:,0]=scaled_red
 im_manipulated[:,:,1]=im[:,:,1]
 im_manipulated[:,:,2]=scaled_blue#scaled_blue
-plt.imsave(f"{filename} R re.png", im_manipulated[:,:,0],cmap="Reds")
-plt.imsave(f"{filename} G re.png", im_manipulated[:,:,1],cmap="Greens")
-plt.imsave(f"{filename} B re.png", im_manipulated[:,:,2],cmap="Blues")
+# plt.imsave(f"{filename} R re.png", im_manipulated[:,:,0],cmap="Reds")
+# plt.imsave(f"{filename} G re.png", im_manipulated[:,:,1],cmap="Greens")
+# plt.imsave(f"{filename} B re.png", im_manipulated[:,:,2],cmap="Blues")
 # plt.figure()
 # plt.imshow(im_manipulated)
 # # plt.colorbar()
 # plt.title("RGB")
 # plt.show()
 #R
-im_shift_r=fftshift(im[:,:,0])
+im_shift_r=fftshift(im_manipulated[:,:,0])
 #G
 im_shift_g=fftshift(im[:,:,1])
 #B
-im_shift_b=fftshift(im[:,:,2])
+im_shift_b=fftshift(im_manipulated[:,:,2])
 # #R
 # im_shift_r=fftshift(scaled_red)
 # #G
@@ -186,7 +186,18 @@ def crop(im_modify,name):
 # R=crop(im_modify_r, "lensr")
 # G=crop(im_modify_g, "lensg")
 # B=crop(im_modify_b, "lensb")
-C=crop(im_modify_c, "L")
+# R=crop(im_modify_noL[:,:,0], "r")
+# G=crop(im_modify_noL[:,:,1], "g")
+# B=crop(im_modify_noL[:,:,2], "b")
+
+# plt.imsave(f"{filename} R re.png", im_modify_noL[:,:,0],cmap="Reds")
+# plt.imsave(f"{filename} G re.png", im_modify_noL[:,:,1],cmap="Greens")
+# plt.imsave(f"{filename} B re.png", im_modify_noL[:,:,2],cmap="Blues")
+
+# plt.imsave(f"{filename} Rlen.png", im_modify_r[:,:,0],cmap="Reds")
+# plt.imsave(f"{filename} Glen.png", im_modify_g[:,:,1],cmap="Greens")
+# plt.imsave(f"{filename} Blen.png", im_modify_b[:,:,2],cmap="Blues")
+# C=crop(im_modify_c, "L")
 # C_noL=crop(im_modify_noL, "re_nL")
 # Save each channel separately
 # red_channel.save(f"{filename}_GS_{iterations}_lens_NoCo_HA_r.png")

@@ -14,7 +14,7 @@ import time
 
 start_t=time.time()
 os.chdir("C:/Users/Laboratorio/MakeHologram/For Exp in thesis")
-filename="Grass" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
+filename="whiteRing" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -146,7 +146,9 @@ arr_r=np.zeros((height, width))
 arr_g=np.zeros((height, width))
 arr_b=np.zeros((height, width))
 pixel_size=4.5e-6
-f=-2 # focal length (meters).
+f=-2 # focal length (meters)
+fg=-1.5
+fb=-1
 center_h=height//2
 center_w=width//2
 # Calculate the phase of lenses according to Eq. (9.1) for three wavelengths.
@@ -154,8 +156,8 @@ for i in range(height):
     for j in range(width):
         r = pixel_size * np.sqrt((i - center_h)**2 + (j - center_w)**2)
         arr_r[i, j] =  r**2 / (f * lambda_r) 
-        arr_g[i, j] =  r**2 / (f * lambda_g)
-        arr_b[i, j] =  r**2 / (f * lambda_b)
+        arr_g[i, j] =  r**2 / (fg * lambda_g)
+        arr_b[i, j] =  r**2 / (fb * lambda_b)
 # Change the range of the phase into [0,2].
 arr_r_mod=np.mod(arr_r,2)
 arr_g_mod=np.mod(arr_g,2)
@@ -183,7 +185,7 @@ def crop(im_modify,name):
     im_modi.save(f"{filename}_GS_It1_{iterations1}_It2_{iterations2}_{name}_p {power1}.png")
 
 C=crop(im_modify_c, "L")
-C_noL=crop(im_modify_noL, "nL")
+# C_noL=crop(im_modify_noL, "nL")
 
 end_t=time.time()
 print(f"Time consuming {end_t-start_t}s, iteration {iterations1+iterations2}")
