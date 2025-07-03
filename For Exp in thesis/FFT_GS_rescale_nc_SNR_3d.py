@@ -14,7 +14,7 @@ import time
 
 start_t=time.time()
 os.chdir("C:/Users/Laboratorio/MakeHologram/For Exp in thesis")
-filename="whiteRing" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
+filename="5" #flowers_tf  RGB 3circles_exp RGB_500 fl_one
 im=plt.imread(f"{filename}.png")
 
 height=im.shape[0]
@@ -59,6 +59,12 @@ im_shift_r=fftshift(scaled_red**power1)
 im_shift_g=fftshift(im[:,:,1]**power1)
 #B
 im_shift_b=fftshift(scaled_blue**power1)
+# #R
+# im_shift_r=fftshift(im[:,:,0]**power1)
+# #G
+# im_shift_g=fftshift(im[:,:,1]**power1)
+# #B
+# im_shift_b=fftshift(im[:,:,2]**power1)
 # Genaration of random phase noise.
 rand=np.random.uniform(0, 1, (height, width))
 rand_2pi=np.pi*rand
@@ -146,9 +152,10 @@ arr_r=np.zeros((height, width))
 arr_g=np.zeros((height, width))
 arr_b=np.zeros((height, width))
 pixel_size=4.5e-6
-f=-2 # focal length (meters)
-fg=-1.5
-fb=-1
+offset=0.4
+f=-2+offset # focal length (meters)
+fg=f
+fb=f
 center_h=height//2
 center_w=width//2
 # Calculate the phase of lenses according to Eq. (9.1) for three wavelengths.
