@@ -10,20 +10,30 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fft import fft2, ifft2, fftshift
 
-im=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/dear_GS_It1_20_It2_0_L_p 2.png")
-# im_1=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/1_GS_It1_20_It2_0_L_p 1.png")
-# im_2=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/2_GS_It1_20_It2_0_L_p 1.png")
+# im=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/dear_GS_It1_20_It2_0_L_p 2.png")
+im_1=plt.imread("C:/Users/Laboratorio/MakeHologram/Con_Cor/CGH_o.png")
+im_2=plt.imread("C:/Users/Laboratorio/MakeHologram/Con_Cor/Tri_CGH_h.png")
 # im_3=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/3_GS_It1_20_It2_0_L_p 1.png")
 # im_4=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/4_GS_It1_20_It2_0_L_p 1.png")
 # im_5=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/5_GS_It1_20_It2_0_L_p 1.png")
 
-# im_1_array = np.array(im_1)*255
-# im_2_array = np.array(im_2)*255
+im_1_array = np.array(im_1[:,:,0])*255
+im_2_array = np.array(im_2[:,:,0])*255
 # im_3_array = np.array(im_3)*255
 # im_4_array = np.array(im_4)*255
 # im_5_array = np.array(im_5)*255
+im3=im_1_array+im_2_array
+im3=np.mod(im3,255)
 
+plt.figure()
+plt.imshow(im_1_array,cmap="hsv")
+plt.axis("off")
+plt.show()
+plt.imsave("con.png", im3, cmap="hsv")
 
+# plt.figure()
+# plt.imshow(im_2_array,cmap="hsv")
+# plt.show()
 
 # # """Lens"""
 # # # height, width=1080,1920
@@ -105,35 +115,35 @@ im=plt.imread("C:/Users/Laboratorio/MakeHologram/For Exp in thesis/dear_GS_It1_2
 # im_new = Image.fromarray(im_new_array_new.astype(np.uint8))
 # im_new.save('dear2_5 with mlens.png')
 # im_new.show()
-"""Reconstruction"""
-rec=fftshift(ifft2(np.exp(1j*im)))
-# plt.figure()
-# plt.imshow(abs(im_new_array[:,:,0]))
-# plt.show()
+# """Reconstruction"""
+# rec=fftshift(ifft2(np.exp(1j*im)))
+# # plt.figure()
+# # plt.imshow(abs(im_new_array[:,:,0]))
+# # plt.show()
+
+# # plt.figure()
+# # plt.imshow(np.angle(im_new_array[:,:,0]))
+# # plt.show()
+
+# # plt.figure()
+# # plt.imshow(abs(im_new_array[:,:,1]))
+# # plt.show()
+
+# # plt.figure()
+# # plt.imshow(np.angle(im_new_array[:,:,1]))
+# # plt.show()
 
 # plt.figure()
-# plt.imshow(np.angle(im_new_array[:,:,0]))
+# plt.imshow(abs(rec)**2, cmap="hot")
 # plt.show()
 
-# plt.figure()
-# plt.imshow(abs(im_new_array[:,:,1]))
-# plt.show()
+# # plt.figure()
+# # plt.imshow(np.angle(im_new_array))
+# # plt.show()
+# # plt.figure()
+# # plt.imshow(lens3[0])
+# # plt.show()
 
-# plt.figure()
-# plt.imshow(np.angle(im_new_array[:,:,1]))
-# plt.show()
-
-plt.figure()
-plt.imshow(abs(rec)**2, cmap="hot")
-plt.show()
-
-# plt.figure()
-# plt.imshow(np.angle(im_new_array))
-# plt.show()
-# plt.figure()
-# plt.imshow(lens3[0])
-# plt.show()
-
-# plt.figure()
-# plt.imshow(abs(blank))
-# plt.show()
+# # plt.figure()
+# # plt.imshow(abs(blank))
+# # plt.show()
